@@ -7,6 +7,8 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { FileText, User, Target, FileBarChart, LogOut, LogIn } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
+import { useToast } from '@/hooks/use-toast';
+import { useStorage, AuthenticationRequiredError } from '@/lib/storage';
 import ClientDataForm from './ClientDataForm';
 import StrategyBank from './StrategyBank';
 import ReportPreview from './ReportPreview';
@@ -24,6 +26,8 @@ export default function FinancialPlanningLayout() {
   const [clientData, setClientData] = useState<ClientData | null>(null);
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const { user, isAuthenticated } = useAuth();
+  const { toast } = useToast();
+  const storage = useStorage();
 
   const handleLogin = () => {
     window.location.href = "/api/login";
@@ -31,6 +35,19 @@ export default function FinancialPlanningLayout() {
 
   const handleLogout = () => {
     window.location.href = "/api/logout";
+  };
+
+  const handleAuthError = (error: AuthenticationRequiredError) => {
+    toast({
+      title: "Sign In Required",
+      description: error.message,
+      action: (
+        <Button onClick={handleLogin} size="sm">
+          Sign In
+        </Button>
+      ),
+      duration: 6000,
+    });
   };
 
   const getUserInitials = (user: UserType) => {
