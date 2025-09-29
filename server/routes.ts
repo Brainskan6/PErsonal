@@ -226,21 +226,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Add new strategy
-  app.post('/api/strategies', async (req, res) => {
-    try {
-      const result = strategySchema.safeParse(req.body);
-      if (!result.success) {
-        res.status(400).json({ error: 'Invalid strategy data', details: result.error });
-        return;
-      }
+  app.post('/api/strategies', handleAsyncRoute(async (req, res) => {
+    const result = strategySchema.safeParse(req.body);
+    if (!result.success) {
+      return sendError(res, 400, 'Invalid strategy data', result.error);
+    }
 
-      const newStrategy = await (storage as any).addStrategy(result.data);
-      res.json(newStrategy);
+    try {
+      const newStrategy = await storage.addStrategy(result.data);
+      sendSuccess(res, newStrategy);
     } catch (error) {
       console.error('Error adding strategy:', error);
-      res.status(500).json({ error: 'Failed to add strategy' });
+      sendError(res, 500, 'Failed to add strategy');
     }
-  });
+  }));
 
   // Update existing strategy (built-in)
   app.put('/api/strategies/:id', async (req, res) => {

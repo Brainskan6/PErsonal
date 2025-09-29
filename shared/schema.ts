@@ -37,7 +37,7 @@ export const clientDataSchema = z.object({
   ...personalInfoSchema.shape,
 
   // Second Client Information
-  hasSecondClient: z.boolean(),
+  hasSecondClient: z.boolean().default(false),
   secondClientFirstName: z.string().optional(),
   secondClientLastName: z.string().optional(),
   secondClientDateOfBirth: z.string().optional(),
@@ -119,22 +119,22 @@ export const clientDataSchema = z.object({
 
   // Goals and Comments
   financialGoals: z.string().optional(),
-  riskTolerance: z.enum(["conservative", "conservative-income", "balanced-income", "balanced", "balanced-growth", "growth"]),
+  riskTolerance: z.enum(["conservative", "conservative-income", "balanced-income", "balanced", "balanced-growth", "growth"]).default("balanced"),
 
   // Retirement Planning
   desiredRetirementAge: z.number().min(50, "Retirement age must be at least 50").max(75, "Retirement age must be at most 75").optional().default(65),
   retirementSpendingGoal: z.number().min(0, "Retirement spending goal must be positive").optional().default(0),
 
   // Government Benefits
-  qppCurrentlyReceiving: z.boolean(),
+  qppCurrentlyReceiving: z.boolean().default(false),
   qppCurrentAmount: z.number().min(0, "QPP amount must be positive").optional(),
   qppExpectedAmount: z.number().min(0, "QPP expected amount must be positive").optional(),
-  oasCurrentlyReceiving: z.boolean(),
+  oasCurrentlyReceiving: z.boolean().default(false),
   oasCurrentAmount: z.number().min(0, "OAS amount must be positive").optional(),
   oasExpectedAmount: z.number().min(0, "OAS expected amount must be positive").optional(),
 
   // Insurance Information
-  hasInsurance: z.boolean(),
+  hasInsurance: z.boolean().default(false),
   insuranceDeathBenefit: z.number().min(0, "Death benefit must be positive").optional(),
   insuranceType: z.enum(["term", "permanent"]).optional(),
   insuranceTermYearsRemaining: z.number().min(0, "Years remaining must be positive").optional(),
@@ -142,18 +142,18 @@ export const clientDataSchema = z.object({
   insuranceWithEmployer: z.boolean().optional(),
 
   // Legal Documents
-  hasWill: z.boolean(),
+  hasWill: z.boolean().default(false),
   willLastUpdated: z.string().optional(),
 
   // Other Financial Institutions
-  hasAssetsOFI: z.boolean(),
+  hasAssetsOFI: z.boolean().default(false),
   assetsOFIDetails: z.string().optional(),
 
   // TFSA Information
-  tfsaMaximizedYearly: z.boolean(),
+  tfsaMaximizedYearly: z.boolean().default(false),
 
   // Relationship Status
-  inRelationship: z.boolean(),
+  inRelationship: z.boolean().default(false),
   relationshipType: z.enum(["married", "common-law"]).optional(),
   hasCohabitationAgreement: z.boolean().optional(),
 

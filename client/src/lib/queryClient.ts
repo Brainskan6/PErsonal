@@ -10,31 +10,31 @@ async function throwIfResNotOk(res: Response) {
 type ApiRequestHeaders = Record<string, string> | undefined;
 
 export async function apiRequest(
-  url: string,
-  method: string,
-  data?: unknown | undefined,
-  extraHeaders?: ApiRequestHeaders,
+  endpoint: string,
+  method: 'GET' | 'POST' | 'PUT' | 'DELETE' = 'GET',
+  data?: any,
+  customHeaders?: Record<string, string>
 ): Promise<Response> {
-  const token = typeof window !== "undefined" ? window.localStorage.getItem("auth_token") : null;
-
+  const token = localStorage.getItem('auth_token');
   const headers: Record<string, string> = {
-    ...(data ? { "Content-Type": "application/json" } : {}),
-    ...(extraHeaders ?? {}),
+    'Content-Type': 'application/json',
+    ...customHeaders,
   };
 
   if (token) {
-    headers.Authorization = `Bearer ${token}`;
+    headers['Authorization'] = `Bearer ${token}`;
   }
 
-  const res = await fetch(url, {
+  const config: RequestInit = {
     method,
     headers,
-    body: data ? JSON.stringify(data) : undefined,
-    credentials: "include",
-  });
+  };
 
-  await throwIfResNotOk(res);
-  return res;
+  if (data && method !== 'GET') {
+    config.body = JSON.stringify(data);
+  }
+
+  return fetch(endpoint, config);
 }
 
 type UnauthorizedBehavior = "returnNull" | "throw";

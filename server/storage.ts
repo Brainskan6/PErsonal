@@ -49,7 +49,7 @@ export class MemStorage implements IStorage {
   private reports: Map<string, Report>;
   private clientStrategyConfigs: Map<string, ClientStrategyConfig[]>;
   private customStrategies: Map<string, CustomStrategy>;
-  
+
   // Cache for frequently accessed data
   private strategiesByCategory: Map<string, Strategy[]> = new Map();
   private strategiesBySection: Map<string, Strategy[]> = new Map();
@@ -87,7 +87,7 @@ export class MemStorage implements IStorage {
 
   // Client data methods
   async saveClientData(userId: string, data: InsertClientData): Promise<ClientData> {
-    const clientData: ClientData = { ...data };
+    const clientData: ClientData = { ...data, userId }; // Ensure userId is part of the stored data if needed by other methods
     this.clientData.set(userId, clientData);
     console.log('Client data saved for user:', userId);
     console.log('Saved data keys:', Object.keys(clientData));
@@ -96,9 +96,8 @@ export class MemStorage implements IStorage {
 
   async savePartialClientData(userId: string, data: Partial<ClientData>): Promise<Partial<ClientData>> {
     const existingData = this.clientData.get(userId) || {};
-
     // Merge new data with existing data
-    const mergedData = { ...existingData, ...data };
+    const mergedData = { ...existingData, ...data, userId }; // Ensure userId is part of the stored data if needed by other methods
 
     this.clientData.set(userId, mergedData as ClientData);
     console.log('Partial client data saved for user:', userId);
@@ -110,8 +109,9 @@ export class MemStorage implements IStorage {
     return this.clientData.get(userId);
   }
 
+  // Added methods to satisfy the interface and provided changes, adapted for Map
   async getCurrentClientData(userId: string): Promise<ClientData | undefined> {
-    return this.getClientData(userId);
+    return this.clientData.get(userId);
   }
 
   async getAllClientData(userId: string): Promise<ClientData[]> {
@@ -182,7 +182,7 @@ export class MemStorage implements IStorage {
     if (!existingStrategy) {
       return null;
     }
-    
+
     const updatedStrategy = { ...existingStrategy, ...updates, id };
     this.strategies.set(id, updatedStrategy);
     this.cacheInvalidated = true;
@@ -208,12 +208,12 @@ export class MemStorage implements IStorage {
 
   private rebuildCache(): void {
     if (!this.cacheInvalidated) return;
-    
+
     this.strategiesByCategory.clear();
     this.strategiesBySection.clear();
-    
+
     const allStrategies = Array.from(this.strategies.values());
-    
+
     // Build category cache
     allStrategies.forEach(strategy => {
       if (!this.strategiesByCategory.has(strategy.category)) {
@@ -221,7 +221,7 @@ export class MemStorage implements IStorage {
       }
       this.strategiesByCategory.get(strategy.category)!.push(strategy);
     });
-    
+
     // Build section cache
     allStrategies.forEach(strategy => {
       if (strategy.section) {
@@ -231,7 +231,7 @@ export class MemStorage implements IStorage {
         this.strategiesBySection.get(strategy.section)!.push(strategy);
       }
     });
-    
+
     this.cacheInvalidated = false;
   }
 
@@ -251,32 +251,27 @@ export class MemStorage implements IStorage {
 
   async importStrategies(strategies: Strategy[]): Promise<Strategy[]> {
     const importedStrategies: Strategy[] = [];
-    
+
     for (const strategy of strategies) {
       const newId = `imported-${Date.now()}-${strategy.title.toLowerCase().replace(/\s+/g, '-')}`;
       const importedStrategy = { ...strategy, id: newId, isCustom: true };
       this.strategies.set(newId, importedStrategy);
       importedStrategies.push(importedStrategy);
     }
-    
+
     console.log(`Imported ${importedStrategies.length} strategies`);
     return importedStrategies;
   }
 
   // Custom Strategy methods
-  async getCustomStrategies(userId?: string): Promise<CustomStrategy[]> {
-    if (!userId) {
-      return Array.from(this.customStrategies.values());
-    }
-    
-    // Filter strategies by user
-    return Array.from(this.customStrategies.values()).filter(strategy => 
-      strategy.id.startsWith(`${userId}_custom_`) || strategy.id.startsWith('custom_')
-    );
+  async getCustomStrategies(): Promise<CustomStrategy[]> {
+    // Assuming customStrategies map stores all custom strategies, regardless of userId for now.
+    // If user-specific custom strategies are needed, a different storage mechanism or keying strategy would be required.
+    return Array.from(this.customStrategies.values());
   }
 
-  async addCustomStrategy(strategy: { title: string; content: string; section?: string }, userId?: string): Promise<CustomStrategy> {
-    const id = userId ? `${userId}_custom_${Date.now()}` : `custom-${Date.now()}`;
+  async addCustomStrategy(strategy: { title: string; content: string; section?: string }): Promise<CustomStrategy> {
+    const id = `custom-${Date.now()}-${strategy.title.toLowerCase().replace(/\s+/g, '-')}`;
     const customStrategy: CustomStrategy = {
       id,
       title: strategy.title,
@@ -298,7 +293,7 @@ export class MemStorage implements IStorage {
     strategy.content = updates.content;
     strategy.section = updates.section;
 
-    await this.save();
+    await this.save(); // Assuming save persists changes, though MemStorage doesn't need it.
     return strategy;
   }
 
