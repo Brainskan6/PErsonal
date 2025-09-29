@@ -5,12 +5,12 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { FileText, User, Target, FileBarChart, Settings, Plus, LogOut } from 'lucide-react';
+import { FileText, User, Target, FileBarChart, LogOut } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import ClientDataForm from './ClientDataForm';
 import StrategyBank from './StrategyBank';
 import ReportPreview from './ReportPreview';
-import StrategyAdmin from './StrategyAdmin';
+
 import { apiRequest } from "@/lib/queryClient";
 import type { ClientData, Strategy, ClientStrategyConfig, User as UserType } from "@shared/schema";
 
@@ -20,7 +20,7 @@ export default function FinancialPlanningLayout() {
   const [selectedCustomStrategies, setSelectedCustomStrategies] = useState<string[]>([]);
   const [strategyConfigurations, setStrategyConfigurations] = useState<ClientStrategyConfig[]>([]);
   const [reportText, setReportText] = useState("");
-  const [showStrategyAdmin, setShowStrategyAdmin] = useState(false);
+  
   const [clientData, setClientData] = useState<ClientData | null>(null);
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
   const { user } = useAuth();
@@ -305,12 +305,7 @@ export default function FinancialPlanningLayout() {
               isGenerating={isGeneratingReport}
             />
         );
-      case 'admin':
-         return (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              <StrategyAdmin onBack={() => setActiveTab('strategies')} />
-            </div>
-         );
+      
       default:
         return null;
     }
@@ -338,13 +333,7 @@ export default function FinancialPlanningLayout() {
       status: completionStatus.report,
       description: 'Generate and view report'
     },
-    {
-      key: 'admin' as const,
-      label: 'Admin',
-      icon: Settings,
-      status: false,
-      description: 'Manage strategies'
-    }
+    
   ];
 
   if (strategiesLoading) {
@@ -415,7 +404,6 @@ export default function FinancialPlanningLayout() {
                   key={tab.key}
                   onClick={() => {
                     setActiveTab(tab.key);
-                    if(tab.key === 'strategies') setShowStrategyAdmin(false);
                   }}
                   className={`
                     flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all duration-200 
@@ -431,21 +419,7 @@ export default function FinancialPlanningLayout() {
                   {tab.status && (
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
                   )}
-                  {activeTab === tab.key && tab.key === 'strategies' && (
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setShowStrategyAdmin(true);
-                      }}
-                      className="ml-1 h-6 px-2 text-xs bg-blue-100 hover:bg-blue-200 text-blue-700"
-                      data-testid="button-strategy-admin"
-                    >
-                      <Plus className="h-3 w-3 mr-1" />
-                      Add Strategy
-                    </Button>
-                  )}
+                  
                 </button>
               );
             })}
@@ -454,13 +428,9 @@ export default function FinancialPlanningLayout() {
       </header>
 
       <main className="container mx-auto px-3 py-3">
-        {showStrategyAdmin ? (
-          <StrategyAdmin onBack={() => setShowStrategyAdmin(false)} />
-        ) : (
-          <div className="min-h-[400px]">
-            {renderTabContent()}
-          </div>
-        )}
+        <div className="min-h-[400px]">
+          {renderTabContent()}
+        </div>
       </main>
     </div>
   );
