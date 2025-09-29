@@ -156,3 +156,22 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
     return;
   }
 };
+
+export function getUserFromSession(req: any) {
+  if (!req.isAuthenticated() || !req.user) {
+    return null;
+  }
+  
+  const user = req.user as any;
+  if (!user.claims) {
+    return null;
+  }
+
+  return {
+    id: user.claims.sub,
+    email: user.claims.email,
+    firstName: user.claims.first_name,
+    lastName: user.claims.last_name,
+    profileImageUrl: user.claims.profile_image_url,
+  };
+}
