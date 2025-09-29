@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, type FormEvent } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { clientDataSchema, type ClientData } from "@shared/schema";
@@ -10,7 +10,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Switch } from "@/components/ui/switch";
 import { Button } from "@/components/ui/button";
 import { User, DollarSign, Target, Calendar, Shield, FileText, Building2, Heart } from "lucide-react";
-import { useQueryClient, useMutation } from '@tanstack/react-query';
 
 interface ClientDataFormProps {
   onSubmit: (data: ClientData) => void;
@@ -18,7 +17,6 @@ interface ClientDataFormProps {
 }
 
 export default function ClientDataForm({ onSubmit, initialData }: ClientDataFormProps) {
-  const queryClient = useQueryClient();
   const form = useForm<ClientData>({
     resolver: zodResolver(clientDataSchema),
     defaultValues: initialData || {
@@ -118,43 +116,17 @@ export default function ClientDataForm({ onSubmit, initialData }: ClientDataForm
     }
   }, [initialData, form]);
 
-  const clientDataMutation = useMutation({
-    mutationFn: async (data: any) => {
-      console.log('Client data submitted:', data);
-      const response = await fetch('/api/client-data', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(data),
-      });
-
-      if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.message || 'Failed to save client data');
-      }
-
-      const result = await response.json();
-      console.log('Client data saved successfully:', result);
-      return result;
-    },
-    onSuccess: (data) => {
-      queryClient.invalidateQueries({ queryKey: ['/api/client-data/current'] });
-    },
-    onError: (error) => {
-      console.error('Error saving client data:', error);
-    }
-  });
-
-  const handleSubmit = useCallback((data: ClientData) => {
+  const handleValidSubmit = useCallback((data: ClientData) => {
     console.log('Form button clicked, submitting:', data);
-    clientDataMutation.mutate(data);
-  }, [clientDataMutation]);
+    onSubmit(data);
+  }, [onSubmit]);
 
-  const handleFormSubmit = useCallback((e: React.FormEvent) => {
+  const handleFormSubmit = useCallback((e: FormEvent) => {
     e.preventDefault();
     e.stopPropagation();
     console.log('Form submit handler called');
-    form.handleSubmit(handleSubmit)(e);
-  }, [form, handleSubmit]);
+    form.handleSubmit(handleValidSubmit)(e);
+  }, [form, handleValidSubmit]);
 
   return (
     <div className="space-y-6">
@@ -167,11 +139,10 @@ export default function ClientDataForm({ onSubmit, initialData }: ClientDataForm
           data-testid="button-submit-form-top"
           onClick={(e) => {
             console.log('Update Client Data button clicked');
-            form.handleSubmit(handleSubmit)(e);
+            form.handleSubmit(handleValidSubmit)(e);
           }}
-          disabled={clientDataMutation.isPending}
         >
-          {clientDataMutation.isPending ? 'Saving...' : 'Save Changes'}
+          Save Changes
         </Button>
       </div>
 
