@@ -1,4 +1,4 @@
-// Replit Auth React Hook  
+
 import React, { createContext, useContext } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { getQueryFn } from "@/lib/queryClient";
