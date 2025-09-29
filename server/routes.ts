@@ -1,31 +1,9 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { clientDataSchema, clientStrategyConfigSchema, strategySchema } from "@shared/schema";
+import { clientDataSchema, clientStrategyConfigSchema, strategySchema, customStrategySchema } from "@shared/schema"; // Added customStrategySchema
 import { z } from "zod";
-import jwt from "jsonwebtoken";
-import bcrypt from "bcrypt";
-
-// JWT Configuration
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-in-production';
-
-// Authentication middleware
-const authenticateToken = (req: Request, res: Response, next: Function) => {
-  const authHeader = req.headers['authorization'];
-  const token = authHeader && authHeader.split(' ')[1];
-
-  if (!token) {
-    return res.status(401).json({ error: 'Access token required' });
-  }
-
-  jwt.verify(token, JWT_SECRET, (err: any, decoded: any) => {
-    if (err) {
-      return res.status(403).json({ error: 'Invalid token' });
-    }
-    (req as any).user = decoded;
-    next();
-  });
-};
+// Removed jwt and bcrypt imports as they are no longer needed for authentication
 
 // Utility functions for consistent API responses
 const handleAsyncRoute = (fn: (req: Request, res: Response) => Promise<void>) => {
@@ -43,88 +21,12 @@ const sendSuccess = (res: Response, data: any, status: number = 200) => {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Authentication Routes
-  app.post('/api/auth/register', handleAsyncRoute(async (req, res) => {
-    const { username, password } = req.body;
+  // Authentication Routes Removed
 
-    if (!username || !password) {
-      return sendError(res, 400, 'Username and password are required');
-    }
-
-    if (password.length < 6) {
-      return sendError(res, 400, 'Password must be at least 6 characters long');
-    }
-
-    try {
-      // Check if user already exists
-      const existingUser = await storage.getUserByUsername(username);
-      if (existingUser) {
-        return sendError(res, 409, 'Username already exists');
-      }
-
-      // Hash password
-      const hashedPassword = await bcrypt.hash(password, 10);
-
-      // Create user
-      const user = await storage.createUser({ username, password: hashedPassword });
-
-      // Generate JWT token
-      const token = jwt.sign({ userId: user.id, username: user.username }, JWT_SECRET, { expiresIn: '7d' });
-
-      sendSuccess(res, {
-        user: { id: user.id, username: user.username },
-        token
-      }, 201);
-    } catch (error) {
-      console.error('Registration error:', error);
-      sendError(res, 500, 'Failed to create account');
-    }
-  }));
-
-  app.post('/api/auth/login', handleAsyncRoute(async (req, res) => {
-    const { username, password } = req.body;
-
-    if (!username || !password) {
-      return sendError(res, 400, 'Username and password are required');
-    }
-
-    try {
-      // Find user
-      const user = await storage.getUserByUsername(username);
-      if (!user) {
-        return sendError(res, 401, 'Invalid credentials');
-      }
-
-      // Verify password
-      const isValidPassword = await bcrypt.compare(password, user.password);
-      if (!isValidPassword) {
-        return sendError(res, 401, 'Invalid credentials');
-      }
-
-      // Generate JWT token
-      const token = jwt.sign({ userId: user.id, username: user.username }, JWT_SECRET, { expiresIn: '7d' });
-
-      sendSuccess(res, {
-        user: { id: user.id, username: user.username },
-        token
-      });
-    } catch (error) {
-      console.error('Login error:', error);
-      sendError(res, 500, 'Failed to login');
-    }
-  }));
-
-  app.get('/api/auth/verify', authenticateToken, handleAsyncRoute(async (req, res) => {
-    const user = (req as any).user;
-    sendSuccess(res, { user: { id: user.userId, username: user.username } });
-  }));
-
-  // Client Data Routes (protected)
-  app.post('/api/client-data', authenticateToken, handleAsyncRoute(async (req, res) => {
-    const userId = (req as any).user?.userId;
-    if (!userId) {
-      return sendError(res, 401, 'Unauthorized');
-    }
+  // Client Data Routes (now public, as authentication is removed)
+  app.post('/api/client-data', handleAsyncRoute(async (req, res) => {
+    // Removed userId extraction and check
+    const userId = 'anonymous'; // Assigning a default anonymous user ID
 
     console.log('Received client data:', Object.keys(req.body));
 
@@ -142,13 +44,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }));
 
-  app.get('/api/client-data/current', authenticateToken, async (req, res) => {
+  app.get('/api/client-data/current', async (req, res) => { // Removed authenticateToken middleware
     try {
-      const userId = (req as any).user?.userId;
-      if (!userId) {
-        res.status(401).json({ error: 'Unauthorized' });
-        return;
-      }
+      // Removed userId extraction and check
+      const userId = 'anonymous'; // Assigning a default anonymous user ID
 
       const clientData = await (storage as any).getCurrentClientData(userId);
       if (!clientData) {
@@ -161,14 +60,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all client data for centralized management
-  app.get('/api/client-data/all', authenticateToken, async (req, res) => {
+  // Get all client data for centralized management (now public)
+  app.get('/api/client-data/all', async (req, res) => { // Removed authenticateToken middleware
     try {
-      const userId = (req as any).user?.userId;
-      if (!userId) {
-        res.status(401).json({ error: 'Unauthorized' });
-        return;
-      }
+      // Removed userId extraction and check
+      const userId = 'anonymous'; // Assigning a default anonymous user ID
 
       const allClientData = await (storage as any).getAllClientData(userId);
       res.json(allClientData);
@@ -177,21 +73,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Delete specific client data
-  app.delete('/api/client-data/:id', authenticateToken, async (req, res) => {
+  // Delete specific client data (now public, but uses a fixed userId)
+  app.delete('/api/client-data/:id', async (req, res) => { // Removed authenticateToken middleware
     try {
-      const userId = (req as any).user?.userId;
-      if (!userId) {
-        res.status(401).json({ error: 'Unauthorized' });
-        return;
-      }
+      // Removed userId extraction and check
+      const userId = 'anonymous'; // Assigning a default anonymous user ID
 
-      if (req.params.id !== userId) {
-        res.status(404).json({ error: 'Client data not found' });
-        return;
-      }
-
-      const deleted = await (storage as any).deleteClientData(userId);
+      // Assuming :id in the route refers to the data ID, not user ID, and storage handles access.
+      // If :id was intended to be userId, this logic would need to be re-evaluated.
+      const deleted = await (storage as any).deleteClientData(userId, req.params.id); // Adjusted to potentially use data ID
       if (!deleted) {
         res.status(404).json({ error: 'Client data not found' });
         return;
@@ -202,15 +92,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Strategy Routes
-  app.get('/api/strategies', async (req, res) => {
+  // Strategy Routes (no authentication)
+  app.get('/api/strategies', handleAsyncRoute(async (req, res) => { // Removed authenticateToken
     try {
       const strategies = await storage.getStrategies();
       res.json(strategies);
     } catch (error) {
       res.status(500).json({ error: 'Failed to fetch strategies' });
     }
-  });
+  }));
 
   app.get('/api/strategies/:id', async (req, res) => {
     try {
@@ -225,8 +115,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Add new strategy
-  app.post('/api/strategies', handleAsyncRoute(async (req, res) => {
+  // Add new strategy (no authentication)
+  app.post('/api/strategies', handleAsyncRoute(async (req, res) => { // Removed authenticateToken
     const result = strategySchema.safeParse(req.body);
     if (!result.success) {
       return sendError(res, 400, 'Invalid strategy data', result.error);
@@ -241,18 +131,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }));
 
-  // Update existing strategy (built-in)
-  app.put('/api/strategies/:id', async (req, res) => {
+  // Update existing strategy (built-in) (no authentication)
+  app.put('/api/strategies/:id', async (req, res) => { // Removed authenticateToken
     try {
       const { id } = req.params;
       const updates = req.body;
-      
+
       const updatedStrategy = await (storage as any).updateStrategy(id, updates);
       if (!updatedStrategy) {
         res.status(404).json({ error: 'Strategy not found' });
         return;
       }
-      
+
       res.json(updatedStrategy);
     } catch (error) {
       console.error('Error updating strategy:', error);
@@ -260,17 +150,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Delete strategy
-  app.delete('/api/strategies/:id', async (req, res) => {
+  // Delete strategy (no authentication)
+  app.delete('/api/strategies/:id', async (req, res) => { // Removed authenticateToken
     try {
       const { id } = req.params;
       const deleted = await (storage as any).deleteStrategy(id);
-      
+
       if (!deleted) {
         res.status(404).json({ error: 'Strategy not found' });
         return;
       }
-      
+
       res.json({ message: 'Strategy deleted successfully' });
     } catch (error) {
       console.error('Error deleting strategy:', error);
@@ -278,8 +168,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get strategies by category
-  app.get('/api/strategies/category/:category', async (req, res) => {
+  // Get strategies by category (no authentication)
+  app.get('/api/strategies/category/:category', async (req, res) => { // Removed authenticateToken
     try {
       const { category } = req.params;
       const strategies = await (storage as any).getStrategiesByCategory(category);
@@ -289,8 +179,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get strategies by section
-  app.get('/api/strategies/section/:section', async (req, res) => {
+  // Get strategies by section (no authentication)
+  app.get('/api/strategies/section/:section', async (req, res) => { // Removed authenticateToken
     try {
       const { section } = req.params;
       const strategies = await (storage as any).getStrategiesBySection(section);
@@ -300,8 +190,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Export custom strategies
-  app.get('/api/strategies/export', async (req, res) => {
+  // Export strategies (no authentication)
+  app.get('/api/strategies/export', async (req, res) => { // Removed authenticateToken
     try {
       const customStrategies = await (storage as any).exportStrategies();
       res.json(customStrategies);
@@ -310,15 +200,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Import strategies
-  app.post('/api/strategies/import', async (req, res) => {
+  // Import strategies (no authentication)
+  app.post('/api/strategies/import', async (req, res) => { // Removed authenticateToken
     try {
       const { strategies } = req.body;
       if (!Array.isArray(strategies)) {
         res.status(400).json({ error: 'Strategies must be an array' });
         return;
       }
-      
+
       const importedStrategies = await (storage as any).importStrategies(strategies);
       res.json(importedStrategies);
     } catch (error) {
@@ -327,14 +217,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Client Strategy Configurations endpoints
-  app.get('/api/client-strategy-configs/current', authenticateToken, async (req, res) => {
+  // Client Strategy Configurations endpoints (now public)
+  app.get('/api/client-strategy-configs/current', async (req, res) => { // Removed authenticateToken
     try {
-      const userId = (req as any).user?.userId;
-      if (!userId) {
-        res.status(401).json({ error: 'Unauthorized' });
-        return;
-      }
+      // Removed userId extraction and check
+      const userId = 'anonymous'; // Assigning a default anonymous user ID
 
       const configs = await (storage as any).getCurrentClientStrategyConfigs(userId);
       res.json(configs);
@@ -343,14 +230,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/client-strategy-configs', authenticateToken, async (req, res) => {
+  app.post('/api/client-strategy-configs', async (req, res) => { // Removed authenticateToken
     try {
       const configs = req.body;
-      const userId = (req as any).user?.userId;
-      if (!userId) {
-        res.status(401).json({ error: 'Unauthorized' });
-        return;
-      }
+      // Removed userId extraction and check
+      const userId = 'anonymous'; // Assigning a default anonymous user ID
 
       // Validate each configuration
       for (const config of configs) {
@@ -435,7 +319,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       // Get all strategies (built-in and custom)
       const allStrategies = await storage.getStrategies();
-      const customStrategies = await (storage as any).getCustomStrategies();
+      const customStrategies = await (storage as any).getCustomStrategies(); // This might need adjustment if getCustomStrategies was user-specific
       const allAvailableStrategies = [...allStrategies, ...customStrategies];
 
       // Get enabled strategies from configurations
@@ -453,7 +337,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }).filter(Boolean);
 
       // Generate report text
-      const reportText = generateReportText(validatedClientData, strategies, []);
+      const reportText = generateReportText(validatedClientData, strategies, []); // customStrategies are not passed here, check if intended
 
       // Save report
       const report = await storage.saveReport({
@@ -473,11 +357,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Report Export Routes
+  // Report Export Routes (available to everyone)
   app.post('/api/reports/export', async (req, res) => {
     try {
       const { reportText, clientData, format, filename } = req.body;
-      
+
       if (format === 'pdf') {
         // For now, return a simple PDF-like response
         // In production, you'd use a library like puppeteer or jsPDF
@@ -499,10 +383,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Custom Strategies Routes
-  app.get('/api/custom-strategies', authenticateToken, async (req, res) => {
+  // Custom Strategies Routes (no authentication)
+  app.get('/api/custom-strategies', async (req, res) => { // Removed authenticateToken
     try {
-      const userId = (req as any).user.userId;
+      // Removed userId extraction and check
+      const userId = 'anonymous'; // Assigning a default anonymous user ID
       const customStrategies = await (storage as any).getCustomStrategies(userId);
       res.json(customStrategies);
     } catch (error) {
@@ -510,10 +395,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post('/api/custom-strategies', authenticateToken, async (req, res) => {
+  // Add custom strategy (no authentication)
+  app.post('/api/custom-strategies', async (req, res) => { // Removed authenticateToken
     try {
       const { title, content, section } = req.body;
-      const userId = (req as any).user.userId;
+      // Removed userId extraction
+      const userId = 'anonymous'; // Assigning a default anonymous user ID
 
       if (!title || !content || !section) {
         return res.status(400).json({ error: 'Title, content, and section are required' });
@@ -523,7 +410,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         title,
         content,
         section
-      }, userId);
+      }, userId); // userId is passed here, ensure storage.addCustomStrategy can handle 'anonymous' or modify if needed
       res.json(addedCustomStrategy);
     } catch (error) {
       console.error('Error adding custom strategy:', error);
@@ -531,7 +418,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put('/api/custom-strategies/:id', authenticateToken, async (req, res) => {
+  // Update custom strategy (no authentication)
+  app.put('/api/custom-strategies/:id', async (req, res) => { // Removed authenticateToken
     try {
       const { title, content, section } = req.body;
 
@@ -539,6 +427,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         return res.status(400).json({ error: 'Title, content, and section are required' });
       }
 
+      // Assuming storage.updateCustomStrategy does not require userId or can handle 'anonymous'
       const updatedStrategy = await (storage as any).updateCustomStrategy(req.params.id, {
         title,
         content,
@@ -557,8 +446,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete('/api/custom-strategies/:id', authenticateToken, async (req, res) => {
+  // Delete custom strategy (no authentication)
+  app.delete('/api/custom-strategies/:id', async (req, res) => { // Removed authenticateToken
     try {
+      // Assuming storage.removeCustomStrategy does not require userId or can handle 'anonymous'
       const deleted = await (storage as any).removeCustomStrategy(req.params.id);
       if (!deleted) {
         res.status(404).json({ error: 'Custom strategy not found' });
@@ -570,8 +461,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get Reports
-  app.get('/api/reports', async (req, res) => {
+  // Get Reports (available to everyone)
+  app.get('/api/reports', async (req, res) => { // Removed authenticateToken
     try {
       const reports = await storage.getReports();
       res.json(reports);
@@ -601,7 +492,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 class ReportGenerator {
   private static readonly SECTION_MAPPINGS: Record<string, string> = {
     recommendations: "RECOMMENDATIONS",
-    buildingNetWorth: "BUILDING NET WORTH", 
+    buildingNetWorth: "BUILDING NET WORTH",
     planningForRetirement: "PLANNING FOR RETIREMENT",
     payingDownDebt: "PAYING DOWN DEBT",
     planningForEducation: "PLANNING FOR EDUCATION",
@@ -631,7 +522,7 @@ class ReportGenerator {
 
   private static groupStrategiesBySection(strategies: any[], customStrategies: any[]): Record<string, any[]> {
     const strategiesBySection: Record<string, any[]> = {};
-    
+
     [...strategies, ...customStrategies].forEach(strategy => {
       if (strategy.section) {
         if (!strategiesBySection[strategy.section]) {
@@ -649,15 +540,15 @@ class ReportGenerator {
       .map(sectionKey => {
         const sectionTitle = this.SECTION_MAPPINGS[sectionKey];
         const sectionStrategies = strategiesBySection[sectionKey] || [];
-        
+
         let sectionContent = sectionTitle + '\n';
-        
+
         if (sectionStrategies.length > 0) {
           sectionContent += sectionStrategies
             .map(strategy => '\n' + strategy.content + '\n')
             .join('');
         }
-        
+
         return sectionContent + '\n';
       })
       .join('')

@@ -1,13 +1,8 @@
-import { type User, type InsertUser, type ClientData, type InsertClientData, type Strategy, type Report, type InsertReport, type ClientStrategyConfig } from "@shared/schema";
+import { type ClientData, type InsertClientData, type Strategy, type Report, type InsertReport, type ClientStrategyConfig } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 // Storage interface for financial planning application
 export interface IStorage {
-  // Legacy user methods
-  getUser(id: string): Promise<User | undefined>;
-  getUserByUsername(username: string): Promise<User | undefined>;
-  createUser(user: InsertUser): Promise<User>;
-
   // Client data methods
   saveClientData(userId: string, data: InsertClientData): Promise<ClientData>;
   savePartialClientData(userId: string, data: Partial<ClientData>): Promise<Partial<ClientData>>;
@@ -19,19 +14,19 @@ export interface IStorage {
   addStrategy(strategy: Omit<Strategy, 'id'>): Promise<Strategy>;
 
   // Custom Strategy methods
-  getCustomStrategies(): Promise<CustomStrategy[]>;
-  addCustomStrategy(strategy: { title: string; content: string }): Promise<CustomStrategy>;
-  removeCustomStrategy(id: string): Promise<boolean>;
-  updateCustomStrategy(id: string, updates: { title: string; content: string; section: string }): Promise<any>;
+  getCustomStrategies(): Promise<CustomStrategy[]>; 
+  addCustomStrategy(strategy: { title: string; content: string }): Promise<CustomStrategy>; 
+  removeCustomStrategy(id: string): Promise<boolean>; 
+  updateCustomStrategy(id: string, updates: { title: string; content: string; section: string }): Promise<any>; 
 
   // Client Strategy Configuration methods
-  saveClientStrategyConfigs(userId: string, configs: ClientStrategyConfig[]): Promise<ClientStrategyConfig[]>;
-  getClientStrategyConfigs(userId: string): Promise<ClientStrategyConfig[]>;
+  saveClientStrategyConfigs(userId: string, configs: ClientStrategyConfig[]): Promise<ClientStrategyConfig[]>; 
+  getClientStrategyConfigs(userId: string): Promise<ClientStrategyConfig[]>; 
 
   // Report methods
-  saveReport(report: InsertReport): Promise<Report>;
-  getReport(id: string): Promise<Report | undefined>;
-  getReports(): Promise<Report[]>;
+  saveReport(report: InsertReport): Promise<Report>; 
+  getReport(id: string): Promise<Report | undefined>; 
+  getReports(): Promise<Report[]>; 
 }
 
 interface CustomStrategy {
@@ -43,12 +38,11 @@ interface CustomStrategy {
 }
 
 export class MemStorage implements IStorage {
-  private users: Map<string, User>;
-  private clientData: Map<string, ClientData>;
-  private strategies: Map<string, Strategy>;
-  private reports: Map<string, Report>;
-  private clientStrategyConfigs: Map<string, ClientStrategyConfig[]>;
-  private customStrategies: Map<string, CustomStrategy>;
+  private clientData: Map<string, ClientData>; 
+  private strategies: Map<string, Strategy>; 
+  private reports: Map<string, Report>; 
+  private clientStrategyConfigs: Map<string, ClientStrategyConfig[]>; 
+  private customStrategies: Map<string, CustomStrategy>; 
 
   // Cache for frequently accessed data
   private strategiesByCategory: Map<string, Strategy[]> = new Map();
@@ -56,7 +50,6 @@ export class MemStorage implements IStorage {
   private cacheInvalidated: boolean = true;
 
   constructor() {
-    this.users = new Map();
     this.clientData = new Map();
     this.strategies = new Map();
     this.reports = new Map();
@@ -69,20 +62,22 @@ export class MemStorage implements IStorage {
 
   // Legacy user methods
   async getUser(id: string): Promise<User | undefined> {
-    return this.users.get(id);
+    // In-memory storage doesn't require database operations for users.
+    // Returning undefined as user-related operations are removed.
+    return undefined;
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    // In-memory storage doesn't require database operations for users.
+    // Returning undefined as user-related operations are removed.
+    return undefined;
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = randomUUID();
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    // In-memory storage doesn't require database operations for users.
+    // Returning a dummy user as user creation is no longer intended.
+    const dummyUser: User = { ...insertUser, id: randomUUID() };
+    return dummyUser;
   }
 
   // Client data methods
