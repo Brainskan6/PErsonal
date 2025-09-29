@@ -7,10 +7,28 @@ async function throwIfResNotOk(res: Response) {
   }
 }
 
-export async function apiRequest(url: string, method: string, data?: unknown | undefined): Promise<Response> {
+type ApiRequestHeaders = Record<string, string> | undefined;
+
+export async function apiRequest(
+  url: string,
+  method: string,
+  data?: unknown | undefined,
+  extraHeaders?: ApiRequestHeaders,
+): Promise<Response> {
+  const token = typeof window !== "undefined" ? window.localStorage.getItem("auth_token") : null;
+
+  const headers: Record<string, string> = {
+    ...(data ? { "Content-Type": "application/json" } : {}),
+    ...(extraHeaders ?? {}),
+  };
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
