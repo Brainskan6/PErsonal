@@ -337,8 +337,13 @@ export default function StrategyBank({
     removeCustomStrategyMutation.mutate(strategyId);
   };
 
-  // Combine fetched custom strategies with prop custom strategies
-  const customStrategies = [...fetchedCustomStrategies, ...propCustomStrategies];
+  // Combine fetched custom strategies with prop custom strategies, avoiding duplicates
+  const customStrategies = [
+    ...fetchedCustomStrategies,
+    ...propCustomStrategies.filter(propStrategy => 
+      !fetchedCustomStrategies.some(fetchedStrategy => fetchedStrategy.id === propStrategy.id)
+    )
+  ];
 
   // Use custom hook for strategy filtering
   const { filteredBuiltInStrategies, filteredCustomStrategies } = useFilteredStrategies({

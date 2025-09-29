@@ -20,6 +20,7 @@ export default function StrategyBankExample() {
     <div className="max-w-2xl mx-auto p-6">
       <StrategyBank
         strategies={[]}
+        customStrategies={[]}
         selectedStrategies={selectedStrategies}
         onStrategyToggle={handleStrategyToggle}
         onSelectionChange={handleSelectionChange}
