@@ -17,17 +17,9 @@ const queryClient = new QueryClient({
 });
 
 function Router() {
-  const { isAuthenticated, isLoading } = useAuth();
-
   return (
     <Switch>
-      {isLoading || !isAuthenticated ? (
-        <Route path="/" component={Landing} />
-      ) : (
-        <>
-          <Route path="/" component={Home} />
-        </>
-      )}
+      <Route path="/" component={Home} />
       <Route component={NotFound} />
     </Switch>
   );
