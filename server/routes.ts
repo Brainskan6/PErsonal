@@ -121,25 +121,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Client Data Routes (protected)
   app.post('/api/client-data', authenticateToken, handleAsyncRoute(async (req, res) => {
+    const userId = (req as any).user?.userId;
+    if (!userId) {
+      return sendError(res, 401, 'Unauthorized');
+    }
+
     console.log('Received client data:', Object.keys(req.body));
 
     const result = clientDataSchema.safeParse(req.body);
 
     if (result.success) {
-      const savedData = await storage.saveClientData(result.data);
+      const savedData = await storage.saveClientData(userId, result.data);
       console.log('Full validation - returning saved data');
       sendSuccess(res, savedData);
     } else {
       // Auto-save with partial data
       console.log('Partial validation - saving partial data');
-      const savedData = await (storage as any).savePartialClientData(req.body);
+      const savedData = await (storage as any).savePartialClientData(userId, req.body);
       sendSuccess(res, savedData);
     }
   }));
 
   app.get('/api/client-data/current', authenticateToken, async (req, res) => {
     try {
-      const clientData = await (storage as any).getCurrentClientData();
+      const userId = (req as any).user?.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const clientData = await (storage as any).getCurrentClientData(userId);
       if (!clientData) {
         res.status(404).json({ error: 'No client data found' });
         return;
@@ -153,7 +164,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Get all client data for centralized management
   app.get('/api/client-data/all', authenticateToken, async (req, res) => {
     try {
-      const allClientData = await (storage as any).getAllClientData();
+      const userId = (req as any).user?.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const allClientData = await (storage as any).getAllClientData(userId);
       res.json(allClientData);
     } catch (error) {
       res.status(500).json({ error: 'Failed to fetch all client data' });
@@ -163,7 +180,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Delete specific client data
   app.delete('/api/client-data/:id', authenticateToken, async (req, res) => {
     try {
-      const deleted = await (storage as any).deleteClientData(req.params.id);
+      const userId = (req as any).user?.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      if (req.params.id !== userId) {
+        res.status(404).json({ error: 'Client data not found' });
+        return;
+      }
+
+      const deleted = await (storage as any).deleteClientData(userId);
       if (!deleted) {
         res.status(404).json({ error: 'Client data not found' });
         return;
@@ -301,18 +329,29 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Client Strategy Configurations endpoints
-  app.get('/api/client-strategy-configs/current', async (req, res) => {
+  app.get('/api/client-strategy-configs/current', authenticateToken, async (req, res) => {
     try {
-      const configs = await (storage as any).getCurrentClientStrategyConfigs();
+      const userId = (req as any).user?.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
+
+      const configs = await (storage as any).getCurrentClientStrategyConfigs(userId);
       res.json(configs);
     } catch (error) {
       res.status(404).json({ error: 'No client strategy configurations found' });
     }
   });
 
-  app.post('/api/client-strategy-configs', async (req, res) => {
+  app.post('/api/client-strategy-configs', authenticateToken, async (req, res) => {
     try {
       const configs = req.body;
+      const userId = (req as any).user?.userId;
+      if (!userId) {
+        res.status(401).json({ error: 'Unauthorized' });
+        return;
+      }
 
       // Validate each configuration
       for (const config of configs) {
@@ -323,7 +362,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         }
       }
 
-      const savedConfigs = await (storage as any).saveClientStrategyConfigs('current', configs);
+      const savedConfigs = await (storage as any).saveClientStrategyConfigs(userId, configs);
       res.json(savedConfigs);
     } catch (error) {
       console.error('Error saving client strategy configs:', error);
