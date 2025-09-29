@@ -5,7 +5,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
-import { FileText, User, Target, FileBarChart, LogOut } from 'lucide-react';
+import { FileText, User, Target, FileBarChart, LogOut, LogIn } from 'lucide-react';
 import { useAuth } from '@/hooks/useAuth';
 import ClientDataForm from './ClientDataForm';
 import StrategyBank from './StrategyBank';
@@ -20,10 +20,14 @@ export default function FinancialPlanningLayout() {
   const [selectedCustomStrategies, setSelectedCustomStrategies] = useState<string[]>([]);
   const [strategyConfigurations, setStrategyConfigurations] = useState<ClientStrategyConfig[]>([]);
   const [reportText, setReportText] = useState("");
-  
+
   const [clientData, setClientData] = useState<ClientData | null>(null);
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
-  const { user } = useAuth();
+  const { user, isAuthenticated } = useAuth();
+
+  const handleLogin = () => {
+    window.location.href = "/api/login";
+  };
 
   const handleLogout = () => {
     window.location.href = "/api/logout";
@@ -305,7 +309,7 @@ export default function FinancialPlanningLayout() {
               isGenerating={isGeneratingReport}
             />
         );
-      
+
       default:
         return null;
     }
@@ -333,7 +337,7 @@ export default function FinancialPlanningLayout() {
       status: completionStatus.report,
       description: 'Generate and view report'
     },
-    
+
   ];
 
   if (strategiesLoading) {
@@ -365,34 +369,40 @@ export default function FinancialPlanningLayout() {
                 </p>
               </div>
             </div>
-            
-            {user && (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full" data-testid="button-user-menu">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.profileImageUrl || undefined} alt={getUserDisplayName(user)} style={{ objectFit: 'cover' }} />
-                      <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{getUserDisplayName(user)}</p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {user.email}
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={handleLogout} data-testid="button-logout">
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            )}
+            <div className="flex items-center gap-4">
+              {isAuthenticated ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-8 w-8 rounded-full" data-testid="button-user-menu">
+                      <Avatar className="h-8 w-8">
+                        <AvatarImage src={user.profileImageUrl || undefined} alt={getUserDisplayName(user)} style={{ objectFit: 'cover' }} />
+                        <AvatarFallback>{getUserInitials(user)}</AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent className="w-56" align="end" forceMount>
+                    <DropdownMenuLabel className="font-normal">
+                      <div className="flex flex-col space-y-1">
+                        <p className="text-sm font-medium leading-none">{getUserDisplayName(user)}</p>
+                        <p className="text-xs leading-none text-muted-foreground">
+                          {user.email}
+                        </p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem onClick={handleLogout} data-testid="button-logout">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>Log out</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <Button onClick={handleLogin} data-testid="button-login">
+                  <LogIn className="h-4 w-4 mr-2" />
+                  Sign In with Replit
+                </Button>
+              )}
+            </div>
           </div>
 
           <div className="flex items-center gap-1">
@@ -419,7 +429,7 @@ export default function FinancialPlanningLayout() {
                   {tab.status && (
                     <div className="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
                   )}
-                  
+
                 </button>
               );
             })}
