@@ -7,6 +7,10 @@ export default function Landing() {
     window.location.href = "/api/login";
   };
 
+  const handleGetStarted = () => {
+    window.location.href = "/api/login";
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-b from-background to-muted/20">
       {/* Header */}
@@ -40,7 +44,7 @@ export default function Landing() {
             Generate professional financial planning reports with structured client data, 
             expert strategies, and automated report compilation.
           </p>
-          <Button size="lg" onClick={handleLogin} data-testid="button-get-started">
+          <Button size="lg" onClick={handleGetStarted} data-testid="button-get-started">
             Get Started
           </Button>
         </div>

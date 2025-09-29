@@ -3,7 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { clientDataSchema, clientStrategyConfigSchema, strategySchema, customStrategySchema } from "@shared/schema";
 import { z } from "zod";
-import { setupAuth, isAuthenticated } from "./replitAuth";
+import { setupAuth, isAuthenticated, getUserFromSession } from "./replitAuth";
 
 // Utility functions for consistent API responses
 const handleAsyncRoute = (fn: (req: Request, res: Response) => Promise<void>) => {
@@ -24,17 +24,14 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Auth middleware
   await setupAuth(app);
 
-  // Auth routes
-  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
-    try {
-      const userId = req.user.claims.sub;
-      const user = await storage.getUser(userId);
-      res.json(user);
-    } catch (error) {
-      console.error("Error fetching user:", error);
-      res.status(500).json({ message: "Failed to fetch user" });
+  // Authentication routes
+  app.get('/api/auth/user', isAuthenticated, handleAsyncRoute(async (req: Request, res: Response) => {
+    const user = getUserFromSession(req);
+    if (!user) {
+      return sendError(res, 401, 'Unauthorized');
     }
-  });
+    res.json(user);
+  }));
 
   // Protected Client Data Routes
   app.post('/api/client-data', isAuthenticated, handleAsyncRoute(async (req: any, res) => {
