@@ -1,14 +1,13 @@
 import { useState } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { FileText, Database, Settings } from 'lucide-react';
+import { Button } from "@/components/ui/button";
+import { FileText, User, Target, FileBarChart, Settings, Plus } from 'lucide-react';
 import ClientDataForm from './ClientDataForm';
 import StrategyBank from './StrategyBank';
 import ReportPreview from './ReportPreview';
 import StrategyAdmin from './StrategyAdmin';
-import { useQuery } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import type { ClientData, Strategy, ClientStrategyConfig } from "@shared/schema";
 
@@ -21,7 +20,6 @@ export default function FinancialPlanningLayout() {
   const [showStrategyAdmin, setShowStrategyAdmin] = useState(false);
   const [clientData, setClientData] = useState<ClientData | null>(null);
   const [isGeneratingReport, setIsGeneratingReport] = useState(false);
-
 
   // Fetch strategies (available to everyone)
   const { data: strategies = [], isLoading: strategiesLoading, error: strategiesError } = useQuery<Strategy[]>({
@@ -54,7 +52,6 @@ export default function FinancialPlanningLayout() {
     staleTime: 10 * 60 * 1000, // 10 minutes
   });
 
-
   // Fetch client data (no longer requires authentication)
   const { data: fetchedClientData, isLoading: clientDataLoading, refetch: refetchClientData } = useQuery<ClientData | null>({
     queryKey: ['/api/client-data/current'],
@@ -84,7 +81,6 @@ export default function FinancialPlanningLayout() {
     }
   });
 
-
   // Save client data mutation (no longer requires authentication)
   const saveClientDataMutation = useMutation({
     mutationFn: async (data: ClientData) => {
@@ -96,18 +92,9 @@ export default function FinancialPlanningLayout() {
     },
     onSuccess: () => {
       refetchClientData(); // Refetch to update the fetched data
-      // toast({
-      //   title: "Client data saved",
-      //   description: "Client information has been saved.",
-      // });
     },
     onError: (error) => {
       console.error('Save client data error:', error);
-      // toast({
-      //   title: "Error saving data",
-      //   description: "Failed to save client information. Please try again.",
-      //   variant: "destructive",
-      // });
     },
   });
 
@@ -131,24 +118,14 @@ export default function FinancialPlanningLayout() {
     },
     onSuccess: (data: any) => {
       setReportText(data.report);
-      // toast({
-      //   title: "Report generated",
-      //   description: "Financial planning report has been created successfully.",
-      // });
     },
     onError: (error) => {
       console.error('Generate report error:', error);
-      // toast({
-      //   title: "Error generating report",
-      //   description: "Failed to generate report. Please try again.",
-      //   variant: "destructive",
-      // });
     },
   });
 
   const selectedStrategyObjects = Array.isArray(strategies) ? strategies.filter((s: Strategy) => selectedStrategies.includes(s.id)) : [];
   const selectedCustomStrategyObjects = Array.isArray(customStrategies) ? customStrategies.filter((s: Strategy) => selectedCustomStrategies.includes(s.id)) : [];
-
 
   const handleClientDataSubmit = (data: ClientData) => {
     console.log('Client data submitted:', data);
@@ -194,11 +171,6 @@ export default function FinancialPlanningLayout() {
 
   const generateReport = async () => {
     if (!clientData) {
-      // toast({
-      //   title: "Client data required",
-      //   description: "Please fill out client data before generating a report.",
-      //   variant: "destructive",
-      // });
       return;
     }
 
@@ -225,11 +197,6 @@ export default function FinancialPlanningLayout() {
 
     } catch (error) {
       console.error('Error in generateReport function:', error);
-      // toast({
-      //   title: "Error",
-      //   description: "Failed to initiate report generation. Please check client data and strategy selections.",
-      //   variant: "destructive",
-      // });
     } finally {
       setIsGeneratingReport(false);
     }
@@ -237,11 +204,6 @@ export default function FinancialPlanningLayout() {
 
   const exportReport = () => {
     if (!reportText) {
-      // toast({
-      //   title: "No report to export",
-      //   description: "Please generate a report first.",
-      //   variant: "destructive",
-      // });
       return;
     }
 
@@ -255,10 +217,6 @@ export default function FinancialPlanningLayout() {
     document.body.removeChild(link);
     URL.revokeObjectURL(url);
 
-    // toast({
-    //   title: "Report exported",
-    //   description: "The report has been downloaded as a text file.",
-    // });
     console.log('Report exported successfully');
   };
 
@@ -320,7 +278,6 @@ export default function FinancialPlanningLayout() {
          return (
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <StrategyAdmin onBack={() => setActiveTab('strategies')} />
-              {/* Removed UserTesting component as it was not in the original scope */}
             </div>
          );
       default:
@@ -332,29 +289,29 @@ export default function FinancialPlanningLayout() {
     {
       key: 'client' as const,
       label: 'Client Information',
-      icon: 'User', // Changed to string to avoid import issues if User icon is removed
+      icon: User,
       status: completionStatus.clientData,
       description: 'Personal and financial details'
     },
     {
       key: 'strategies' as const,
       label: 'Strategy Bank',
-      icon: 'Target', // Changed to string
+      icon: Target,
       status: completionStatus.strategies,
       description: 'Select financial strategies'
     },
     {
       key: 'report' as const,
       label: 'Report',
-      icon: 'FileBarChart', // Changed to string
+      icon: FileBarChart,
       status: completionStatus.report,
       description: 'Generate and view report'
     },
     {
       key: 'admin' as const,
       label: 'Admin',
-      icon: 'Settings', // Changed to string
-      status: false, // Admin tab doesn't have a completion status in this context
+      icon: Settings,
+      status: false,
       description: 'Manage strategies'
     }
   ];
@@ -388,29 +345,18 @@ export default function FinancialPlanningLayout() {
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              {/* Removed auth-related buttons */}
-            </div>
           </div>
 
           <div className="flex items-center gap-1">
             {tabButtons.map((tab) => {
-              // Dynamically render icon components if needed, or use strings as placeholders
-              let IconComponent = FileText; // Default icon
-              switch (tab.key) {
-                  case 'client': IconComponent = User; break; // Assuming User icon exists
-                  case 'strategies': IconComponent = Target; break; // Assuming Target icon exists
-                  case 'report': IconComponent = FileBarChart; break; // Assuming FileBarChart icon exists
-                  case 'admin': IconComponent = Settings; break; // Assuming Settings icon exists
-                  default: IconComponent = FileText;
-              }
+              const IconComponent = tab.icon;
               const isActive = activeTab === tab.key;
               return (
                 <button
                   key={tab.key}
                   onClick={() => {
                     setActiveTab(tab.key);
-                    if(tab.key === 'strategies') setShowStrategyAdmin(false); // Hide admin when switching to strategies
+                    if(tab.key === 'strategies') setShowStrategyAdmin(false);
                   }}
                   className={`
                     flex items-center gap-2 px-4 py-2 rounded-md font-medium transition-all duration-200 
@@ -457,8 +403,6 @@ export default function FinancialPlanningLayout() {
           </div>
         )}
       </main>
-
-      {/* Auth Form Modal removed */}
     </div>
   );
 }

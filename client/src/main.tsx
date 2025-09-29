@@ -1,3 +1,4 @@
+
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
@@ -6,7 +7,6 @@ import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { Switch, Route } from "wouter";
-import { AuthProvider } from "./hooks/useAuth";
 import Home from "./pages/Home";
 import NotFound from "./pages/not-found";
 
@@ -67,15 +67,13 @@ function App() {
   return (
     <ErrorBoundary>
       <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Switch>
-              <Route path="/" component={Home} />
-              <Route component={NotFound} />
-            </Switch>
-          </TooltipProvider>
-        </AuthProvider>
+        <TooltipProvider>
+          <Toaster />
+          <Switch>
+            <Route path="/" component={Home} />
+            <Route component={NotFound} />
+          </Switch>
+        </TooltipProvider>
       </QueryClientProvider>
     </ErrorBoundary>
   );
