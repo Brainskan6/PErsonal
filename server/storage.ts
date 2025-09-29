@@ -1,8 +1,12 @@
-import { type ClientData, type InsertClientData, type Strategy, type Report, type InsertReport, type ClientStrategyConfig } from "@shared/schema";
+import { type ClientData, type InsertClientData, type Strategy, type Report, type InsertReport, type ClientStrategyConfig, type User, type UpsertUser, type CustomStrategy, type InsertUser } from "@shared/schema";
 import { randomUUID } from "crypto";
 
 // Storage interface for financial planning application
 export interface IStorage {
+  // User operations - REQUIRED for Replit Auth
+  getUser(id: string): Promise<User | undefined>;
+  upsertUser(user: UpsertUser): Promise<User>;
+  
   // Client data methods
   saveClientData(userId: string, data: InsertClientData): Promise<ClientData>;
   savePartialClientData(userId: string, data: Partial<ClientData>): Promise<Partial<ClientData>>;
@@ -29,20 +33,14 @@ export interface IStorage {
   getReports(): Promise<Report[]>; 
 }
 
-interface CustomStrategy {
-  id: string;
-  title: string;
-  content: string;
-  section?: string;
-  isSelected: boolean;
-}
 
 export class MemStorage implements IStorage {
   private clientData: Map<string, ClientData>; 
   private strategies: Map<string, Strategy>; 
   private reports: Map<string, Report>; 
   private clientStrategyConfigs: Map<string, ClientStrategyConfig[]>; 
-  private customStrategies: Map<string, CustomStrategy>; 
+  private customStrategies: Map<string, CustomStrategy>;
+  private users: Map<string, User>;
 
   // Cache for frequently accessed data
   private strategiesByCategory: Map<string, Strategy[]> = new Map();
@@ -55,29 +53,62 @@ export class MemStorage implements IStorage {
     this.reports = new Map();
     this.clientStrategyConfigs = new Map();
     this.customStrategies = new Map();
+    this.users = new Map();
 
     // Initialize default strategies
     this.initializeDefaultStrategies();
   }
 
-  // Legacy user methods
+  // User operations - REQUIRED for Replit Auth
   async getUser(id: string): Promise<User | undefined> {
-    // In-memory storage doesn't require database operations for users.
-    // Returning undefined as user-related operations are removed.
-    return undefined;
+    return this.users.get(id);
   }
 
+  async upsertUser(userData: UpsertUser): Promise<User> {
+    const existingUser = this.users.get(userData.id!);
+    
+    if (existingUser) {
+      // Update existing user
+      const updatedUser: User = {
+        ...existingUser,
+        ...userData,
+        updatedAt: new Date(),
+      } as User;
+      this.users.set(userData.id!, updatedUser);
+      return updatedUser;
+    } else {
+      // Create new user
+      const newUser: User = {
+        id: userData.id || randomUUID(),
+        email: userData.email || null,
+        firstName: userData.firstName || null,
+        lastName: userData.lastName || null,
+        profileImageUrl: userData.profileImageUrl || null,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      this.users.set(newUser.id, newUser);
+      return newUser;
+    }
+  }
+
+  // Legacy methods for backward compatibility
   async getUserByUsername(username: string): Promise<User | undefined> {
-    // In-memory storage doesn't require database operations for users.
-    // Returning undefined as user-related operations are removed.
-    return undefined;
+    return Array.from(this.users.values()).find(user => user.email === username);
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    // In-memory storage doesn't require database operations for users.
-    // Returning a dummy user as user creation is no longer intended.
-    const dummyUser: User = { ...insertUser, id: randomUUID() };
-    return dummyUser;
+    const newUser: User = {
+      id: randomUUID(),
+      email: insertUser.email || null,
+      firstName: insertUser.firstName || null,
+      lastName: insertUser.lastName || null,
+      profileImageUrl: null,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+    this.users.set(newUser.id, newUser);
+    return newUser;
   }
 
   // Client data methods

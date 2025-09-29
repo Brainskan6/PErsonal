@@ -1,9 +1,9 @@
 import type { Express, Request, Response } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { clientDataSchema, clientStrategyConfigSchema, strategySchema, customStrategySchema } from "@shared/schema"; // Added customStrategySchema
+import { clientDataSchema, clientStrategyConfigSchema, strategySchema, customStrategySchema } from "@shared/schema";
 import { z } from "zod";
-// Removed jwt and bcrypt imports as they are no longer needed for authentication
+import { setupAuth, isAuthenticated } from "./replitAuth";
 
 // Utility functions for consistent API responses
 const handleAsyncRoute = (fn: (req: Request, res: Response) => Promise<void>) => {
@@ -21,12 +21,24 @@ const sendSuccess = (res: Response, data: any, status: number = 200) => {
 };
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Authentication Routes Removed
+  // Auth middleware
+  await setupAuth(app);
 
-  // Client Data Routes (now public, as authentication is removed)
-  app.post('/api/client-data', handleAsyncRoute(async (req, res) => {
-    // Removed userId extraction and check
-    const userId = 'anonymous'; // Assigning a default anonymous user ID
+  // Auth routes
+  app.get('/api/auth/user', isAuthenticated, async (req: any, res) => {
+    try {
+      const userId = req.user.claims.sub;
+      const user = await storage.getUser(userId);
+      res.json(user);
+    } catch (error) {
+      console.error("Error fetching user:", error);
+      res.status(500).json({ message: "Failed to fetch user" });
+    }
+  });
+
+  // Protected Client Data Routes
+  app.post('/api/client-data', isAuthenticated, handleAsyncRoute(async (req: any, res) => {
+    const userId = req.user.claims.sub; // Get authenticated user ID
 
     console.log('Received client data:', Object.keys(req.body));
 
@@ -44,10 +56,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   }));
 
-  app.get('/api/client-data/current', async (req, res) => { // Removed authenticateToken middleware
+  app.get('/api/client-data/current', isAuthenticated, async (req: any, res) => {
     try {
-      // Removed userId extraction and check
-      const userId = 'anonymous'; // Assigning a default anonymous user ID
+      const userId = req.user.claims.sub; // Get authenticated user ID
 
       const clientData = await (storage as any).getCurrentClientData(userId);
       if (!clientData) {
@@ -60,11 +71,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Get all client data for centralized management (now public)
-  app.get('/api/client-data/all', async (req, res) => { // Removed authenticateToken middleware
+  // Get all client data for centralized management (protected)
+  app.get('/api/client-data/all', isAuthenticated, async (req: any, res) => {
     try {
-      // Removed userId extraction and check
-      const userId = 'anonymous'; // Assigning a default anonymous user ID
+      const userId = req.user.claims.sub; // Get authenticated user ID
 
       const allClientData = await (storage as any).getAllClientData(userId);
       res.json(allClientData);
