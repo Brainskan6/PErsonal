@@ -39,8 +39,9 @@ export function getSession() {
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: true,
+      secure: process.env.NODE_ENV === 'production',
       maxAge: sessionTtl,
+      sameSite: 'lax',
     },
   });
 }
@@ -111,7 +112,7 @@ export async function setupAuth(app: Express) {
 
   app.get("/api/callback", (req, res, next) => {
     passport.authenticate(`replitauth:${req.hostname}`, {
-      successReturnToOrRedirect: "/dashboard",
+      successReturnToOrRedirect: "/",
       failureRedirect: "/api/login",
     })(req, res, next);
   });
