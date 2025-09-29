@@ -2,14 +2,7 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { queryClient } from "./lib/queryClient";
-import { Toaster } from "@/components/ui/toaster";
-import { TooltipProvider } from "@/components/ui/tooltip";
-import { Switch, Route } from "wouter";
-import { AuthProvider } from "@/hooks/useAuth";
-import Home from "./pages/Home";
-import NotFound from "./pages/not-found";
+import App from "./App";
 
 // Global error handlers
 window.addEventListener('unhandledrejection', (event) => {
@@ -63,26 +56,16 @@ class ErrorBoundary extends React.Component<
   }
 }
 
-function App() {
+function Main() {
   return (
     <ErrorBoundary>
-      <QueryClientProvider client={queryClient}>
-        <AuthProvider>
-          <TooltipProvider>
-            <Toaster />
-            <Switch>
-              <Route path="/" component={Home} />
-              <Route component={NotFound} />
-            </Switch>
-          </TooltipProvider>
-        </AuthProvider>
-      </QueryClientProvider>
+      <App />
     </ErrorBoundary>
   );
 }
 
 createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <App />
+    <Main />
   </React.StrictMode>
 );
