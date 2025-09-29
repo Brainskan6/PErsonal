@@ -9,9 +9,9 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
 
   // Client data methods
-  saveClientData(data: InsertClientData): Promise<ClientData>;
-  savePartialClientData(data: Partial<ClientData>): Promise<Partial<ClientData>>;
-  getClientData(id: string): Promise<ClientData | undefined>;
+  saveClientData(userId: string, data: InsertClientData): Promise<ClientData>;
+  savePartialClientData(userId: string, data: Partial<ClientData>): Promise<Partial<ClientData>>;
+  getClientData(userId: string): Promise<ClientData | undefined>;
 
   // Strategy methods
   getStrategies(): Promise<Strategy[]>;
@@ -25,8 +25,8 @@ export interface IStorage {
   updateCustomStrategy(id: string, updates: { title: string; content: string; section: string }): Promise<any>;
 
   // Client Strategy Configuration methods
-  saveClientStrategyConfigs(clientId: string, configs: ClientStrategyConfig[]): Promise<ClientStrategyConfig[]>;
-  getClientStrategyConfigs(clientId: string): Promise<ClientStrategyConfig[]>;
+  saveClientStrategyConfigs(userId: string, configs: ClientStrategyConfig[]): Promise<ClientStrategyConfig[]>;
+  getClientStrategyConfigs(userId: string): Promise<ClientStrategyConfig[]>;
 
   // Report methods
   saveReport(report: InsertReport): Promise<Report>;
@@ -49,7 +49,6 @@ export class MemStorage implements IStorage {
   private reports: Map<string, Report>;
   private clientStrategyConfigs: Map<string, ClientStrategyConfig[]>;
   private customStrategies: Map<string, CustomStrategy>;
-  private currentClientId: string | null = null;
   
   // Cache for frequently accessed data
   private strategiesByCategory: Map<string, Strategy[]> = new Map();
@@ -87,53 +86,41 @@ export class MemStorage implements IStorage {
   }
 
   // Client data methods
-  async saveClientData(data: InsertClientData, userId?: string): Promise<ClientData> {
-    const dataKey = userId ? `${userId}_client_data` : (this.currentClientId || randomUUID());
+  async saveClientData(userId: string, data: InsertClientData): Promise<ClientData> {
     const clientData: ClientData = { ...data };
-    this.clientData.set(dataKey, clientData);
-    if (!userId) {
-      this.currentClientId = dataKey;
-    }
-    console.log('Client data saved with key:', dataKey);
+    this.clientData.set(userId, clientData);
+    console.log('Client data saved for user:', userId);
     console.log('Saved data keys:', Object.keys(clientData));
     return clientData;
   }
 
-  async savePartialClientData(data: Partial<ClientData>): Promise<Partial<ClientData>> {
-    const id = this.currentClientId || randomUUID();
-
-    // Get existing data or create new with defaults
-    const existingData = this.clientData.get(id) || {};
+  async savePartialClientData(userId: string, data: Partial<ClientData>): Promise<Partial<ClientData>> {
+    const existingData = this.clientData.get(userId) || {};
 
     // Merge new data with existing data
     const mergedData = { ...existingData, ...data };
 
-    this.clientData.set(id, mergedData as ClientData);
-    this.currentClientId = id;
-    console.log('Partial client data saved with ID:', id);
+    this.clientData.set(userId, mergedData as ClientData);
+    console.log('Partial client data saved for user:', userId);
     console.log('Merged data keys:', Object.keys(mergedData));
     return mergedData;
   }
 
-  async getClientData(id: string): Promise<ClientData | undefined> {
-    return this.clientData.get(id);
+  async getClientData(userId: string): Promise<ClientData | undefined> {
+    return this.clientData.get(userId);
   }
 
-  async getCurrentClientData(): Promise<ClientData | undefined> {
-    if (!this.currentClientId) return undefined;
-    return this.getClientData(this.currentClientId);
+  async getCurrentClientData(userId: string): Promise<ClientData | undefined> {
+    return this.getClientData(userId);
   }
 
-  async getAllClientData(): Promise<ClientData[]> {
-    return Array.from(this.clientData.values());
+  async getAllClientData(userId: string): Promise<ClientData[]> {
+    const data = this.clientData.get(userId);
+    return data ? [data] : [];
   }
 
-  async deleteClientData(id: string): Promise<boolean> {
-    const deleted = this.clientData.delete(id);
-    if (deleted && this.currentClientId === id) {
-      this.currentClientId = null;
-    }
-    return deleted;
+  async deleteClientData(userId: string): Promise<boolean> {
+    return this.clientData.delete(userId);
   }
 
   // Strategy methods
@@ -168,18 +155,17 @@ export class MemStorage implements IStorage {
   }
 
   // Client Strategy Configuration methods
-  async saveClientStrategyConfigs(clientId: string, configs: ClientStrategyConfig[]): Promise<ClientStrategyConfig[]> {
-    this.clientStrategyConfigs.set(clientId, configs);
+  async saveClientStrategyConfigs(userId: string, configs: ClientStrategyConfig[]): Promise<ClientStrategyConfig[]> {
+    this.clientStrategyConfigs.set(userId, configs);
     return configs;
   }
 
-  async getClientStrategyConfigs(clientId: string): Promise<ClientStrategyConfig[]> {
-    return this.clientStrategyConfigs.get(clientId) || [];
+  async getClientStrategyConfigs(userId: string): Promise<ClientStrategyConfig[]> {
+    return this.clientStrategyConfigs.get(userId) || [];
   }
 
-  async getCurrentClientStrategyConfigs(): Promise<ClientStrategyConfig[]> {
-    if (!this.currentClientId) return [];
-    return this.getClientStrategyConfigs(this.currentClientId);
+  async getCurrentClientStrategyConfigs(userId: string): Promise<ClientStrategyConfig[]> {
+    return this.getClientStrategyConfigs(userId);
   }
 
   async addStrategy(strategy: Omit<Strategy, 'id'>): Promise<Strategy> {
