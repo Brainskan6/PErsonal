@@ -1,0 +1,80 @@
+2. Bullet Point List of Future Features to Add Iteratively
+
+Here’s the "backlog" of ideas you mentioned, stripped down to essentials:
+Strategy Bank: Create a library of all available financial strategies with blank placeholder text.
+AI Integration (Later): Use AI to customize and adapt the placeholder text per client.
+Toggle System: Each strategy can be toggled on/off, inserting its text into the report.
+Form Enhancements: Expand the form to capture both quantitative inputs (assets, income, etc.) and qualitative data (goals, preferences).
+Report Formatting: Generate professional, well-structured reports (PDF or DOCX).
+Client Profiles: Ability to save and load client information for recurring updates.
+Data Persistence: Start with local storage, later expand to a database.
+Projection Integration: Include financial projections (charts, tables, etc.).
+Template Management: Multiple report templates selectable by the user.
+Structured Report Template System
+Reports follow the exact predefined sections and order you already use manually.
+Output looks identical to your current professional reports.
+Bank of Strategies
+Preloaded strategy templates with standard wording.
+Only a finite set of strategies (no free-text to keep it consistent).
+Toggle-Based Strategy Selection
+Input form includes toggles/checklists for selecting applicable strategies.
+Toggled strategies are automatically inserted into the report in the right section.
+Client Data Integration
+Input form for quantitative and qualitative client data.
+Report automatically merges relevant client data into the prewritten strategy text.
+Instant Report Generation
+One-click "Generate Report" produces a ready-to-use output.
+Exportable in a professional format (Word, PDF).
+No AI Phase (Initial)
+Keep everything static and deterministic (exact templates, exact formatting).
+Later iteration: AI layer for slight personalization/customization.
+Confidentiality / Stealth Use
+Output must be indistinguishable from manually written reports.
+System must mirror existing language, tone, and formatting to avoid detection.
+Scalability
+Later ability to update strategy templates as rules, tax laws, or planning methods evolve.
+Future: multiple templates or styles for different types of clients.
+
+Phase 1 – Core Foundations
+
+Manual Data Input Form
+Fields designed to mimic your current process for capturing client info.
+Include comment boxes for extra context.
+Plain Text Report Output
+Generated reports are structured into predefined sections.
+Output mirrors your existing manual report style.
+Strategy Templates (Static)
+Import a master file of predefined strategy texts.
+Report pulls strategies directly from this "database."
+Toggle system: manually select which strategies to include in a report.
+Phase 2 – Enhanced Functionality
+
+Template Placeholders
+Strategy texts include placeholders (e.g., [ClientName], [Age]).
+Placeholders are auto-filled from the input form.
+Editable Strategy Bank
+Ability to update and manage strategies inside the app (instead of hard-coding).
+Organize strategies by categories (e.g., Tax Planning, Retirement, Legacy).
+Formatting Improvements
+Report output structured with headings, bullet points, and clean separation of sections.
+Option to copy, save, or export text.
+Phase 3 – Professionalization
+
+Export Options
+Export reports to Word or PDF while keeping exact professional formatting.
+Reports remain indistinguishable from manual versions.
+Local-Only Mode
+Ensure the entire app can run in-browser (no external servers) to protect confidentiality.
+Client Profiles (Optional)
+Save/load client info locally for repeat use.
+Data stored securely in local storage or encrypted local database.
+Phase 4 – Advanced (Future)
+
+AI Layer
+Customize/prettify text based on client context.
+Automatically adjust tone, merge strategies, or shorten/expand explanations.
+Rule-Based Suggestions
+System recommends strategies based on client input (age, income, goals).
+Planner can accept/reject suggestions manually.
+Multiple Templates
+Different report formats for different client types (e.g., retirees, business owners).
