@@ -286,16 +286,30 @@ export default function StrategyBank({
     return sections;
   }, [strategies, customStrategies, searchTerm]);
 
-  // Auto-expand sections that have search matches
+  // Auto-expand sections that have search matches, but only if no sections are manually expanded
   useEffect(() => {
     if (searchTerm) {
       const sectionsWithMatches = Object.keys(organizedStrategies).filter(section => {
         const sectionData = organizedStrategies[section];
         return sectionData.strategies.length > 0 || Object.keys(sectionData.subsections).length > 0;
       });
-      setExpandedSections(sectionsWithMatches);
+      // Only auto-expand if no sections are currently expanded
+      if (expandedSections.length === 0) {
+        setExpandedSections(sectionsWithMatches);
+      }
     }
   }, [searchTerm, organizedStrategies]);
+
+  const toggleAllSections = () => {
+    const allSections = Object.keys(organizedStrategies);
+    if (expandedSections.length === allSections.length) {
+      // Collapse all
+      setExpandedSections([]);
+    } else {
+      // Expand all
+      setExpandedSections(allSections);
+    }
+  };
 
   const addCustomStrategy = () => {
     if (!newStrategyTitle.trim() || !newStrategyContent.trim() || !newStrategySection.trim()) {
@@ -609,7 +623,7 @@ export default function StrategyBank({
             />
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             <Button
               variant="outline"
               size="sm"
@@ -619,6 +633,15 @@ export default function StrategyBank({
             >
               <Plus className="h-4 w-4 mr-2" />
               Add Custom Strategy
+            </Button>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={toggleAllSections}
+              className="h-9 px-4"
+              disabled={Object.keys(organizedStrategies).length === 0}
+            >
+              {expandedSections.length === Object.keys(organizedStrategies).length ? 'Collapse All' : 'Expand All'}
             </Button>
             <Button
               variant="outline"
@@ -747,10 +770,14 @@ export default function StrategyBank({
 
                     return (
                       <AccordionItem key={sectionKey} value={sectionKey} className="border rounded-lg">
-                        <AccordionTrigger className={`px-4 py-3 hover:no-underline rounded-t-lg ${getSectionColor(sectionKey)}`}>
+                        <AccordionTrigger className={`px-4 py-3 hover:no-underline transition-all duration-200 ${
+                          expandedSections.includes(sectionKey) ? 'rounded-t-lg' : 'rounded-lg'
+                        } ${getSectionColor(sectionKey)} hover:shadow-sm`}>
                           <div className="flex items-center justify-between w-full mr-4">
                             <div className="flex items-center gap-3">
-                              <span className="text-lg">{getSectionIcon(sectionKey)}</span>
+                              <span className="text-lg transition-transform duration-200">
+                                {getSectionIcon(sectionKey)}
+                              </span>
                               <div className="text-left">
                                 <h3 className="font-semibold text-base">
                                   {getSectionDisplayName(sectionKey)}
@@ -767,10 +794,13 @@ export default function StrategyBank({
                                   {selectedInSection}
                                 </Badge>
                               )}
+                              <span className="text-xs text-gray-500 ml-2">
+                                {expandedSections.includes(sectionKey) ? 'Click to collapse' : 'Click to expand'}
+                              </span>
                             </div>
                           </div>
                         </AccordionTrigger>
-                        <AccordionContent className="px-4 pb-4">
+                        <AccordionContent className="px-4 pb-4 bg-white/50 rounded-b-lg border-t border-gray-100">
                           <div className="space-y-4">
                             {/* Direct section strategies */}
                             {sectionData.strategies.length > 0 && (
