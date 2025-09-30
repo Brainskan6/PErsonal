@@ -382,7 +382,7 @@ export class MemStorage implements IStorage {
           description: "Set up automated contributions to RRSP and TFSA accounts",
           category: "Recommendations",
           section: "recommendations",
-          content: "Once the transfer of your assets to TD Wealth and the recommended portfolio changes are complete, we can implement an automatic savings program to (EACH OF) your RRSPs and your TFSA(S).",
+          content: "Once your assets have transferred to TD Wealth and the recommended portfolio changes are complete, we can implement an automatic savings program to each of your RRSPs and TFSAs.",
           inputFields: [],
           isCustom: false
         },
@@ -392,7 +392,7 @@ export class MemStorage implements IStorage {
           description: "Implement portfolio changes with automatic contribution plan",
           category: "Recommendations",
           section: "recommendations",
-          content: "With your approval we will make the recommended portfolio changes and we can implement an automatic savings program to (EACH OF) your RRSPs and your TFSA(S).",
+          content: "With your approval, we will implement the recommended portfolio changes and set up an automatic savings program to each of your RRSPs and TFSAs.",
           inputFields: [],
           isCustom: false
         },
@@ -402,7 +402,7 @@ export class MemStorage implements IStorage {
           description: "Provide required documents to open RESP account",
           category: "Recommendations",
           section: "recommendations",
-          content: "Provide birth certificate and SIN of children to open RESP account.",
+          content: "Provide the children’s birth certificates and SINs to open an RESP account.",
           inputFields: [],
           isCustom: false
         },
@@ -412,7 +412,7 @@ export class MemStorage implements IStorage {
           description: "Establish regular contribution and investment plan",
           category: "Recommendations",
           section: "recommendations",
-          content: "Set-up monthly contribution plan and systematic investment plan.",
+          content: "Set up a monthly contribution plan with a systematic investment plan.",
           inputFields: [],
           isCustom: false
         },
@@ -422,7 +422,7 @@ export class MemStorage implements IStorage {
           description: "Review optimal business structure with advisors",
           category: "Recommendations",
           section: "recommendations",
-          content: "I suggest that you consult with your tax and legal advisors to discuss what form of business structure is most appropriate for you.",
+          content: "Consult your tax and legal advisors to determine the most appropriate business structure.",
           inputFields: [],
           isCustom: false
         },
@@ -432,7 +432,7 @@ export class MemStorage implements IStorage {
           description: "Meet with succession advisor for business strategies",
           category: "Recommendations",
           section: "recommendations",
-          content: "I would like to introduce you to a TD Wealth Business Succession Advisor to discuss possible strategies specific to your circumstances.",
+          content: "I would like to introduce you to a TD Wealth Business Succession Advisor to discuss strategies tailored to your circumstances.",
           inputFields: [],
           isCustom: false
         },
@@ -442,7 +442,7 @@ export class MemStorage implements IStorage {
           description: "Implement savings plan for large purchase",
           category: "Recommendations",
           section: "recommendations",
-          content: "Implement savings plan towards major purchase goal.",
+          content: "Implement a savings plan toward your major purchase goal.",
           inputFields: [],
           isCustom: false
         },
@@ -452,7 +452,7 @@ export class MemStorage implements IStorage {
           description: "Consultation with financial specialist",
           category: "Recommendations",
           section: "recommendations",
-          content: "Meet with (NAME, BUSINESS). They will be able to review your needs and provide solutions for you.",
+          content: "Meet with (NAME, BUSINESS). They will review your needs and provide suitable solutions.",
           inputFields: [],
           isCustom: false
         },
@@ -462,7 +462,7 @@ export class MemStorage implements IStorage {
           description: "Discuss tax planning with specialist",
           category: "Recommendations",
           section: "recommendations",
-          content: "I would like to introduce you to (NAME, BUSINESS), so that you can review and discuss your tax planning strategies further.",
+          content: "I would like to introduce you to (NAME, BUSINESS) to review and discuss your tax planning strategies.",
           inputFields: [],
           isCustom: false
         },
@@ -472,7 +472,7 @@ export class MemStorage implements IStorage {
           description: "Consolidate assets for better control and efficiency",
           category: "Recommendations",
           section: "recommendations",
-          content: "I recommend that you consider consolidating your assets to achieve greater control and flexibility to ensure more effective diversification and tax efficiency.",
+          content: "Consider consolidating your assets to gain greater control and flexibility, enhance diversification, and improve tax efficiency.",
           inputFields: [],
           isCustom: false
         },
@@ -482,7 +482,7 @@ export class MemStorage implements IStorage {
           description: "Process donation of securities to charity",
           category: "Recommendations",
           section: "recommendations",
-          content: "Complete process to donate selected (SHARES/UNITS) to the charitable organization of your choice.",
+          content: "Complete the process to donate the selected (SHARES/UNITS) to the charitable organization of your choice.",
           inputFields: [],
           isCustom: false
         },
@@ -502,7 +502,7 @@ export class MemStorage implements IStorage {
           description: "Update estate planning documents",
           category: "Recommendations",
           section: "recommendations",
-          content: "We recommend that you both schedule a meeting with your lawyer to ensure that your respective Will(s) and respective Power(s) of Attorney for Property and Personal Care are drafted and are a clear reflection of your current intentions.",
+          content: "Schedule a meeting with your lawyer to ensure your respective Wills and Powers of Attorney for Property and Personal Care are drafted and reflect your current intentions.",
           inputFields: [],
           isCustom: false
         },
@@ -512,7 +512,7 @@ export class MemStorage implements IStorage {
           description: "Schedule meeting to discuss charitable goals",
           category: "Recommendations",
           section: "recommendations",
-          content: "Once you have had an opportunity to review this information, we can schedule a follow-up meeting to discuss your charitable giving goals.",
+          content: "After reviewing this information, we can schedule a follow-up meeting to discuss your charitable giving goals.",
           inputFields: [],
           isCustom: false
         },
@@ -522,7 +522,7 @@ export class MemStorage implements IStorage {
           description: "Regular review of estate documents",
           category: "Recommendations",
           section: "recommendations",
-          content: "Review your estate documentation periodically to ensure that your wishes appropriately reflect your current circumstances.",
+          content: "Review your estate documentation periodically to ensure your wishes reflect your current circumstances.",
           inputFields: [],
           isCustom: false
         },
@@ -532,7 +532,7 @@ export class MemStorage implements IStorage {
           description: "Consider TD Canada Trust as estate liquidator",
           category: "Recommendations",
           section: "recommendations",
-          content: "We recommend considering appointing TD Canada Trust as liquidator or co-liquidator to guide you through the complex and lengthy process of Estate settlement. We can schedule a brief meeting with one of our specialists to explore your options.",
+          content: "Consider appointing TD Canada Trust as liquidator or co‑liquidator to guide you through the estate settlement process. We can arrange a brief meeting with a specialist to explore your options.",
           inputFields: [],
           isCustom: false
         },
@@ -542,7 +542,7 @@ export class MemStorage implements IStorage {
           description: "Consult specialist for cross-border matters",
           category: "Recommendations",
           section: "recommendations",
-          content: "Consider meeting a cross-border tax and estate specialist to discuss the particulars of your situation.",
+          content: "Consider meeting with a cross‑border tax and estate specialist to discuss your situation.",
           inputFields: [],
           isCustom: false
         },
@@ -552,7 +552,7 @@ export class MemStorage implements IStorage {
           description: "Review modified assumptions in financial plan",
           category: "Recommendations",
           section: "recommendations",
-          content: "Within your plan (insert plan name if a What If), we have modified the (insert field name) from the default assumptions as follows; (detail assumption used within plan and supporting information)",
+          content: "Within your plan (insert plan name if a What‑If), we modified the (insert field name) from the default assumptions as follows: (detail the assumption used in the plan and supporting information).",
           inputFields: [],
           isCustom: false
         },
@@ -564,7 +564,7 @@ export class MemStorage implements IStorage {
           description: "Determine appropriate investment product and profile",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "In our discussions we have discussed your investment profile(s) and have determined that we will invest your (insert account) in a (insert profile) investment product. (repeat as needed based on client's overall portfolio if different risk profiles are used)",
+          content: "We discussed your investment profile(s) and determined that we will invest your (insert account) in a (insert profile) investment product. Repeat as needed for other accounts if different risk profiles apply.",
           inputFields: [],
           isCustom: false
         },
@@ -574,7 +574,7 @@ export class MemStorage implements IStorage {
           description: "Conservative rate assumptions for long-term goals",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "In our analysis we have used a (%) rate of return to create the projections towards your (insert goal ie: Planning for retirement) This rate may be more conservative than your stated investor profile as it represents a long-term projection. Please note this rate does not represent actual investment performance and is not guaranteed. (repeat as needed for each goal.)",
+          content: "We used a (%) rate of return to project progress toward your (insert goal, e.g., retirement). This conservative, long‑term projection may differ from your stated investor profile. It does not represent actual performance and is not guaranteed. Repeat as needed for each goal.",
           inputFields: [],
           isCustom: false
         },
@@ -584,7 +584,7 @@ export class MemStorage implements IStorage {
           description: "Define retirement timeline and income targets",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "Client would like to retire soon this year and Client2, in 3 years, with an initial after-tax income goal of $90,000 per year in today's dollars. You are both Canadian citizens and residents of Quebec for income tax and estate purposes.",
+          content: "You would like to retire this year, and Client2 in three years, with an initial after‑tax income goal of $90,000 per year in today’s dollars. You are both Canadian citizens and residents of Quebec for income tax and estate purposes.",
           inputFields: [],
           isCustom: false
         },
@@ -594,7 +594,7 @@ export class MemStorage implements IStorage {
           description: "Optimize QPP benefit timing and amounts",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "The Canada Pension Plan (QPP) is a contributory pension plan, and therefore the amount of QPP benefit you receive in retirement is based entirely on the amount you have contributed to the QPP during your working years. Deciding when to begin receiving your QPP retirement pension is a very common consideration for most Quebec residents approaching retirement. When deciding when to take your QPP retirement pension, it's important to consider life expectancy, other sources of income and your overall level of taxation, both now and in future years. With regards to your entitlements, we have used the data available from your most recent statement for an amount of $$$ per month. For a more accurate projection, we recommend contacting Retraite Quebec to obtain your individual QPP Statement of Participation.",
+          content: "The Quebec Pension Plan (QPP) is contributory; your retirement benefit depends on your contributions during your working years. When deciding when to begin receiving your QPP pension, consider life expectancy, other income sources, and your overall tax level now and in the future. Based on your latest statement, we used an entitlement of $$$ per month. For a more accurate projection, contact Retraite Québec for your Statement of Participation.",
           inputFields: [],
           isCustom: false
         },
@@ -604,7 +604,7 @@ export class MemStorage implements IStorage {
           description: "Track current QPP benefits received",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "You are currently receiving your Quebec Pension Plan (QPP) entitlements. These amount to $XXX a year.",
+          content: "You are currently receiving Quebec Pension Plan (QPP) benefits totaling $XXX per year.",
           inputFields: [],
           isCustom: false
         },
@@ -614,7 +614,7 @@ export class MemStorage implements IStorage {
           description: "Maximize OAS benefits and minimize clawback",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "Old Age Security (OAS) is a retirement pension program available to most Canadian residents who are age 65 and older. The OAS program is income tested, meaning that when your income reaches a certain level, you will begin to lose access to OAS benefits. Your OAS retirement benefits are gradually reduced as your overall income increases beyond a specific threshold. This gradual reduction is called OAS claw back. The threshold for OAS claw back for the 2024 tax year is $90,997, although this number increases each year with inflation. When your net income is above this amount, your OAS benefits will be clawed back by 15 cents for every $1 of income above the threshold. We have included a maximum benefit of 100 % Old Age Security (OAS) entitlement for each of you starting at age 65. The plan will automatically calculate and reflect any year where the OAS claw back is triggered.",
+          content: "Old Age Security (OAS) is available to most Canadian residents age 65 and older. OAS is income‑tested; benefits are reduced once your net income exceeds a threshold ($90,997 for 2024, indexed annually). Above the threshold, OAS is clawed back at 15 cents per dollar. We have included a 100% OAS entitlement for each of you starting at age 65, and the plan will reflect any clawback in applicable years.",
           inputFields: [],
           isCustom: false
         },
@@ -624,7 +624,7 @@ export class MemStorage implements IStorage {
           description: "Track employer pension with cost-of-living adjustments",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "XXX, you have a RREGOP Pension with benefits of $2,310 per month. Your cost-of-living adjustment has been estimated at 1.5%, in line with current expectations.",
+          content: "XXX has a RREGOP pension with benefits of $2,310 per month. Cost‑of‑living adjustments are estimated at 1.5%, aligned with current expectations.",
           inputFields: [],
           isCustom: false
         },
@@ -634,7 +634,7 @@ export class MemStorage implements IStorage {
           description: "Multiple scenario planning for retirement",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "In addition to the \"Base Plan\", we have prepared three additional scenarios entitled \"Max retirement spending\", \"Market crash and max spending\", and \"Retire early\", respectively.",
+          content: "In addition to the \"Base Plan,\" we prepared three scenarios: \"Max retirement spending,\" \"Market crash and max spending,\" and \"Retire early.\"",
           inputFields: [],
           isCustom: false
         },
@@ -644,7 +644,7 @@ export class MemStorage implements IStorage {
           description: "Manage early retirement market downturn risk",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "Considering that your investments provide a significant portion of your retirement income, a major market downturn in the early years of your retirement - often referred to as \"sequence of returns risk\" - could make recovery more difficult, as withdrawals during a downturn can permanently erode your capital. To help mitigate this risk, one effective strategy is to consider delaying retirement. Retiring later allows you to continue contributing to your investments and reduce the number of years your savings need to support you.",
+          content: "Because investment income is a significant part of your retirement, a major market downturn early in retirement—\"sequence of returns risk\"—can make recovery more difficult as withdrawals can permanently erode capital. One mitigation strategy is to delay retirement, allowing continued contributions and fewer years for savings to support withdrawals.",
           inputFields: [],
           isCustom: false
         },
@@ -654,7 +654,7 @@ export class MemStorage implements IStorage {
           description: "Leverage property equity for retirement security",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "According to our projections you are currently on track to meet your retirement goal, assuming expected returns and spending patterns remain within a reasonable range. In the event of adverse market conditions that significantly affect the performance of your investment portfolio. You have an important financial cushion: the equity of your real estate holdings. This equity could be accessed, if needed, through options such as downsizing, refinancing, or using a reverse mortgage - providing you with additional flexibility and security to support your retirement income without compromising your long-term financial stability. Considering that your investments provide a significant portion of your retirement income, a major market downturn in the early years of your retirement - often referred to as \"sequence of returns risk\" - could make recovery more difficult, as withdrawals during a downturn can permanently erode your capital. To help mitigate this risk, one effective strategy is to consider delaying retirement. Retiring later allows you to continue contributing to your investments and reduce the number of years your savings need to support you.",
+          content: "Our projections indicate you are on track to meet your retirement goal, assuming expected returns and spending remain within a reasonable range. In adverse market conditions that significantly affect portfolio performance, your real estate equity provides a financial cushion. If needed, you could access equity through downsizing, refinancing, or a reverse mortgage to support retirement income without compromising long‑term stability.",
           inputFields: [],
           isCustom: false
         },
@@ -664,7 +664,7 @@ export class MemStorage implements IStorage {
           description: "Prepare for various retirement outcomes",
           category: "Objectives",
           section: "buildNetWorth",
-          content: "To help you prepare for a range of possible outcomes in retirement, we've modeled three scenarios that reflect varying market conditions and spending patterns: The base scenario which includes all of our recommendations. What happens in the event of a Market Crash? What is the maximum amount of money you can afford to spend each year?",
+          content: "To help you prepare for a range of retirement outcomes, we modeled three scenarios reflecting varying market conditions and spending patterns: the base scenario (including all recommendations), a market crash scenario, and a maximum sustainable spending scenario.",
           inputFields: [],
           isCustom: false
         },
@@ -677,7 +677,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Planning",
           section: "buildNetWorth",
           subsection: "Planning for Retirement",
-          content: "Since you will be drawing down your registered accounts (RRSP/LRSP) first, instead of starting to collect your QPP pensions immediately upon retirement, consider starting to collect your QPP at 65, or delay it until age 72 to maximize the pension amounts",
+          content: "Because you will draw from your registered accounts (RRSP/LRSP) first, consider starting QPP at age 65, or delaying to age 72 to maximize benefits, rather than taking it immediately at retirement.",
           inputFields: [],
           isCustom: false
         },
@@ -688,7 +688,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Planning",
           section: "buildNetWorth",
           subsection: "Planning for Retirement",
-          content: "(CLIENT 1, CLIENT 2), we recommend that you (CONTINUE/START) to maximize your annual contributions of $6,500 to (EACH OF) your TFSA(S) until you retire. Maximizing your TFSA savings allows you to take advantage of tax-free growth since income or capital gains earned on investments in your TFSA are non-taxable. Withdrawals can be made on a tax-free basis should you need to access these funds.",
+          content: "(CLIENT 1, CLIENT 2), we recommend you (CONTINUE/START) maximizing annual TFSA contributions of $6,500 each until retirement. TFSA growth is tax‑free, and withdrawals are tax‑free if funds are needed.",
           inputFields: [],
           isCustom: false
         },
@@ -699,7 +699,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Planning",
           section: "buildNetWorth",
           subsection: "Planning for Retirement",
-          content: "We recommend that you (BOTH) continue to contribute (THE MAXIMUM/$ AMOUNT) to your RRSP each year until you retire.",
+          content: "We recommend that you (BOTH) continue contributing (THE MAXIMUM/$ AMOUNT) to your RRSP each year until retirement.",
           inputFields: [],
           isCustom: false
         },
@@ -710,7 +710,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Planning",
           section: "buildNetWorth",
           subsection: "Planning for Retirement",
-          content: "During your retirement it may be appropriate to take a slightly more conservative approach in your investment strategy. Therefore, we recommend a (NAME OF PORTFOLIO) investor profile during your retirement stage and we have reduced the projected rate of return in retirement accordingly.",
+          content: "During retirement, a slightly more conservative investment approach may be appropriate. We recommend a (NAME OF PORTFOLIO) profile during retirement and have reduced projected returns accordingly.",
           inputFields: [],
           isCustom: false
         },
@@ -723,7 +723,7 @@ export class MemStorage implements IStorage {
           category: "Debt Management",
           section: "buildNetWorth",
           subsection: "Paying Down Debt",
-          content: "You don't have any debts outstanding on your properties. If you find yourself needing additional liquidity to cover potential shortfalls in retirement, one option to consider is a reverse mortgage, which allows you to make use of your home equity without having to sell your property.",
+          content: "You have no outstanding debts on your properties. If additional liquidity is needed in retirement, consider a reverse mortgage to access home equity without selling.",
           inputFields: [],
           isCustom: false
         },
@@ -734,7 +734,7 @@ export class MemStorage implements IStorage {
           category: "Debt Management",
           section: "buildNetWorth",
           subsection: "Paying Down Debt",
-          content: "Based on our discussions we recommend that you consolidate your outstanding debts to reduce the overall cost of borrowing as well as your monthly payments.",
+          content: "Based on our discussions, we recommend consolidating outstanding debts to reduce borrowing costs and monthly payments.",
           inputFields: [],
           isCustom: false
         },
@@ -745,7 +745,7 @@ export class MemStorage implements IStorage {
           category: "Debt Management",
           section: "buildNetWorth",
           subsection: "Paying Down Debt",
-          content: "We recommend that you increase your mortgage payments by (x) in order to ensure the mortgage is paid in full before you begin your retirement.",
+          content: "Increase your mortgage payments by (x) to ensure it is fully paid before retirement.",
           inputFields: [],
           isCustom: false
         },
@@ -756,7 +756,7 @@ export class MemStorage implements IStorage {
           category: "Debt Management",
           section: "buildNetWorth",
           subsection: "Paying Down Debt",
-          content: "As discussed, after reviewing your current liabilities, I recommend you consider consolidating these liabilities with an aim to lower your overall interest rate which can help you pay off the debt more rapidly. If you choose to implement any recommendations in regard to your liabilities, we will update your plan to help maintain accurate long-term projections. If the consolidation reduces your monthly payments, we recommend that the difference be added to your monthly savings, to increase the rate of saving towards your future objectives.",
+          content: "After reviewing your liabilities, consider consolidating them to lower your overall interest rate and accelerate repayment. If implemented, we will update your plan to maintain accurate projections. If consolidation reduces monthly payments, direct the difference to monthly savings to increase progress toward your goals.",
           inputFields: [],
           isCustom: false
         },
@@ -767,7 +767,7 @@ export class MemStorage implements IStorage {
           category: "Debt Management",
           section: "buildNetWorth",
           subsection: "Paying Down Debt",
-          content: "In order to increase your overall savings, we recommend a monthly contribution plan. It will automate savings, typically lead to more money being saved, and is easier for you to manage. These funds can also be invested systematically, which can result in dollar-cost averaging savings. Should you need to make changes, we are able to change the frequency as well as the amount, and if needed, can halt or pause contributions.",
+          content: "To increase overall savings, implement a monthly contribution plan. Automation simplifies management, supports consistent saving, and enables systematic investing (dollar‑cost averaging). We can adjust frequency or amount as needed, or pause contributions if necessary.",
           inputFields: [],
           isCustom: false
         },
@@ -780,7 +780,7 @@ export class MemStorage implements IStorage {
           category: "Education Planning",
           section: "buildNetWorth",
           subsection: "Planning for Education",
-          content: "We recommend that you open a Registered Education Savings Plan (RESP), this is a government assisted savings plan which allows for tax-deferred growth on contributions. The federal government and some provincial governments match a portion of your contributions. As you already have a Registered Education Savings Plan (RESP), we recommend that you set-up an automated savings plan and systematic investment plan. This will help you to reach your goal and is a simple way to manage savings.",
+          content: "Open a Registered Education Savings Plan (RESP), a government‑assisted plan with tax‑deferred growth and contribution matching. As you already have an RESP, set up an automated savings and systematic investment plan to simplify management and support your goal.",
           inputFields: [],
           isCustom: false
         },
@@ -791,7 +791,7 @@ export class MemStorage implements IStorage {
           category: "Education Planning",
           section: "buildNetWorth",
           subsection: "Planning for Education",
-          content: "An RESP may be opened by the grandparents, however it is important to note that should the children not attend a post-secondary institution and the grandparents are over the age of 71, the grandparents may not be able to transfer the funds to their RRSP accounts. As a result, it may be desirable for the RESP to be opened by the parents, and for the grandparents to provide funds for the RESP or look at other savings options.",
+          content: "Grandparents may open an RESP; however, if the child does not attend post‑secondary education and the grandparents are over 71, they may not be able to transfer funds to their RRSP. It may be preferable for parents to open the RESP, with grandparents providing funds or considering alternative savings options.",
           inputFields: [],
           isCustom: false
         },
@@ -804,7 +804,7 @@ export class MemStorage implements IStorage {
           category: "Business Planning",
           section: "buildNetWorth",
           subsection: "Planning for Business Owners",
-          content: "One option that you may want to consider is implementing an estate freeze on your business interests. It would allow other family members to become shareholders, directly or indirectly through a Family Trust, and any future growth in the value of the business would be reflected in the new shares. Your business interest would, for estate purposes, remain \"frozen\" at its current value.",
+          content: "Consider implementing an estate freeze on your business interests. This would allow other family members to become shareholders—directly or through a family trust—with future growth accruing to the new shares. Your interest would remain \"frozen\" at its current value for estate purposes.",
           inputFields: [],
           isCustom: false
         },
@@ -815,7 +815,7 @@ export class MemStorage implements IStorage {
           category: "Business Planning",
           section: "buildNetWorth",
           subsection: "Planning for Business Owners",
-          content: "A business succession plan should be considered. You could decide whether to engage a consultant or facilitator to help you, as the business owner, communicate your plan with family members and determine its feasibility from their perspective. The consultant/facilitator could also work with the family to professionalize the business and prepare for future management and ownership transitions.",
+          content: "Develop a business succession plan. Consider engaging a consultant/facilitator to communicate the plan to family members, assess feasibility, professionalize the business, and prepare for management and ownership transitions.",
           inputFields: [],
           isCustom: false
         },
@@ -826,7 +826,7 @@ export class MemStorage implements IStorage {
           category: "Business Planning",
           section: "buildNetWorth",
           subsection: "Planning for Business Owners",
-          content: "A shareholders' agreement is an important document that defines the duties and obligations of each shareholder of a private corporation. This agreement may be thought of as a set of ground rules which govern shareholders' behavior and generally contains provisions which deal with specific circumstances that may arise. As (INSERT NAME OF COMPANY) does not currently have a shareholders' agreement in place, we recommend that you meet with your corporate lawyer/Quebec notary to draft a shareholders' agreement.",
+          content: "A shareholders' agreement defines the duties and obligations of shareholders in a private corporation and sets rules for specific circumstances. As (INSERT NAME OF COMPANY) does not have one, meet with your corporate lawyer/Quebec notary to draft it.",
           inputFields: [],
           isCustom: false
         },
@@ -837,7 +837,7 @@ export class MemStorage implements IStorage {
           category: "Business Planning",
           section: "buildNetWorth",
           subsection: "Planning for Business Owners",
-          content: "A review of your shareholders' agreement will allow you to determine if there is a mechanism to transfer your shares to other shareholders. This is usually referred to as a 'Buy-Sell Provision.'",
+          content: "Review your shareholders' agreement to determine whether a mechanism exists to transfer shares—typically a buy‑sell provision.",
           inputFields: [],
           isCustom: false
         },
@@ -848,7 +848,7 @@ export class MemStorage implements IStorage {
           category: "Business Planning",
           section: "buildNetWorth",
           subsection: "Planning for Business Owners",
-          content: "To determine the value of your business and if feasible, map out how you would structure its eventual sale/transition, please seek guidance from your accountant or a business valuator.",
+          content: "Consult your accountant or a business valuator to determine the value of your business and, if feasible, outline how to structure an eventual sale or transition.",
           inputFields: [],
           isCustom: false
         },
@@ -859,7 +859,7 @@ export class MemStorage implements IStorage {
           category: "Business Planning",
           section: "buildNetWorth",
           subsection: "Planning for Business Owners",
-          content: "A corporate lawyer may also assist in areas such as drafting and updating corporate documents, revising the company's organizational documents, setting up new companies to effect tax planning strategies, or drafting and reviewing agreements and documents relating to the ownership transfer of the business assets or shares.",
+          content: "A corporate lawyer can assist with drafting and updating corporate documents, revising organizational documents, creating companies to implement tax planning, and drafting or reviewing agreements related to ownership transfers.",
           inputFields: [],
           isCustom: false
         },
@@ -870,7 +870,7 @@ export class MemStorage implements IStorage {
           category: "Business Planning",
           section: "buildNetWorth",
           subsection: "Planning for Business Owners",
-          content: "A business intermediary could suggest next steps to prepare your business for sale and to help you maximize the value of proceeds you will receive from the transfer of ownership.",
+          content: "A business intermediary can recommend steps to prepare your business for sale and help maximize the value of proceeds from ownership transfer.",
           inputFields: [],
           isCustom: false
         },
@@ -883,7 +883,7 @@ export class MemStorage implements IStorage {
           category: "Major Purchase",
           section: "buildNetWorth",
           subsection: "Planning for Large Purchase or Event",
-          content: "We recommend that you save (X$) per month towards your goal and that the savings be directed to your (ACCOUNT TYPE) account.",
+          content: "Save (X$) per month toward your goal, directing savings to your (ACCOUNT TYPE) account.",
           inputFields: [],
           isCustom: false
         },
@@ -894,7 +894,7 @@ export class MemStorage implements IStorage {
           category: "Major Purchase",
           section: "buildNetWorth",
           subsection: "Planning for Large Purchase or Event",
-          content: "As you may need a (LOAN/MORTGAGE) to complete the purchase we recommend that you meet with our colleague (NAME, BUSINESS) to discuss your borrowing options.",
+          content: "If you may need a (LOAN/MORTGAGE) to complete the purchase, meet with our colleague (NAME, BUSINESS) to discuss borrowing options.",
           inputFields: [],
           isCustom: false
         },
@@ -906,7 +906,7 @@ export class MemStorage implements IStorage {
           description: "Assess debt reduction and payment strategies",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "As discussed, you would like to review your current liabilities to determine if interest can be reduced and/or payments increased to conclude debt payments in a shorter timeframe.",
+          content: "You would like to review your liabilities to determine whether interest can be reduced and/or payments increased to repay debt sooner.",
           inputFields: [],
           isCustom: false
         },
@@ -916,7 +916,7 @@ export class MemStorage implements IStorage {
           description: "Multi-strategy tax burden reduction",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "As part of our overall approach to tax planning, we are working to identify and implement a range of strategies aimed at reducing your tax burden. This includes, but not limited to, building a tax-efficient portfolio, optimizing contributions to registered accounts, structuring the different incomes sources, income-splitting opportunities, prescribed loans, pension sharing and the potential use of trusts.",
+          content: "As part of our tax planning approach, we aim to implement strategies to reduce your tax burden, including building a tax‑efficient portfolio, optimizing registered account contributions, structuring income sources, income splitting, prescribed loans, pension sharing, and the potential use of trusts.",
           inputFields: [],
           isCustom: false
         },
@@ -926,7 +926,7 @@ export class MemStorage implements IStorage {
           description: "Optimize allocation of increased savings",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "You have mentioned that you are comfortable increasing your current savings and would like to identify the best ways to direct the additional savings.",
+          content: "You are comfortable increasing savings and would like guidance on the most effective allocation.",
           inputFields: [],
           isCustom: false
         },
@@ -936,7 +936,7 @@ export class MemStorage implements IStorage {
           description: "Explore tax-saving opportunities",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "You have expressed an interest in building a tax-efficient portfolio and would like to explore strategies for reducing your tax liability and discuss potential tax-saving opportunities.",
+          content: "You are interested in building a tax‑efficient portfolio and would like to explore strategies to reduce tax liability and identify opportunities.",
           inputFields: [],
           isCustom: false
         },
@@ -946,7 +946,7 @@ export class MemStorage implements IStorage {
           description: "Best-in-class tax efficient portfolio",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "As you accounts grows, it will become especially important to be mindful of the tax consequences. Marc will assist you in building a best-in-class tax efficient portfolio.",
+          content: "As your accounts grow, it becomes especially important to be mindful of tax consequences. Marc will help you build a best‑in‑class, tax‑efficient portfolio.",
           inputFields: [],
           isCustom: false
         },
@@ -956,7 +956,7 @@ export class MemStorage implements IStorage {
           description: "Transfer strategy for tax optimization",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "You currently have significant assets invested in your non-registered investment account; however, you have not yet maximized the amount in your TFSA.",
+          content: "You hold significant assets in a non-registered account and have not yet maximized your TFSA contributions.",
           inputFields: [],
           isCustom: false
         },
@@ -966,7 +966,7 @@ export class MemStorage implements IStorage {
           description: "Strategies to reduce overall family tax",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "You have indicated that you would like to explore strategies to help reduce the overall tax liability for your family.",
+          content: "You would like to explore strategies to reduce your family’s overall tax liability.",
           inputFields: [],
           isCustom: false
         },
@@ -976,7 +976,7 @@ export class MemStorage implements IStorage {
           description: "Track and optimize charitable giving",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "During our discussions you indicated that you donate approximately $XXX annually to various organizations.",
+          content: "You donate approximately $XXX annually to various organizations.",
           inputFields: [],
           isCustom: false
         },
@@ -986,7 +986,7 @@ export class MemStorage implements IStorage {
           description: "Cash donation tracking",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "During our discussions you indicated that you make regular cash donations to various charitable organizations.",
+          content: "You make regular cash donations to various charitable organizations.",
           inputFields: [],
           isCustom: false
         },
@@ -996,7 +996,7 @@ export class MemStorage implements IStorage {
           description: "Identify TFSA optimization opportunities",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "You do not own any TFSA and have not yet maximized your contributions to them. Contribution room cannot be rolled over to the spouse.",
+          content: "You do not own any TFSAs and have not maximized contributions. TFSA contribution room cannot be transferred to a spouse.",
           inputFields: [],
           isCustom: false
         },
@@ -1016,7 +1016,7 @@ export class MemStorage implements IStorage {
           description: "Integrated planning for both spouses",
           category: "Tax Planning Objectives",
           section: "implementingTaxStrategies",
-          content: "When only one spouse's financial picture is visible, it limits the ability to deliver fully integrated retirement, tax, and estate planning strategies. Consolidating and coordinating assets across both spouses not only simplifies financial management but also allows for more precise planning — from income splitting to minimizing estate taxes and ensuring efficient retirement withdrawals. A shared view enhances long-term planning and helps protect both partners' financial well-being",
+          content: "When only one spouse’s finances are visible, fully integrated retirement, tax, and estate strategies are limited. Consolidating and coordinating across both spouses simplifies management and enables more precise planning—from income splitting to minimizing estate taxes and optimizing withdrawals—enhancing long‑term outcomes for both partners.",
           inputFields: [],
           isCustom: false
         },
@@ -1029,7 +1029,7 @@ export class MemStorage implements IStorage {
           category: "Cash Flow Optimization",
           section: "implementingTaxStrategies",
           subsection: "Optimize Cash Flow",
-          content: "I recommend that you speak with a TD Wealth Private Banker. TD Wealth Private Banking is accustomed to providing clients – executives, business owners, professionals and their families – with a level of service that is attuned to their sophisticated banking needs. They offer integrated banking services that include access to your own personal Private Banker. Their focus is to provide personalized services and advice to help make your credit needs as economical, flexible and convenient as possible.",
+          content: "Speak with a TD Wealth Private Banker. TD Wealth Private Banking provides integrated, personalized banking services for clients with sophisticated needs, focusing on economical, flexible, and convenient credit solutions.",
           inputFields: [],
           isCustom: false
         },
@@ -1040,7 +1040,7 @@ export class MemStorage implements IStorage {
           category: "Cash Flow Optimization",
           section: "implementingTaxStrategies",
           subsection: "Optimize Cash Flow",
-          content: "Although this financial plan is prepared for you individually, it is worth noting that several retirement income strategies can be enhance when coordinated with the a spouse. Approaches such as income splitting, pension sharing, and optimizing the timing of withdrawals can meaningfully improve after-tax income for couples. While these strategies are not included in this plan given its individual focus, they remain important considerations for your broader retirement planning.",
+          content: "Although this plan is prepared for you individually, many retirement income strategies are enhanced when coordinated with a spouse. Income splitting, pension sharing, and optimizing withdrawal timing can improve after‑tax income for couples. While not included here, these remain important considerations for broader planning.",
           inputFields: [],
           isCustom: false
         },
@@ -1051,7 +1051,7 @@ export class MemStorage implements IStorage {
           category: "Cash Flow Optimization",
           section: "implementingTaxStrategies",
           subsection: "Optimize Cash Flow",
-          content: "Splitting income with family members who earn less income, and are therefore in a lower marginal tax bracket, is one way to reduce your family's overall tax burden. In your situation, I suggest that you consider the following: (Advisor to select the option(s) that apply and delete the others)\n\n- Contribute to a Spousal RRSP – since you are currently taxed at a higher marginal tax rate than your spouse, (SPOUSE NAME), an easy way to split income is for you to contribute to a spousal RRSP for (SPOUSE NAME). You will be able to claim the deduction for the contribution to the spousal RRSP (assuming you have sufficient RRSP contribution room) and (SPOUSE NAME) will be taxed on any future RRSP withdrawals, presumably at a lower tax rate. You should be aware of the attribution rule associated with spousal RRSPs. If (SPOUSE NAME) withdraws funds from the spousal RRSP in the same calendar year that you make a contribution or in either of the two following calendar years, the RRSP income will be attributed back to you.\n\n- Elect for pension income splitting – the advantage of pension income splitting is that part of your eligible pension income can be shifted to your spouse, who would be taxed at a lower marginal tax rate. If the recipient is under age 65, they may only elect to split certain types of pension income, such as lifetime annuity payments from a registered pension plan; however, amounts distributed from a registered retirement income fund (RRIF) cannot be split.\n\n- Use an income on income strategy – In general, when the higher income spouse gives money to the lower income earning spouse and the funds are used for investment purposes, the income generated attributes back to the higher income earning spouse. However, if the income is re-invested, subsequent income generated (\"second generation income\") does not attribute back to the higher income spouse. It is recommended that the income that is re-invested be invested in a separate account so that the second generation income is easily trackable.\n\n- Consider a prescribed rate loan strategy - This strategy is particularly useful when there is a low interest rate environment. The rate of interest that is prescribed by the regulations in the Income Tax Act (Canada) is currently 2%. Loans made at this rate of interest between related persons are not subject to the attribution rules; therefore, where an investment is expected to produce a return that is in excess of this rate, it may be worthwhile for the higher income spouse to loan money to the lower income spouse (and charge the 2% rate of interest on the loan every year to avoid the application of the attribution rules). The yield from the money invested (over the amount of interest charged) will then be included in the lower income spouse's income and taxed to him or her without triggering the attribution rules.\n\n- Pension share with your spouse – The CPP/QPP program allows married or common-law couples to share CPP/QPP credits earned during their contributory period based on the number of years they lived together. This allows the couple to balance CPP payments if there is a difference in their individual pensions and may result in tax savings.",
+          content: "Splitting income with family members in lower marginal tax brackets can reduce your family’s overall tax burden. Consider:\n\n- Contribute to a spousal RRSP – If you are taxed at a higher marginal rate than your spouse (SPOUSE NAME), contributing to a spousal RRSP allows you to claim the deduction (assuming sufficient room), while (SPOUSE NAME) is taxed on future withdrawals, presumably at a lower rate. Be aware of attribution rules: if (SPOUSE NAME) withdraws funds in the same calendar year you contribute or in either of the next two years, the income may attribute back to you.\n\n- Elect pension income splitting – You may shift part of eligible pension income to your spouse to be taxed at their lower rate. If the recipient is under 65, only certain types (e.g., lifetime annuity payments from a registered pension plan) may be split; RRIF distributions generally cannot be split before age 65.\n\n- Use an income‑on‑income strategy – When the higher‑income spouse gifts funds to the lower‑income spouse for investment, income generally attributes back to the higher‑income spouse. However, income earned on reinvested income (\"second‑generation income\") does not attribute. Track and invest reinvested income separately to preserve this treatment.\n\n- Consider a prescribed rate loan – When prescribed interest rates are low (currently 2%), loans at the prescribed rate between related persons are not subject to attribution. If expected returns exceed the rate, the higher‑income spouse can lend to the lower‑income spouse and charge the prescribed interest annually to avoid attribution. Returns above interest are then taxed in the lower‑income spouse’s hands.\n\n- Share CPP/QPP credits – The CPP/QPP program allows married or common‑law couples to share CPP/QPP credits earned during their contributory period to balance benefits and potentially reduce tax.",
           inputFields: [],
           isCustom: false
         },
@@ -1062,7 +1062,7 @@ export class MemStorage implements IStorage {
           category: "Cash Flow Optimization",
           section: "implementingTaxStrategies",
           subsection: "Optimize Cash Flow",
-          content: "It is important to consider the most tax-efficient way of withdrawing funds from your company(ies). As earned income, your salary will be included in the amount determining RRSP contribution room and future CPP benefits. However, while your salary is a deductible expense for your company, you will be subject to tax on your salary at your marginal tax rate. Dividends, on the other hand, do not create RRSP contribution room nor CPP benefits and are not a deductible expense for your company. However, you are generally subject to tax on Canadian dividends at a lower tax rate.",
+          content: "Consider the most tax‑efficient way to withdraw funds from your company(ies). Salary creates RRSP room and CPP benefits and is deductible to the company but taxed at your marginal rate. Dividends do not create RRSP room or CPP benefits and are not deductible to the company, but are generally taxed to you at lower rates.",
           inputFields: [],
           isCustom: false
         },
@@ -1073,7 +1073,7 @@ export class MemStorage implements IStorage {
           category: "Cash Flow Optimization",
           section: "implementingTaxStrategies",
           subsection: "Optimize Cash Flow",
-          content: "You should consult with your accountant for advice on the specific application of the information presented to your personal situation. In addition, you may wish to meet with your accountant to determine how best to utilize the benefits of the Capital Dividend Account (CDA) and Refundable Dividend Tax on Hand (RDTOH) balances of your corporate shareholdings.",
+          content: "Consult your accountant on how best to use the Capital Dividend Account (CDA) and Refundable Dividend Tax on Hand (RDTOH) balances within your corporate shareholdings.",
           inputFields: [],
           isCustom: false
         },
@@ -1084,7 +1084,7 @@ export class MemStorage implements IStorage {
           category: "Cash Flow Optimization",
           section: "implementingTaxStrategies",
           subsection: "Optimize Cash Flow",
-          content: "Instead of making cash donations you may consider making in-kind donations as there is no tax on capital gains when you donate publicly traded shares/mutual funds or segregated funds in-kind to a charity.",
+          content: "Consider donating publicly traded securities, mutual funds, or segregated funds in‑kind to charity, as capital gains on donated securities are not taxable.",
           inputFields: [],
           isCustom: false
         },
@@ -1095,7 +1095,7 @@ export class MemStorage implements IStorage {
           category: "Cash Flow Optimization",
           section: "implementingTaxStrategies",
           subsection: "Optimize Cash Flow",
-          content: "Since you own publicly traded securities in your non-registered account that have increased significantly in value, you may owe capital gains tax when you sell them. If you donate the securities to charity, you can meet your charitable giving goals as the capital gain inclusion rate is reduced to zero. In addition, you will receive a charitable receipt for this donation, which can be used to reduce your income tax liability.",
+          content: "Because you hold appreciated publicly traded securities in your non‑registered account, donating them to charity can eliminate the capital gains inclusion rate and provide a charitable receipt to reduce income tax.",
           inputFields: [],
           isCustom: false
         },
@@ -1106,7 +1106,7 @@ export class MemStorage implements IStorage {
           category: "Cash Flow Optimization",
           section: "implementingTaxStrategies",
           subsection: "Optimize Cash Flow",
-          content: "Since a portion of your investments is held in a Non-Registered account, it becomes especially important to manage the portfolio with tax efficiency in mind. Danny can help you structure the investments in a way that reduces unnecessary taxation and support your long-term goals.",
+          content: "Because part of your portfolio is held in a non‑registered account, tax‑efficient structuring is especially important. Danny can help structure holdings to reduce unnecessary taxation and support your long‑term goals.",
           inputFields: [],
           isCustom: false
         },
@@ -1119,7 +1119,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Income",
           section: "implementingTaxStrategies",
           subsection: "Retirement Income Planning",
-          content: "Based on our analysis we recommend that you convert your retirement savings products into retirement income products at age (X) and begin to draw the minimum withdrawal.",
+          content: "Based on our analysis, convert your retirement savings products to retirement income products at age (X) and begin minimum withdrawals.",
           inputFields: [],
           isCustom: false
         },
@@ -1130,7 +1130,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Income",
           section: "implementingTaxStrategies",
           subsection: "Retirement Income Planning",
-          content: "We recommend that you use the birthdate of your younger spouse when converting to a retirement income product as this will reduce the annual minimum payment, as you have indicated you may not need these funds to meet your lifestyle needs.",
+          content: "When converting to a retirement income product, use your younger spouse’s birthdate to reduce the annual minimum payment if you do not need the funds to meet spending needs.",
           inputFields: [],
           isCustom: false
         },
@@ -1141,7 +1141,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Income",
           section: "implementingTaxStrategies",
           subsection: "Retirement Income Planning",
-          content: "We recommend transferring money from XXX RRIF to his TFSA. Contributing to your TFSA allows you to take advantage of tax-free growth since income or capital gains earned on investments in your TFSA are non-taxable. Withdrawals can be made on a tax-free basis should you need to access these funds.\n\nXXX, based on our projections, you can withdraw $XXXX on top of your minimum payment from your RRIF and contribute those to the TFSA. We elected this number based on your projected income and the Federal and Provincial tax brackets however we recommend meeting with you accountant for the exact amount you can withdraw without impacting your overall taxes too much.",
+          content: "We recommend transferring money from XXX’s RRIF to his TFSA. TFSA growth and withdrawals are tax‑free. Based on our projections, you can withdraw $XXXX above the RRIF minimum and contribute it to the TFSA. We selected this amount using projected income and tax brackets; consult your accountant for the precise amount that minimizes overall taxes.",
           inputFields: [],
           isCustom: false
         },
@@ -1152,7 +1152,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Income",
           section: "implementingTaxStrategies",
           subsection: "Retirement Income Planning",
-          content: "We recommend contributing the proceeds of life insurance to XXX' TFSA and allocate the remainder to a non-registered account.",
+          content: "We recommend contributing life insurance proceeds to XXX’s TFSA and allocating the remainder to a non‑registered account.",
           inputFields: [],
           isCustom: false
         },
@@ -1163,7 +1163,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Income",
           section: "implementingTaxStrategies",
           subsection: "Retirement Income Planning",
-          content: "XXX RRIF will eventually be rolled-over to YYY on a tax-free basis. RRIFs in the Estate are fully taxable. To avoid paying too many taxes, we recommend transferring XXX in addition to your minimum payment to your non-registered account.\n\nNon-Registered account have preferential tax treatment.",
+          content: "XXX’s RRIF will roll over to YYY on a tax‑deferred basis. RRIFs passing through the estate are fully taxable. To limit taxes, transfer XXX in addition to your minimum payment to your non‑registered account. Non‑registered accounts may receive preferential tax treatment.",
           inputFields: [],
           isCustom: false
         },
@@ -1174,7 +1174,7 @@ export class MemStorage implements IStorage {
           category: "Retirement Income",
           section: "implementingTaxStrategies",
           subsection: "Retirement Income Planning",
-          content: "Cash management can be an important element when you move to a new stage of your life. You will find below the procedure to follow to make withdrawals in the most tax-efficient way.\n\nStep 1 The first step is to determine the after-tax income that comes from recurring sources, such as:\nRetirement income (from your employer-sponsored retirement savings plan)\nGovernment benefits, such as CPP and OAS (if applicable);\nMandatory withdrawals from your registered retirement savings plans (RRSP, RRIF), if applicable;\nIncome from non-registered investment accounts;\nOther sources of income (e.g., rental income).\n\nStep 2 Over the course of a year, if you expect your current expenses to exceed the revenue sources mentioned above, you may need to withdraw funds from your investment accounts to cover the difference.\n\nGenerally, it is best to draw first from the lowest tax-paying investment accounts:\nThe capital from non-registered accounts, starting with investments that have accumulated the least capital gains;\nWithdrawals from your tax-free savings account. In your case, it would be more advantageous to not touch this account at all due to its tax-free nature to the estate as well.\n\nStep 3 If the above placements are exhausted, you may need to turn to some investment accounts whose withdrawals are less advantageous from a tax point of view or entirely taxable, such as lump-sum withdrawals from an RRSP or a RRIF/LIF.\n\nRecommendations: Convert your RRSP/LIRA to a RRIF/LIF at age 71 and start make the minimum payments. This coupled with your other sources of income (pensions and governmental) are more than enough to fill your needs. Contact your tax advisor to see if the strategies outlined above should be tailored to your situation.",
+          content: "Cash management is important as you transition to a new life stage. Follow this procedure for tax‑efficient withdrawals.\n\nStep 1 Determine after‑tax income from recurring sources, such as:\n- Retirement income (from employer‑sponsored plans)\n- Government benefits, such as CPP and OAS (if applicable)\n- Mandatory withdrawals from registered plans (RRSP, RRIF), if applicable\n- Income from non‑registered accounts\n- Other income (e.g., rental)\n\nStep 2 If expenses exceed the sources above, withdraw from investment accounts to cover the difference. Generally, draw first from the least‑taxed accounts:\n- Capital from non‑registered accounts, prioritizing investments with the smallest unrealized gains\n- TFSA withdrawals. In your case, it is advantageous to avoid TFSA withdrawals due to their tax‑free nature for the estate\n\nStep 3 If needed, use less tax‑efficient or fully taxable sources, such as lump‑sum RRSP or RRIF/LIF withdrawals.\n\nRecommendations Convert your RRSP/LIRA to a RRIF/LIF at age 71 and take the minimum payments. Combined with pensions and government benefits, this should meet your needs. Consult your tax advisor to tailor the strategy.",
           inputFields: [],
           isCustom: false
         },
@@ -1186,7 +1186,7 @@ export class MemStorage implements IStorage {
           description: "Essential protection for family security",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "Insurance is a foundational component of a well-rounded financial plan, as it helps protect against unforeseen events that could impact your family's financial security. Life, critical illness, and disability coverage can provide essential support in times of need, ensuring your goals stay on track even in the face of adversity. While this report does not include a detailed insurance analysis, we encourage you to explore this area further. We can connect you with appropriate TD insurance Specialists within our team to ensure your coverage continues to support your objectives and risk profile.",
+          content: "Insurance is a foundational component of a comprehensive financial plan, protecting against unforeseen events that could impact your family’s financial security. Life, critical illness, and disability coverage can help ensure your goals remain on track. While this report does not include a detailed insurance analysis, we encourage further review. We can connect you with TD Insurance Specialists to ensure coverage aligns with your objectives and risk profile.",
           inputFields: [],
           isCustom: false
         },
@@ -1196,7 +1196,7 @@ export class MemStorage implements IStorage {
           description: "Key advantages of life insurance protection",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "We recommend that you consider the advantages of life insurance as part of your overall plan to accumulate and transfer investment assets to your beneficiaries more tax-efficiently. Life insurance provides the following advantages:\n- Income replacement in the event of premature death.\n- Creates liquidity in your estate to fund a significant tax liability.\n- Is a tax-efficient strategy to transfer assets to your beneficiaries.",
+          content: "Consider the advantages of life insurance as part of your plan to accumulate and transfer assets tax‑efficiently. Benefits include:\n- Income replacement in the event of premature death\n- Liquidity in your estate to fund tax liabilities\n- A tax‑efficient strategy to transfer assets to beneficiaries",
           inputFields: [],
           isCustom: false
         },
@@ -1206,7 +1206,7 @@ export class MemStorage implements IStorage {
           description: "Understanding estate costs and taxes",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "Upon death your estate value will be eroded as a result of numerous factors, including:\n- Income taxes that become payable on death. A person is deemed to have disposed of all of his/her assets on death. The taxes will be payable on unrealized capital gains on investments and on the value of RRSP and RRIF balances if these assets are not transferred to a qualifying beneficiary, such as a surviving spouse/partner.\n- Legal fees to help settle the estate of the deceased.\n- Repayment of any debts.\n- Funeral costs.",
+          content: "Upon death, estate value may be reduced by:\n- Income taxes payable at death (deemed disposition of assets; taxes on unrealized gains and on RRSP/RRIF balances if not transferred to a qualifying beneficiary, such as a surviving spouse/partner)\n- Legal fees to settle the estate\n- Debt repayment\n- Funeral costs",
           inputFields: [],
           isCustom: false
         },
@@ -1216,7 +1216,7 @@ export class MemStorage implements IStorage {
           description: "Liquidation vs life insurance for estate costs",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "This estate erosion can be covered by the liquidation of assets in the estate or through the use of life insurance.",
+          content: "Estate erosion can be addressed by liquidating estate assets or by using life insurance.",
           inputFields: [],
           isCustom: false
         },
@@ -1226,7 +1226,7 @@ export class MemStorage implements IStorage {
           description: "Existing coverage and beneficiaries reviewed",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "Based on our conversation, your insurance coverage is already in place and all beneficiary designations have been reviewed.",
+          content: "Based on our conversation, your insurance coverage is in place and beneficiary designations have been reviewed.",
           inputFields: [],
           isCustom: false
         },
@@ -1236,7 +1236,7 @@ export class MemStorage implements IStorage {
           description: "Determine adequate coverage for objectives",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "In our discussions you mentioned that you would like to review your current insurance policies to determine if they are adequate to cover your needs. At this time your main objective is to (REPLACE INCOME/PLAN FOR ESTATE/TAX SHELTER FUNDS).",
+          content: "You would like to review your current insurance policies to determine whether they adequately cover your needs. Your primary objective is to (REPLACE INCOME/PLAN FOR ESTATE/TAX‑SHELTER FUNDS).",
           inputFields: [],
           isCustom: false
         },
@@ -1246,7 +1246,7 @@ export class MemStorage implements IStorage {
           description: "Prepared for unexpected situations",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "You have indicated that you feel you have adequate funds available should an unexpected situation arise that may impact other sources of income or your ability to earn income for a short period of time.",
+          content: "You indicated that you have adequate funds available for unexpected situations that could impact income or your ability to earn for a short period.",
           inputFields: [],
           isCustom: false
         },
@@ -1256,7 +1256,7 @@ export class MemStorage implements IStorage {
           description: "Need for short-term emergency coverage",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "Based on our conversations you do not have a source of emergency funds at this time and are concerned about the impact a short-term event may have on your cash flow needs.",
+          content: "Based on our discussions, you do not currently have an emergency fund and are concerned about the impact a short‑term event could have on your cash flow.",
           inputFields: [],
           isCustom: false
         },
@@ -1266,7 +1266,7 @@ export class MemStorage implements IStorage {
           description: "Assess coverage for work disability",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "You mentioned that you would like to review your current insurance policies to determine if they are adequate to cover your needs should there be a disability that would impact your ability to work in the short or long-term.",
+          content: "You would like to review your insurance policies to determine if your coverage is adequate in the event of a disability affecting your ability to work in the short or long term.",
           inputFields: [],
           isCustom: false
         },
@@ -1276,7 +1276,7 @@ export class MemStorage implements IStorage {
           description: "Explore critical illness coverage options",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "You mentioned that you do not currently have Critical Illness insurance and that you wish to obtain more information on the benefits and options available.",
+          content: "You do not currently have critical illness insurance and would like more information on available benefits and options.",
           inputFields: [],
           isCustom: false
         },
@@ -1286,7 +1286,7 @@ export class MemStorage implements IStorage {
           description: "No current insurance review requested",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "You have declined an insurance needs analysis at this time. You are comfortable with your current situation and understand that a review is available to you should you wish to re-visit this discussion at another time.",
+          content: "You have declined an insurance needs analysis at this time. You are comfortable with your current situation and understand a review is available if you wish to revisit this later.",
           inputFields: [],
           isCustom: false
         },
@@ -1296,7 +1296,7 @@ export class MemStorage implements IStorage {
           description: "Detailed life insurance review",
           category: "Protection Objectives",
           section: "protectingWhatMatters",
-          content: "You mentioned that you would like to review your life insurance needs in detail with EPA. At this time your main objective is for income replacement (or estate planning).",
+          content: "You would like to review your life insurance needs in detail with EPA. Your primary objective is income replacement (or estate planning).",
           inputFields: [],
           isCustom: false
         },
@@ -1309,7 +1309,7 @@ export class MemStorage implements IStorage {
           category: "Risk Management",
           section: "protectingWhatMatters",
           subsection: "Planning for Uncertainty",
-          content: "It is recommended to have funds that are easily accessible in the event of an emergency or unexpected cost, typically this amount should represent 3-6 months of your household income. We recommend that this be a cash or bank account, but it can also be the unused portion of a line of credit. If a line of credit is used then it is important to consider the cost of interest in the event funds are borrowed, a line of credit that is secured by a home or investment property will provide a lower borrowing rate.",
+          content: "It is recommended to maintain easily accessible funds for emergencies or unexpected costs, typically 3–6 months of household income. We recommend a cash or bank account, or an unused line of credit. If using a line of credit, consider interest costs; a line secured by a home or investment property generally offers lower rates.",
           inputFields: [],
           isCustom: false
         },
@@ -1322,7 +1322,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Our current analysis indicates that you may have a need for life insurance and we recommend that you speak with a specialist from the EPA for further details.",
+          content: "Our analysis indicates you may need life insurance. We recommend speaking with a specialist from EPA for further details.",
           inputFields: [],
           isCustom: false
         },
@@ -1333,7 +1333,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Client 1 currently has term life insurance through his employer of 1 times his/her salary, which will expire upon retirement.",
+          content: "Client 1 currently has employer‑provided term life insurance equal to one times salary, which will expire upon retirement.",
           inputFields: [],
           isCustom: false
         },
@@ -1344,7 +1344,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Client 1 currently has permanent life insurance policies with combined death benefits totaling approximately $100,000, and personal term life insurance policies with combined death benefits totaling approximately $200,000.",
+          content: "Client 1 has permanent life insurance with combined death benefits of approximately $100,000 and personal term life insurance with combined death benefits of approximately $200,000.",
           inputFields: [],
           isCustom: false
         },
@@ -1355,7 +1355,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Client 2 currently does not have any life insurance.",
+          content: "Client 2 currently does not have life insurance.",
           inputFields: [],
           isCustom: false
         },
@@ -1366,7 +1366,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Client 2 currently has a personal term life insurance policy with a $XX death benefit.",
+          content: "Client 2 has a personal term life insurance policy with a $XX death benefit.",
           inputFields: [],
           isCustom: false
         },
@@ -1377,7 +1377,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Client 2 currently has term life insurance through his/her employer of approximately 2 times salary. In addition, he/he also has a personal term life insurance policy with a $XX Million death benefit.",
+          content: "Client 2 has employer‑provided term life insurance of approximately two times salary and a personal term policy with a $XX million death benefit.",
           inputFields: [],
           isCustom: false
         },
@@ -1388,7 +1388,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Client 1 & 2 also have a joint second-to-die participating life insurance policy. The estimated death benefit of this policy is $3 Million, assuming the current dividend scale less 1%.",
+          content: "Client 1 & 2 also have a joint second‑to‑die participating life insurance policy. The estimated death benefit is $3 million, assuming the current dividend scale less 1%.",
           inputFields: [],
           isCustom: false
         },
@@ -1399,7 +1399,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Based on the information provided, our current analysis indicates that you may have sufficient insurance to cover the needs you have identified.",
+          content: "Based on the information provided, our current analysis indicates you may have sufficient insurance to cover your identified needs.",
           inputFields: [],
           isCustom: false
         },
@@ -1410,7 +1410,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "We recommend that whole life or universal policies be reviewed on an annual basis and term policies be reviewed every 3 years or after significant life events.",
+          content: "Review whole life or universal policies annually, and term policies every three years or after significant life events.",
           inputFields: [],
           isCustom: false
         },
@@ -1421,7 +1421,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "We recommend that you review any policies held through an employer to understand eligibility, waiting provisions and fiscal treatment of benefits, and determine if this meets your needs.",
+          content: "Review employer policies to understand eligibility, waiting periods, and tax treatment of benefits, and to confirm they meet your needs.",
           inputFields: [],
           isCustom: false
         },
@@ -1432,7 +1432,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Critical Illness insurance can provide a lump-sum, tax-free payment 30 days after the insured person is diagnosed with a critical illness. This can assist with household bills, debts or medical costs as the individual deals with the impact of the critical illness. This amount is payable based on the diagnosis and during the insured person's life, should the individual pass away after receiving the funds there is no need to repay. We recommend that you meet with our insurance specialist to determine if your current coverage will meet the needs of you and your family.",
+          content: "Critical illness insurance can provide a lump‑sum, tax‑free payment 30 days after diagnosis of a covered condition. This can assist with household bills, debts, or medical costs. Payment is based on diagnosis and is payable during the insured person’s life; if the individual dies after receiving the funds, there is no repayment. Meet with our insurance specialist to assess whether your coverage meets your needs.",
           inputFields: [],
           isCustom: false
         },
@@ -1443,7 +1443,7 @@ export class MemStorage implements IStorage {
           category: "Insurance Coverage",
           section: "protectingWhatMatters",
           subsection: "Insurance",
-          content: "Where individuals have \"never\" money – money they are never going to spend, one strategy for an efficient continuity plan to the next generation is the use of permanent insurance. Permanent life insurance may provide a tax-free investment environment to certain maximums, not dissimilar to a Tax-Free Savings Account (TFSA), allowing an investor to move funds from taxable to tax-free pool. With this strategy, some of your capital is used to fund a permanent life insurance policy. Some of these funds are invested tax‐sheltered inside the policy. Upon the death, the benefit is paid tax‐free and probate‐free to the beneficiaries of the policy. Given the unique tax structure of tax‐exempt life insurance, it can be a powerful tool as a \"unique asset class\" to build a pool of tax‐advantaged capital.",
+          content: "For “never money”—capital you do not intend to spend—permanent life insurance can be an efficient wealth transfer strategy. It provides tax‑sheltered growth within limits, similar to a TFSA, moving funds from taxable to tax‑free. Some capital funds the policy; some may be invested tax‑sheltered inside it. On death, the benefit is paid tax‑free and probate‑free to beneficiaries. Given its unique tax structure, tax‑exempt life insurance can act as a “unique asset class” for building tax‑advantaged capital.",
           inputFields: [],
           isCustom: false
         },
@@ -1455,7 +1455,7 @@ export class MemStorage implements IStorage {
           description: "Review of will and power of attorney completion",
           category: "Estate Planning Objectives",
           section: "leavingALegacy",
-          content: "In our discussion you mentioned that it was important to you to make things clear for your loved ones on your passing. You told us that you (HAVE/HAVE NOT) completed your Estate documentation (Wills, Powers of Attorney) (AND YOU FEEL THAT THESE DOCUMENTS REFLECT YOUR CURRENT WISHES/, BUT THAT THEY WERE DRAFTED SOME TIME AGO).",
+          content: "You indicated it is important to make things clear for your loved ones upon your passing. You (HAVE/HAVE NOT) completed your estate documentation (Wills, Powers of Attorney) (AND THEY REFLECT YOUR CURRENT WISHES/ BUT THEY WERE DRAFTED SOME TIME AGO).",
           inputFields: [],
           isCustom: false
         },
@@ -1465,7 +1465,7 @@ export class MemStorage implements IStorage {
           description: "Future estate value and tax liability",
           category: "Estate Planning Objectives",
           section: "leavingALegacy",
-          content: "Your net estate is expected to be valued at approximately $XXXX in future dollars. Please refer to the Estate Summary report for additional details on the projected values and tax liability at death. Please note that the Estate Summary report does not include probate tax, if applicable in your province.",
+          content: "Your net estate is expected to be approximately $XXXX in future dollars. See the Estate Summary report for projected values and taxes at death. Note: The Estate Summary does not include probate tax, if applicable in your province.",
           inputFields: [],
           isCustom: false
         },
@@ -1475,7 +1475,7 @@ export class MemStorage implements IStorage {
           description: "Concerns about children inheriting young",
           category: "Estate Planning Objectives",
           section: "leavingALegacy",
-          content: "Based on our discussions you expressed concern about how funds may be managed if your children inherited money when they are still young.",
+          content: "You expressed concern about how funds would be managed if your children inherited at a young age.",
           inputFields: [],
           isCustom: false
         },
@@ -1485,7 +1485,7 @@ export class MemStorage implements IStorage {
           description: "Update required for insurance and accounts",
           category: "Estate Planning Objectives",
           section: "leavingALegacy",
-          content: "You have indicated that your beneficiary designations on Life Insurance (or RRSP/RRIF/TFSA) may not be up to date.",
+          content: "Your beneficiary designations on life insurance (or RRSP/RRIF/TFSA) may not be up to date.",
           inputFields: [],
           isCustom: false
         },
@@ -1495,7 +1495,7 @@ export class MemStorage implements IStorage {
           description: "Larger charitable giving consideration",
           category: "Estate Planning Objectives",
           section: "leavingALegacy",
-          content: "You have indicated that you would now like to consider charitable giving on a larger scale or through your estate.",
+          content: "You would like to consider charitable giving on a larger scale or through your estate.",
           inputFields: [],
           isCustom: false
         },
@@ -1505,7 +1505,7 @@ export class MemStorage implements IStorage {
           description: "Continued support through estate",
           category: "Estate Planning Objectives",
           section: "leavingALegacy",
-          content: "You mentioned that you love to support (insert charity) and would like to understand how you may continue to support them through your will, estate or life insurance policies.",
+          content: "You enjoy supporting (insert charity) and would like to understand how to continue through your will, estate, or life insurance policies.",
           inputFields: [],
           isCustom: false
         },
@@ -1518,7 +1518,7 @@ export class MemStorage implements IStorage {
           category: "Charitable Giving",
           section: "leavingALegacy",
           subsection: "Donating to Charity",
-          content: "Based on our discussions we recommend that you update the beneficiaries on your life insurance policies to reflect the (insert charity).",
+          content: "We recommend updating life insurance beneficiaries to designate (insert charity).",
           inputFields: [],
           isCustom: false
         },
@@ -1529,7 +1529,7 @@ export class MemStorage implements IStorage {
           category: "Charitable Giving",
           section: "leavingALegacy",
           subsection: "Donating to Charity",
-          content: "We recommend that you donate (insert security) to (insert charity) as this will eliminate the unrealized capital gain and provide you with a charitable tax credit in exchange, as well as support the charity that is close to your heart.",
+          content: "We recommend donating (insert security) to (insert charity) to eliminate the unrealized capital gain and receive a charitable tax credit, while supporting a cause important to you.",
           inputFields: [],
           isCustom: false
         },
@@ -1540,7 +1540,7 @@ export class MemStorage implements IStorage {
           category: "Charitable Giving",
           section: "leavingALegacy",
           subsection: "Donating to Charity",
-          content: "One aspect worth considering in your estate plan is charitable giving. Even if it hasn't been part of your past planning, donating to charity—during your lifetime or through your estate—can be a powerful way to leave a meaningful legacy while also reducing your tax burden. Gifts made through your will or via a donor-advised fund, like the Private Giving Foundation, can support causes you care about and generate significant tax credits for your estate. It's a way to align your wealth with your values, maximize impact, and ease the administrative burden on your heirs.",
+          content: "Consider incorporating charitable giving into your estate plan. Gifts during life or through your estate—such as via a donor‑advised fund like the Private Giving Foundation—can align your wealth with your values, reduce taxes, and ease the administrative burden on heirs.",
           inputFields: [],
           isCustom: false
         },
@@ -1553,7 +1553,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "We recommend you speak with your legal representative to ensure that you have your Wills updated to reflect your current estate objectives. You may wish to discuss your Powers of Attorney for Property and Personal Care to ensure that you have made provisions in the event of incapacity. It is important to review these documents periodically or after any major life event. You can to speak with your legal representative to discuss your Powers of Attorney for Property and Personal Care to ensure that you have made provisions in the event of incapacity. It is important to review these documents periodically or after any major life event. You may want to consider setting up a testamentary trust upon your passing. Testamentary trusts are created in Wills and become effective upon an individual's death. Testamentary Trusts - In general, a trust is a legal arrangement by which you place property with an individual or trust company (i.e., trustee) to be held for the benefit of your beneficiaries (i.e., nieces / nephews, their children...). The trustee owns and manages the trust property for beneficiaries. Beneficiaries will receive payments of income at any frequency you choose following your death. The trust can also reserve the capital for specific purposes and direct how it is to be used.",
+          content: "Speak with your legal representative to ensure your Wills reflect your current estate objectives. Also discuss your Powers of Attorney for Property and Personal Care to ensure appropriate provisions in the event of incapacity. Review these documents periodically or after major life events. You may also consider setting up a testamentary trust. Testamentary trusts are created by Will and become effective on death, allowing a trustee to manage property for beneficiaries and direct income and capital as specified.",
           inputFields: [],
           isCustom: false
         },
@@ -1564,7 +1564,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "XXX , you have indicated that you completed your Estate documentation (Wills, Powers of Attorney). Some additional points to consider for the future updating process are:",
+          content: "XXX, you have completed your estate documentation (Wills, Powers of Attorney). Consider the following for future updates:",
           inputFields: [],
           isCustom: false
         },
@@ -1575,7 +1575,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "Here are some important considerations during the revision of your Estate documentation\n- Who should be liquidator or co-liquidators?\n- Are they Canadian resident, local, younger, financially savvy and trustworthy?\n- Do they have legal and financial expertise, as well as the time and willingness to fulfill the duties? Should you name a third party, e.g., trust company?",
+          content: "Here are key considerations when revising estate documents:\n- Who should be liquidator or co‑liquidators?\n- Are they Canadian residents, local, younger, financially savvy, and trustworthy?\n- Do they have the expertise, time, and willingness to serve? Should a third party (e.g., a trust company) be named?",
           inputFields: [],
           isCustom: false
         },
@@ -1586,7 +1586,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "A corporate liquidator can provide a high level of expertise, and will facilitate the estate settlement process for your beneficiaries. If The Canada Trust Company is appointed in this capacity, there are no fees payable until The Canada Trust Company begins to administer your estate. Furthermore, a corporate liquidator will endeavor to provide the requisite impartiality, accountability and responsibility in so acting. The Canada Trust Company has a history of acting as corporate liquidator and is able to draw on its extensive expertise to help assure your beneficiaries of a timely and professional administration of your estate. If The Canada Trust Company is named as the liquidator of your estate, it can be called upon to do all the \"heavy-lifting\" of the estate administration that your friends and family cannot do, will not do, or do not have the expertise to do.",
+          content: "A corporate liquidator can provide high‑level expertise and facilitate estate settlement. If The Canada Trust Company is appointed, fees apply only when administration begins. A corporate liquidator offers impartiality, accountability, and responsibility and can handle the “heavy lifting” that family or friends may be unable or unwilling to do.",
           inputFields: [],
           isCustom: false
         },
@@ -1597,7 +1597,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "It may be helpful to create an inventory listing of personal items and discuss how these items will be dealt with. Assets held in a joint account will pass directly to the surviving account holder. Assets with named beneficiaries will flow outside of the estate and will pass directly to the named individual(s).",
+          content: "Create an inventory of personal items and discuss how they will be distributed. Assets held jointly pass directly to the surviving owner. Assets with named beneficiaries pass outside the estate directly to the named individuals.",
           inputFields: [],
           isCustom: false
         },
@@ -1608,7 +1608,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "There are many reasons why a testamentary trust may be a valuable estate planning tool. For example, a testamentary trust may be used to maintain control over inheritances, such as in cases where there are beneficiaries who need help with managing their finances. Placing assets into a trust could give you peace of mind, since the funds may not be accessible to your beneficiary's creditors or spouses. It is important to ensure that any trustee who will administer the trust is qualified, competent and willing to perform the many tasks required to carry out your wishes and discharge their fiduciary duties.",
+          content: "A testamentary trust can help maintain control over inheritances, particularly for beneficiaries who need assistance managing finances. Trusts may protect assets from beneficiaries’ creditors or spouses. Ensure any trustee is qualified, competent, and willing to carry out fiduciary duties.",
           inputFields: [],
           isCustom: false
         },
@@ -1619,7 +1619,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "We can also consider engaging TD Private Trust to become a corporate executor of your estate. A corporate executor can provide expertise and will simplify and facilitate the estate settlement process for your family should you want to unburden your brother Brian.",
+          content: "Consider engaging TD Private Trust as a corporate executor to provide expertise and relieve family members—such as your brother Brian—of administrative burdens.",
           inputFields: [],
           isCustom: false
         },
@@ -1630,7 +1630,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "For individuals seeking a trouble-free management of a trust, TD Wealth Private Trust can provide expertise and advice that ensures that a trust is both managed according to the testator's wishes and to the needs of the trust's beneficiaries.",
+          content: "For individuals seeking streamlined trust management, TD Wealth Private Trust can ensure the trust is administered according to the testator’s wishes and the beneficiaries’ needs.",
           inputFields: [],
           isCustom: false
         },
@@ -1641,7 +1641,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "We recommend that you meet with our Estate Planning colleague to discuss your estate planning options, which may include a corporate executor. A corporate executor can provide expertise and will simplify and facilitate the estate settlement process for your family. (AND/OR) Testamentary trusts are created in Wills and become effective upon an individual's death. Rather than giving all of your assets directly to a surviving spouse and/or children, you may wish to consider setting up testamentary spousal trusts in your Will for your spouse and/or children.",
+          content: "Meet with our Estate Planning colleague to discuss options, including a corporate executor and testamentary trusts (e.g., spousal trusts). A corporate executor can simplify and facilitate the estate settlement process.",
           inputFields: [],
           isCustom: false
         },
@@ -1652,7 +1652,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "It is recommended to review beneficiary designations periodically to ensure that they meet your current estate wishes. On accounts/products that allow beneficiary designations the process will be faster and easier for the beneficiary to receive the funds, and may avoid probate costs if applicable in your province.",
+          content: "Review beneficiary designations periodically to ensure they reflect your estate wishes. Where permitted, proper designations can expedite payouts and may avoid probate costs, if applicable.",
           inputFields: [],
           isCustom: false
         },
@@ -1663,7 +1663,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "It is important to ensure that there are some 'emergency funds' available should one spouse pass away. The estate administration process may be lengthy, so an emergency fund would help the surviving spouse have the ability to meet day-to-day financial needs until the estate is settled.",
+          content: "Ensure some emergency funds are available if one spouse passes away. Estate administration can be lengthy; an emergency fund helps the survivor meet day‑to‑day needs until settlement.",
           inputFields: [],
           isCustom: false
         },
@@ -1674,7 +1674,7 @@ export class MemStorage implements IStorage {
           category: "Wealth Transfer",
           section: "leavingALegacy",
           subsection: "Passing on your Wealth",
-          content: "As a U.S. citizen living in Canada, your spouse may be subject to both the Canadian and U.S. tax regimes upon their death. As a Canadian resident, they are subject to Canadian income tax at death. For Canadian income tax purposes, they will be deemed to dispose of their capital assets upon death for an amount equal to their fair market value at the date of death. As a U.S. citizen, they will also be subject to U.S. estate tax on the fair market value of their worldwide estate at the time of their death. Their worldwide estate includes all property owned at death, regardless of where the property is located. It is recommended that they review their Estate Plan with a Tax and Estate planning specialist who has US/Canada cross border expertise.",
+          content: "As a U.S. citizen living in Canada, your spouse may be subject to both Canadian income tax at death (deemed disposition) and U.S. estate tax on worldwide assets. Review the estate plan with a cross‑border tax and estate specialist.",
           inputFields: [],
           isCustom: false
         },

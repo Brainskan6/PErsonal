@@ -9,7 +9,12 @@ import memoize from "memoizee";
 import connectPg from "connect-pg-simple";
 import { storage } from "./storage";
 
-if (!process.env.REPLIT_DOMAINS) {
+// Local development fallback: if REPLIT_DOMAINS is not provided and we're not in production,
+// bypass OIDC and treat requests as authenticated with a mock user.
+const isLocalDev = process.env.NODE_ENV !== 'production' && !process.env.REPLIT_DOMAINS;
+
+// In local development, don't require REPLIT_DOMAINS; use stubbed auth instead
+if (!process.env.REPLIT_DOMAINS && process.env.NODE_ENV === 'production') {
   throw new Error("Environment variable REPLIT_DOMAINS not provided");
 }
 
@@ -32,6 +37,21 @@ export function getSession() {
     ttl: sessionTtl,
     tableName: "sessions",
   });
+  // In local dev, fall back to in-memory session store with a default secret
+  if (isLocalDev) {
+    return session({
+      secret: process.env.SESSION_SECRET || 'dev-secret',
+      resave: false,
+      saveUninitialized: false,
+      cookie: {
+        httpOnly: true,
+        secure: false,
+        maxAge: sessionTtl,
+        sameSite: 'lax',
+      },
+    });
+  }
+
   return session({
     secret: process.env.SESSION_SECRET!,
     store: sessionStore,
@@ -71,6 +91,26 @@ async function upsertUser(
 export async function setupAuth(app: Express) {
   app.set("trust proxy", 1);
   app.use(getSession());
+
+  if (isLocalDev) {
+    // Stub authentication in local development: every request is authenticated with a mock user
+    app.use(((req, _res, next) => {
+      (req as any).isAuthenticated = () => true;
+      (req as any).user = {
+        claims: {
+          sub: 'dev-user',
+          email: 'dev@example.com',
+          first_name: 'Dev',
+          last_name: 'User',
+          profile_image_url: '',
+          exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60),
+        },
+      };
+      next();
+    }) as RequestHandler);
+    return;
+  }
+
   app.use(passport.initialize());
   app.use(passport.session());
 
@@ -130,6 +170,9 @@ export async function setupAuth(app: Express) {
 }
 
 export const isAuthenticated: RequestHandler = async (req, res, next) => {
+  if (isLocalDev) {
+    return next();
+  }
   const user = req.user as any;
 
   if (!req.isAuthenticated() || !user.expires_at) {
@@ -159,6 +202,16 @@ export const isAuthenticated: RequestHandler = async (req, res, next) => {
 };
 
 export function getUserFromSession(req: any) {
+  if (isLocalDev) {
+    return {
+      id: 'dev-user',
+      email: 'dev@example.com',
+      firstName: 'Dev',
+      lastName: 'User',
+      profileImageUrl: '',
+    };
+  }
+
   if (!req.isAuthenticated() || !req.user) {
     return null;
   }
