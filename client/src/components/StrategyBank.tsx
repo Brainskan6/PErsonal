@@ -241,7 +241,9 @@ export default function StrategyBank({
       const searchLower = searchTerm.toLowerCase();
       return strategy.title.toLowerCase().includes(searchLower) ||
              (strategy.content && strategy.content.toLowerCase().includes(searchLower)) ||
-             (strategy.description && strategy.description.toLowerCase().includes(searchLower));
+             (strategy.description && strategy.description.toLowerCase().includes(searchLower)) ||
+             (strategy.subsection && strategy.subsection.toLowerCase().includes(searchLower)) ||
+             (strategy.category && strategy.category.toLowerCase().includes(searchLower));
     });
 
     // Group by section
@@ -257,14 +259,28 @@ export default function StrategyBank({
         sections[section] = { strategies: [], subsections: {} };
       }
 
-      if (strategy.subsection) {
-        if (!sections[section].subsections[strategy.subsection]) {
-          sections[section].subsections[strategy.subsection] = [];
+      // Use subsection or category as the grouping key
+      const subsectionKey = strategy.subsection || strategy.category;
+      
+      if (subsectionKey) {
+        if (!sections[section].subsections[subsectionKey]) {
+          sections[section].subsections[subsectionKey] = [];
         }
-        sections[section].subsections[strategy.subsection].push(strategy);
+        sections[section].subsections[subsectionKey].push(strategy);
       } else {
         sections[section].strategies.push(strategy);
       }
+    });
+
+    // Sort strategies within each section and subsection
+    Object.keys(sections).forEach(sectionKey => {
+      // Sort strategies within section
+      sections[sectionKey].strategies.sort((a, b) => a.title.localeCompare(b.title));
+      
+      // Sort strategies within each subsection
+      Object.keys(sections[sectionKey].subsections).forEach(subsectionKey => {
+        sections[sectionKey].subsections[subsectionKey].sort((a, b) => a.title.localeCompare(b.title));
+      });
     });
 
     return sections;
@@ -294,7 +310,8 @@ export default function StrategyBank({
     addCustomStrategyMutation.mutate({
       title: newStrategyTitle.trim(),
       content: newStrategyContent.trim(),
-      section: newStrategySection.trim()
+      section: newStrategySection.trim(),
+      subsection: newStrategySubsection.trim() || undefined
     });
   };
 
@@ -324,7 +341,8 @@ export default function StrategyBank({
     setEditFormData({
       title: strategy.title,
       content: strategy.content || "",
-      section: strategy.section || ""
+      section: strategy.section || "",
+      subsection: strategy.subsection || strategy.category || ""
     });
   };
 
@@ -347,6 +365,7 @@ export default function StrategyBank({
         title: editFormData.title.trim(),
         content: editFormData.content.trim(),
         section: editFormData.section.trim(),
+        subsection: editFormData.subsection?.trim() || undefined,
         isBuiltIn: false
       });
     } else if (isBuiltInStrategy) {
@@ -355,6 +374,7 @@ export default function StrategyBank({
         title: editFormData.title.trim(),
         content: editFormData.content.trim(),
         section: editFormData.section.trim(),
+        subsection: editFormData.subsection?.trim() || undefined,
         isBuiltIn: true
       });
     }
@@ -426,9 +446,9 @@ export default function StrategyBank({
                 )}
               </div>
               
-              {strategy.subsection && (
+              {(strategy.subsection || strategy.category) && (
                 <Badge variant="outline" className="text-xs bg-gray-50 text-gray-600 border-gray-300">
-                  {strategy.subsection}
+                  {strategy.subsection || strategy.category}
                 </Badge>
               )}
               
@@ -503,23 +523,35 @@ export default function StrategyBank({
               />
             </div>
 
-            <div className="space-y-2">
-              <Label className="text-xs font-medium text-blue-900">Report Section</Label>
-              <Select
-                value={editFormData.section || ""}
-                onValueChange={(value) => setEditFormData({ ...editFormData, section: value })}
-              >
-                <SelectTrigger className="mt-1 h-8 text-sm">
-                  <SelectValue placeholder="Select report section" />
-                </SelectTrigger>
-                <SelectContent>
-                  {sectionOptions.map(section => (
-                    <SelectItem key={section} value={section}>
-                      {getSectionDisplayName(section)}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <Label className="text-xs font-medium text-blue-900">Report Section</Label>
+                <Select
+                  value={editFormData.section || ""}
+                  onValueChange={(value) => setEditFormData({ ...editFormData, section: value })}
+                >
+                  <SelectTrigger className="mt-1 h-8 text-sm">
+                    <SelectValue placeholder="Select report section" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {sectionOptions.map(section => (
+                      <SelectItem key={section} value={section}>
+                        {getSectionDisplayName(section)}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="space-y-2">
+                <Label className="text-xs font-medium text-blue-900">Subsection (Optional)</Label>
+                <Input
+                  placeholder="e.g., RRSP, TFSA, Insurance..."
+                  value={editFormData.subsection || ''}
+                  onChange={(e) => setEditFormData({ ...editFormData, subsection: e.target.value })}
+                  className="h-8 text-sm"
+                />
+              </div>
             </div>
 
             <div className="space-y-2">
@@ -612,7 +644,7 @@ export default function StrategyBank({
                 <div className="p-4 space-y-4">
                   <h4 className="font-medium text-green-900">Add New Custom Strategy</h4>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     <div>
                       <Label htmlFor="strategy-title" className="text-xs font-medium text-gray-700">Strategy Title</Label>
                       <Input
@@ -643,6 +675,18 @@ export default function StrategyBank({
                           ))}
                         </SelectContent>
                       </Select>
+                    </div>
+
+                    <div>
+                      <Label htmlFor="strategy-subsection" className="text-xs font-medium text-gray-700">Subsection (Optional)</Label>
+                      <Input
+                        id="strategy-subsection"
+                        placeholder="e.g., RRSP, TFSA, Insurance..."
+                        value={newStrategySubsection}
+                        onChange={(e) => setNewStrategySubsection(e.target.value)}
+                        className="mt-1 h-9 text-sm"
+                        disabled={addCustomStrategyMutation.isPending}
+                      />
                     </div>
                   </div>
 
@@ -745,12 +789,14 @@ export default function StrategyBank({
                             )}
 
                             {/* Subsections */}
-                            {Object.entries(sectionData.subsections).map(([subsectionKey, subsectionStrategies]) => (
+                            {Object.entries(sectionData.subsections)
+                              .sort(([a], [b]) => a.localeCompare(b))
+                              .map(([subsectionKey, subsectionStrategies]) => (
                               <div key={subsectionKey} className="space-y-2">
                                 <div className="flex items-center gap-2 pt-2">
                                   <ChevronRight className="h-4 w-4 text-gray-400" />
-                                  <h4 className="font-medium text-sm text-gray-700 uppercase tracking-wide">
-                                    {subsectionKey}
+                                  <h4 className="font-medium text-sm text-gray-700 capitalize">
+                                    {subsectionKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
                                   </h4>
                                   <div className="h-px bg-gray-200 flex-1" />
                                   <Badge variant="outline" className="text-xs">

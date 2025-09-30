@@ -19,9 +19,9 @@ export interface IStorage {
 
   // Custom Strategy methods
   getCustomStrategies(): Promise<CustomStrategy[]>;
-  addCustomStrategy(strategy: { title: string; content: string }): Promise<CustomStrategy>;
+  addCustomStrategy(strategy: { title: string; content: string; section?: string; subsection?: string }): Promise<CustomStrategy>;
   removeCustomStrategy(id: string): Promise<boolean>;
-  updateCustomStrategy(id: string, updates: { title: string; content: string; section: string }): Promise<any>;
+  updateCustomStrategy(id: string, updates: { title: string; content: string; section: string; subsection?: string }): Promise<any>;
 
   // Client Strategy Configuration methods
   saveClientStrategyConfigs(userId: string, configs: ClientStrategyConfig[]): Promise<ClientStrategyConfig[]>;
@@ -45,6 +45,7 @@ export class MemStorage implements IStorage {
   // Cache for frequently accessed data
   private strategiesByCategory: Map<string, Strategy[]> = new Map();
   private strategiesBySection: Map<string, Strategy[]> = new Map();
+  private strategiesBySubsection: Map<string, Strategy[]> = new Map(); // Added cache for subsections
   private cacheInvalidated: boolean = true;
 
   constructor() {
@@ -237,6 +238,7 @@ export class MemStorage implements IStorage {
 
     this.strategiesByCategory.clear();
     this.strategiesBySection.clear();
+    this.strategiesBySubsection.clear(); // Clear subsection cache
 
     const allStrategies = Array.from(this.strategies.values());
 
@@ -258,6 +260,17 @@ export class MemStorage implements IStorage {
       }
     });
 
+    // Build subsection cache
+    allStrategies.forEach(strategy => {
+      if (strategy.subsection) {
+        if (!this.strategiesBySubsection.has(strategy.subsection)) {
+          this.strategiesBySubsection.set(strategy.subsection, []);
+        }
+        this.strategiesBySubsection.get(strategy.subsection)!.push(strategy);
+      }
+    });
+
+
     this.cacheInvalidated = false;
   }
 
@@ -269,6 +282,11 @@ export class MemStorage implements IStorage {
   async getStrategiesBySection(section: string): Promise<Strategy[]> {
     this.rebuildCache();
     return this.strategiesBySection.get(section) || [];
+  }
+
+  async getStrategiesBySubsection(subsection: string): Promise<Strategy[]> {
+    this.rebuildCache();
+    return this.strategiesBySubsection.get(subsection) || [];
   }
 
   async exportStrategies(): Promise<Strategy[]> {
@@ -307,6 +325,9 @@ export class MemStorage implements IStorage {
       isSelected: false
     };
     this.customStrategies.set(id, customStrategy);
+    // Add to strategies map as well to ensure it's cached and sortable
+    this.strategies.set(id, { ...customStrategy, category: 'Custom', description: '', isCustom: true });
+    this.cacheInvalidated = true;
     return customStrategy;
   }
 
@@ -323,12 +344,31 @@ export class MemStorage implements IStorage {
       strategy.subsection = updates.subsection;
     }
 
+    // Update in the main strategies map as well
+    const existingStrategyInMainMap = this.strategies.get(id);
+    if (existingStrategyInMainMap) {
+      this.strategies.set(id, {
+        ...existingStrategyInMainMap,
+        title: updates.title,
+        content: updates.content,
+        section: updates.section,
+        subsection: updates.subsection
+      });
+      this.cacheInvalidated = true;
+    }
+
     await this.save(); // Assuming save persists changes, though MemStorage doesn't need it.
     return strategy;
   }
 
   async removeCustomStrategy(id: string): Promise<boolean> {
-    return this.customStrategies.delete(id);
+    // Remove from both customStrategies and strategies maps
+    const deletedFromCustom = this.customStrategies.delete(id);
+    const deletedFromStrategies = this.strategies.delete(id);
+    if (deletedFromCustom || deletedFromStrategies) {
+      this.cacheInvalidated = true;
+    }
+    return deletedFromCustom;
   }
 
   private initializeDefaultStrategies() {

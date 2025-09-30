@@ -405,20 +405,20 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Add custom strategy (no authentication)
   app.post('/api/custom-strategies', async (req, res) => { // Removed authenticateToken
     try {
-      const { title, content, section } = req.body;
-      // Removed userId extraction
-      const userId = 'anonymous'; // Assigning a default anonymous user ID
+      const { title, content, section, subsection } = req.body;
 
       if (!title || !content || !section) {
         return res.status(400).json({ error: 'Title, content, and section are required' });
       }
 
-      const addedCustomStrategy = await (storage as any).addCustomStrategy({
+      // Assuming addCustomStrategy can handle 'subsection'
+      const customStrategy = await (storage as any).addCustomStrategy({
         title,
         content,
-        section
+        section,
+        subsection
       }, userId); // userId is passed here, ensure storage.addCustomStrategy can handle 'anonymous' or modify if needed
-      res.json(addedCustomStrategy);
+      res.json(customStrategy);
     } catch (error) {
       console.error('Error adding custom strategy:', error);
       res.status(500).json({ error: 'Failed to add custom strategy' });
@@ -428,17 +428,19 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Update custom strategy (no authentication)
   app.put('/api/custom-strategies/:id', async (req, res) => { // Removed authenticateToken
     try {
-      const { title, content, section } = req.body;
+      const { id } = req.params;
+      const { title, content, section, subsection } = req.body;
 
       if (!title || !content || !section) {
         return res.status(400).json({ error: 'Title, content, and section are required' });
       }
 
-      // Assuming storage.updateCustomStrategy does not require userId or can handle 'anonymous'
-      const updatedStrategy = await (storage as any).updateCustomStrategy(req.params.id, {
+      // Assuming storage.updateCustomStrategy can handle 'subsection'
+      const updatedStrategy = await (storage as any).updateCustomStrategy(id, {
         title,
         content,
-        section
+        section,
+        subsection
       });
 
       if (!updatedStrategy) {
@@ -526,31 +528,98 @@ class ReportGenerator {
         if (!strategiesBySection[strategy.section]) {
           strategiesBySection[strategy.section] = [];
         }
-        strategiesBySection[strategy.section].push(strategy);
+        // Check for subsection and group accordingly
+        if (strategy.subsection) {
+          const subsectionKey = `${strategy.section}-${strategy.subsection}`;
+          if (!strategiesBySection[subsectionKey]) {
+            strategiesBySection[subsectionKey] = [];
+          }
+          strategiesBySection[subsectionKey].push(strategy);
+        } else {
+          strategiesBySection[strategy.section].push(strategy);
+        }
       }
     });
 
-    return strategiesBySection;
+    // Ensure subsections are sorted within their sections
+    const sortedStrategiesBySection: Record<string, any[]> = {};
+    Object.keys(strategiesBySection).forEach(sectionKey => {
+      const sectionStrategies = strategiesBySection[sectionKey];
+      sectionStrategies.sort((a, b) => {
+        // Prioritize sorting by subsection if it exists, then by title
+        if (a.subsection && b.subsection) {
+          if (a.subsection < b.subsection) return -1;
+          if (a.subsection > b.subsection) return 1;
+        } else if (a.subsection) {
+          return -1; // a comes first if it has a subsection and b doesn't
+        } else if (b.subsection) {
+          return 1; // b comes first if it has a subsection and a doesn't
+        }
+        // If subsections are the same or non-existent, sort by title
+        if (a.title < b.title) return -1;
+        if (a.title > b.title) return 1;
+        return 0;
+      });
+      sortedStrategiesBySection[sectionKey] = sectionStrategies;
+    });
+
+    return sortedStrategiesBySection;
   }
 
+
   private static buildReportContent(strategiesBySection: Record<string, any[]>): string {
-    return this.SECTION_ORDER
-      .map(sectionKey => {
-        const sectionTitle = this.SECTION_MAPPINGS[sectionKey];
-        const sectionStrategies = strategiesBySection[sectionKey] || [];
+    let reportContent = '';
+    const processedSections = new Set<string>();
 
-        let sectionContent = sectionTitle + '\n';
+    this.SECTION_ORDER.forEach(sectionKey => {
+      const sectionTitle = this.SECTION_MAPPINGS[sectionKey];
+      if (!sectionTitle) return;
 
-        if (sectionStrategies.length > 0) {
-          sectionContent += sectionStrategies
-            .map(strategy => '\n' + strategy.content + '\n')
-            .join('');
+      let strategiesInSection: any[] = [];
+      let subsectionsInOrder: string[] = [];
+
+      // Collect all strategies belonging to this main section, including those with subsections
+      Object.keys(strategiesBySection).forEach(key => {
+        if (key.startsWith(sectionKey)) {
+          strategiesBySection[key].forEach((strategy: any) => {
+            // Ensure we only add strategies that belong to the current main section
+            if (strategy.section === sectionKey) {
+              strategiesInSection.push(strategy);
+              if (strategy.subsection && !subsectionsInOrder.includes(strategy.subsection)) {
+                subsectionsInOrder.push(strategy.subsection);
+              }
+            }
+          });
         }
+      });
 
-        return sectionContent + '\n';
-      })
-      .join('')
-      .trim();
+      // Sort subsections alphabetically
+      subsectionsInOrder.sort();
+
+      if (strategiesInSection.length > 0 && !processedSections.has(sectionKey)) {
+        reportContent += `\n${sectionTitle}\n`;
+        processedSections.add(sectionKey);
+
+        // Add subsections as headers if they exist and are sorted
+        subsectionsInOrder.forEach(subsection => {
+          reportContent += `\n  ${subsection}\n`; // Indented subsection title
+          strategiesInSection
+            .filter(strategy => strategy.subsection === subsection)
+            .forEach(strategy => {
+              reportContent += `\n${strategy.content}\n`;
+            });
+        });
+
+        // Add strategies that do not have a subsection under the main section title
+        strategiesInSection
+          .filter(strategy => !strategy.subsection)
+          .forEach(strategy => {
+            reportContent += `\n${strategy.content}\n`;
+          });
+      }
+    });
+
+    return reportContent.trim();
   }
 }
 
