@@ -100,6 +100,7 @@ export default function StrategyBank({
     subsection?: string;
   }>({ title: '', content: '', section: '', subsection: '' });
   const [expandedSections, setExpandedSections] = useState<string[]>([]);
+  const [expandedSubsections, setExpandedSubsections] = useState<string[]>([]);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -305,10 +306,26 @@ export default function StrategyBank({
     if (expandedSections.length === allSections.length) {
       // Collapse all
       setExpandedSections([]);
+      setExpandedSubsections([]);
     } else {
-      // Expand all
+      // Expand all sections and subsections
       setExpandedSections(allSections);
+      const allSubsections: string[] = [];
+      Object.values(organizedStrategies).forEach(sectionData => {
+        Object.keys(sectionData.subsections).forEach(subsectionKey => {
+          allSubsections.push(subsectionKey);
+        });
+      });
+      setExpandedSubsections(allSubsections);
     }
+  };
+
+  const toggleSubsection = (subsectionKey: string) => {
+    setExpandedSubsections(prev => 
+      prev.includes(subsectionKey) 
+        ? prev.filter(key => key !== subsectionKey)
+        : [...prev, subsectionKey]
+    );
   };
 
   const addCustomStrategy = () => {
@@ -821,32 +838,54 @@ export default function StrategyBank({
                             {/* Subsections */}
                             {Object.entries(sectionData.subsections)
                               .sort(([a], [b]) => a.localeCompare(b))
-                              .map(([subsectionKey, subsectionStrategies]) => (
-                              <div key={subsectionKey} className="space-y-2">
-                                <div className="flex items-center gap-2 pt-2">
-                                  <ChevronRight className="h-4 w-4 text-gray-400" />
-                                  <h4 className="font-medium text-sm text-gray-700 capitalize">
-                                    {subsectionKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
-                                  </h4>
-                                  <div className="h-px bg-gray-200 flex-1" />
-                                  <Badge variant="outline" className="text-xs">
-                                    {subsectionStrategies.length}
-                                  </Badge>
-                                </div>
-                                <div className="ml-6 space-y-2">
-                                  {subsectionStrategies.map((strategy) => {
-                                    const isBuiltIn = strategies.some(s => s.id === strategy.id);
-                                    return (
-                                      <StrategyCard
-                                        key={strategy.id}
-                                        strategy={strategy}
-                                        isBuiltIn={isBuiltIn}
-                                      />
-                                    );
-                                  })}
-                                </div>
-                              </div>
-                            ))}
+                              .map(([subsectionKey, subsectionStrategies]) => {
+                                const isSubsectionExpanded = expandedSubsections.includes(subsectionKey);
+                                const selectedInSubsection = subsectionStrategies.filter(strategy => selectedStrategies.includes(strategy.id)).length;
+                                
+                                return (
+                                  <div key={subsectionKey} className="space-y-2">
+                                    <button
+                                      onClick={() => toggleSubsection(subsectionKey)}
+                                      className="w-full flex items-center gap-2 pt-2 hover:bg-gray-50 rounded-md p-2 transition-colors duration-200 group"
+                                    >
+                                      <ChevronRight className={`h-4 w-4 text-gray-400 transition-transform duration-200 ${
+                                        isSubsectionExpanded ? 'rotate-90' : ''
+                                      }`} />
+                                      <h4 className="font-medium text-sm text-gray-700 capitalize">
+                                        {subsectionKey.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())}
+                                      </h4>
+                                      <div className="h-px bg-gray-200 flex-1" />
+                                      <div className="flex items-center gap-2">
+                                        {selectedInSubsection > 0 && (
+                                          <Badge variant="secondary" className="bg-blue-100 text-blue-700 text-xs">
+                                            {selectedInSubsection} selected
+                                          </Badge>
+                                        )}
+                                        <Badge variant="outline" className="text-xs">
+                                          {subsectionStrategies.length} total
+                                        </Badge>
+                                      </div>
+                                    </button>
+                                    
+                                    <div className={`overflow-hidden transition-all duration-300 ease-out ${
+                                      isSubsectionExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
+                                    }`}>
+                                      <div className="ml-6 space-y-2 pt-1">
+                                        {subsectionStrategies.map((strategy) => {
+                                          const isBuiltIn = strategies.some(s => s.id === strategy.id);
+                                          return (
+                                            <StrategyCard
+                                              key={strategy.id}
+                                              strategy={strategy}
+                                              isBuiltIn={isBuiltIn}
+                                            />
+                                          );
+                                        })}
+                                      </div>
+                                    </div>
+                                  </div>
+                                );
+                              })}
                           </div>
                         </AccordionContent>
                       </AccordionItem>
