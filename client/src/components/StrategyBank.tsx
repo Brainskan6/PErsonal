@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -7,57 +8,14 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Trash2, Search, Edit, Check, X, Save, Pen } from "lucide-react";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Plus, Trash2, Search, Edit, Check, X, Save, Pen, ChevronRight } from "lucide-react";
 import { Checkbox } from "@/components/ui/checkbox";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import type { Strategy } from "@shared/schema";
-
-// Placeholder for the custom hook
-// In a real scenario, this hook would be defined in its own file (e.g., useFilteredStrategies.ts)
-// For demonstration, it's included here.
-const useFilteredStrategies = ({
-  strategies,
-  customStrategies,
-  searchQuery,
-  selectedSection
-}: {
-  strategies: Strategy[];
-  customStrategies: CustomStrategy[];
-  searchQuery: string;
-  selectedSection: string;
-}) => {
-  const filteredBuiltIn = useMemo(() => {
-    return strategies?.filter(strategy => {
-      const matchesSearch = !searchQuery ||
-        strategy.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (strategy.description && strategy.description.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (strategy.content && strategy.content.toLowerCase().includes(searchQuery.toLowerCase()));
-
-      const matchesSection = selectedSection === 'all' || strategy.section === selectedSection;
-
-      return matchesSearch && matchesSection;
-    }) || [];
-  }, [strategies, searchQuery, selectedSection]);
-
-  const filteredCustom = useMemo(() => {
-    return customStrategies?.filter(strategy => {
-      const matchesSearch = !searchQuery ||
-        strategy.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (strategy.content && strategy.content.toLowerCase().includes(searchQuery.toLowerCase()));
-
-      const matchesSection = selectedSection === 'all' || strategy.section === selectedSection;
-
-      return matchesSearch && matchesSection;
-    }) || [];
-  }, [customStrategies, searchQuery, selectedSection]);
-
-  return { filteredBuiltInStrategies: filteredBuiltIn, filteredCustomStrategies: filteredCustom };
-};
-
 
 interface StrategyBankProps {
   strategies: Strategy[];
@@ -66,7 +24,7 @@ interface StrategyBankProps {
   onStrategyToggle: (strategyId: string) => void;
   onSelectionChange: (selectedIds: string[]) => void;
   onStrategyConfigChange?: (strategyId: string, config: Partial<Strategy>) => void;
-  selectionMode?: 'multiple' | 'single'; // New prop for selection type
+  selectionMode?: 'multiple' | 'single';
 }
 
 interface CustomStrategy {
@@ -97,6 +55,28 @@ const getSectionDisplayName = (section: string) => {
   return displayNames[section] || section;
 };
 
+const getSectionIcon = (section: string) => {
+  const icons: Record<string, string> = {
+    recommendations: "💡",
+    buildNetWorth: "💰",
+    implementingTaxStrategies: "📊",
+    protectingWhatMatters: "🛡️",
+    leavingALegacy: "🎯"
+  };
+  return icons[section] || "📋";
+};
+
+const getSectionColor = (section: string) => {
+  const colors: Record<string, string> = {
+    recommendations: "bg-yellow-50 border-yellow-200 text-yellow-800",
+    buildNetWorth: "bg-green-50 border-green-200 text-green-800",
+    implementingTaxStrategies: "bg-blue-50 border-blue-200 text-blue-800",
+    protectingWhatMatters: "bg-purple-50 border-purple-200 text-purple-800",
+    leavingALegacy: "bg-indigo-50 border-indigo-200 text-indigo-800"
+  };
+  return colors[section] || "bg-gray-50 border-gray-200 text-gray-800";
+};
+
 export default function StrategyBank({
   strategies = [],
   customStrategies: propCustomStrategies = [],
@@ -119,10 +99,11 @@ export default function StrategyBank({
     section: string;
     subsection?: string;
   }>({ title: '', content: '', section: '', subsection: '' });
+  const [expandedSections, setExpandedSections] = useState<string[]>([]);
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Fetch custom strategies from backend (fallback to prop if query fails)
+  // Fetch custom strategies from backend
   const { data: fetchedCustomStrategies = [], isLoading, error } = useQuery<CustomStrategy[]>({
     queryKey: ['/api/custom-strategies'],
     queryFn: async () => {
@@ -145,11 +126,10 @@ export default function StrategyBank({
     retryDelay: 1000,
   });
 
-  // Add/Edit strategy mutation (handles both built-in and custom)
+  // Add/Edit strategy mutation
   const addCustomStrategyMutation = useMutation({
     mutationFn: async (strategyData: { title: string; content: string; section: string; id?: string; isBuiltIn?: boolean }) => {
       if (strategyData.id && strategyData.isBuiltIn) {
-        // Update built-in strategy
         const response = await apiRequest(`/api/strategies/${strategyData.id}`, 'PUT', {
           title: strategyData.title,
           content: strategyData.content,
@@ -160,7 +140,6 @@ export default function StrategyBank({
         }
         return await response.json();
       } else if (strategyData.id && customStrategies.some(s => s.id === strategyData.id)) {
-        // Update existing custom strategy
         const response = await apiRequest(`/api/custom-strategies/${strategyData.id}`, 'PUT', {
           title: strategyData.title,
           content: strategyData.content,
@@ -171,7 +150,6 @@ export default function StrategyBank({
         }
         return await response.json();
       } else {
-        // Create new custom strategy
         const response = await apiRequest('/api/custom-strategies', 'POST', {
           title: strategyData.title,
           content: strategyData.content,
@@ -184,20 +162,16 @@ export default function StrategyBank({
       }
     },
     onSuccess: (strategy, variables) => {
-      // Invalidate appropriate queries based on strategy type
       if (variables.isBuiltIn) {
         queryClient.invalidateQueries({ queryKey: ['/api/strategies'] });
       } else {
         queryClient.invalidateQueries({ queryKey: ['/api/custom-strategies'] });
       }
 
-      // Reset form states
       setNewStrategyTitle("");
       setNewStrategyContent("");
       setNewStrategySection("");
       setShowAddForm(false);
-
-      // Always reset edit state when mutation succeeds
       setEditingStrategyId(null);
       setEditFormData({ title: '', content: '', section: '' });
 
@@ -229,7 +203,6 @@ export default function StrategyBank({
     onSuccess: (_, strategyId) => {
       queryClient.invalidateQueries({ queryKey: ['/api/custom-strategies'] });
 
-      // Remove from selected if it was selected
       if (selectedStrategies.includes(strategyId)) {
         const updatedSelected = selectedStrategies.filter(id => id !== strategyId);
         onSelectionChange(updatedSelected);
@@ -250,6 +223,64 @@ export default function StrategyBank({
     },
   });
 
+  // Combine custom strategies avoiding duplicates
+  const customStrategies = [
+    ...fetchedCustomStrategies,
+    ...propCustomStrategies.filter(propStrategy => 
+      !fetchedCustomStrategies.some(fetchedStrategy => fetchedStrategy.id === propStrategy.id)
+    )
+  ];
+
+  // Organize strategies by section and subsection
+  const organizedStrategies = useMemo(() => {
+    const allStrategies = [...strategies, ...customStrategies];
+    
+    // Filter by search term
+    const filteredStrategies = allStrategies.filter(strategy => {
+      if (!searchTerm) return true;
+      const searchLower = searchTerm.toLowerCase();
+      return strategy.title.toLowerCase().includes(searchLower) ||
+             (strategy.content && strategy.content.toLowerCase().includes(searchLower)) ||
+             (strategy.description && strategy.description.toLowerCase().includes(searchLower));
+    });
+
+    // Group by section
+    const sections: Record<string, {
+      strategies: (Strategy | CustomStrategy)[];
+      subsections: Record<string, (Strategy | CustomStrategy)[]>;
+    }> = {};
+
+    filteredStrategies.forEach(strategy => {
+      const section = strategy.section || 'uncategorized';
+      
+      if (!sections[section]) {
+        sections[section] = { strategies: [], subsections: {} };
+      }
+
+      if (strategy.subsection) {
+        if (!sections[section].subsections[strategy.subsection]) {
+          sections[section].subsections[strategy.subsection] = [];
+        }
+        sections[section].subsections[strategy.subsection].push(strategy);
+      } else {
+        sections[section].strategies.push(strategy);
+      }
+    });
+
+    return sections;
+  }, [strategies, customStrategies, searchTerm]);
+
+  // Auto-expand sections that have search matches
+  useEffect(() => {
+    if (searchTerm) {
+      const sectionsWithMatches = Object.keys(organizedStrategies).filter(section => {
+        const sectionData = organizedStrategies[section];
+        return sectionData.strategies.length > 0 || Object.keys(sectionData.subsections).length > 0;
+      });
+      setExpandedSections(sectionsWithMatches);
+    }
+  }, [searchTerm, organizedStrategies]);
+
   const addCustomStrategy = () => {
     if (!newStrategyTitle.trim() || !newStrategyContent.trim() || !newStrategySection.trim()) {
       toast({
@@ -267,12 +298,10 @@ export default function StrategyBank({
     });
   };
 
-  const handleStrategyClick = (strategyId: string, isBuiltIn: boolean = false) => {
+  const handleStrategyClick = (strategyId: string) => {
     if (selectionMode === 'single') {
-      // For single selection, clear others and select this one
       onSelectionChange([strategyId]);
     } else {
-      // For multiple selection, toggle
       onStrategyToggle(strategyId);
     }
   };
@@ -294,7 +323,7 @@ export default function StrategyBank({
     setEditingStrategyId(strategy.id);
     setEditFormData({
       title: strategy.title,
-      content: strategy.content || "", // Use empty string if content is undefined
+      content: strategy.content || "",
       section: strategy.section || ""
     });
   };
@@ -313,7 +342,6 @@ export default function StrategyBank({
     const isBuiltInStrategy = strategies.some(s => s.id === strategyId);
 
     if (isCustomStrategy) {
-      // Update existing custom strategy
       addCustomStrategyMutation.mutate({
         id: strategyId,
         title: editFormData.title.trim(),
@@ -322,7 +350,6 @@ export default function StrategyBank({
         isBuiltIn: false
       });
     } else if (isBuiltInStrategy) {
-      // Update built-in strategy directly
       addCustomStrategyMutation.mutate({
         id: strategyId,
         title: editFormData.title.trim(),
@@ -343,22 +370,6 @@ export default function StrategyBank({
     removeCustomStrategyMutation.mutate(strategyId);
   };
 
-  // Combine fetched custom strategies with prop custom strategies, avoiding duplicates
-  const customStrategies = [
-    ...fetchedCustomStrategies,
-    ...propCustomStrategies.filter(propStrategy => 
-      !fetchedCustomStrategies.some(fetchedStrategy => fetchedStrategy.id === propStrategy.id)
-    )
-  ];
-
-  // Use custom hook for strategy filtering
-  const { filteredBuiltInStrategies, filteredCustomStrategies } = useFilteredStrategies({
-    strategies: strategies || [],
-    customStrategies: customStrategies || [],
-    searchQuery: searchTerm,
-    selectedSection: 'all' // Assuming 'all' is the default or a placeholder for now. Needs to be managed if a section filter is implemented.
-  });
-
   const clearAllStrategies = () => {
     onSelectionChange([]);
     toast({
@@ -373,174 +384,154 @@ export default function StrategyBank({
 
     return (
       <div className="space-y-0">
-        <Card
-          className={`transition-all duration-300 ease-out group relative ${
+        <div
+          className={`transition-all duration-200 ease-out group relative border rounded-lg p-3 ${
             isSelected
-              ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 shadow-md'
-              : 'hover:bg-gray-50 hover:shadow-sm'
+              ? 'bg-blue-50 border-blue-200 shadow-sm'
+              : 'hover:bg-gray-50 hover:shadow-sm border-gray-200'
           }`}
         >
-          <div className="p-5">
-            <div className="flex items-start gap-3">
-              {/* Selection Control */}
-              <div className="flex-shrink-0 mt-1">
-                {selectionMode === 'single' ? (
-                  <RadioGroupItem
-                    value={strategy.id}
-                    checked={isSelected}
-                    onChange={() => handleCheckboxChange(strategy.id, !isSelected)}
-                    className="cursor-pointer"
-                  />
-                ) : (
-                  <Checkbox
-                    checked={isSelected}
-                    onCheckedChange={(checked) => handleCheckboxChange(strategy.id, !!checked)}
-                    className="cursor-pointer"
-                  />
+          <div className="flex items-start gap-3">
+            {/* Selection Control */}
+            <div className="flex-shrink-0 mt-0.5">
+              {selectionMode === 'single' ? (
+                <RadioGroupItem
+                  value={strategy.id}
+                  checked={isSelected}
+                  onChange={() => handleCheckboxChange(strategy.id, !isSelected)}
+                  className="cursor-pointer"
+                />
+              ) : (
+                <Checkbox
+                  checked={isSelected}
+                  onCheckedChange={(checked) => handleCheckboxChange(strategy.id, !!checked)}
+                  className="cursor-pointer"
+                />
+              )}
+            </div>
+
+            {/* Strategy Content */}
+            <div 
+              className="flex-1 space-y-2 cursor-pointer"
+              onClick={() => handleStrategyClick(strategy.id)}
+            >
+              <div className="flex items-center gap-2">
+                <h4 className={`font-medium text-sm transition-colors ${
+                  isSelected ? 'text-blue-900' : 'text-gray-900'
+                }`}>
+                  {strategy.title}
+                </h4>
+                {isSelected && (
+                  <Check className="h-4 w-4 text-blue-600" />
                 )}
               </div>
+              
+              {strategy.subsection && (
+                <Badge variant="outline" className="text-xs bg-gray-50 text-gray-600 border-gray-300">
+                  {strategy.subsection}
+                </Badge>
+              )}
+              
+              <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">
+                {strategy.content}
+              </p>
+            </div>
 
-              {/* Strategy Content */}
-              <div 
-                className="flex-1 space-y-3 cursor-pointer"
-                onClick={() => handleStrategyClick(strategy.id, isBuiltIn)}
+            {/* Action Buttons */}
+            <div className="flex-shrink-0 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={(e) => handleEditClick(strategy, isBuiltIn, e)}
+                className="h-7 w-7 p-0 text-gray-400 hover:text-blue-600 hover:bg-blue-50"
+                disabled={addCustomStrategyMutation.isPending}
               >
-                {/* Display Section and Subsection Tags */}
-                <div className="flex items-center gap-2 flex-wrap">
-                  {strategy.section && (
-                    <Badge variant="outline" className="text-xs bg-gray-50 text-gray-700 border-gray-300">
-                      {getSectionDisplayName(strategy.section)}
-                    </Badge>
-                  )}
-                  {strategy.subsection && (
-                    <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-300">
-                      {strategy.subsection}
-                    </Badge>
-                  )}
-                </div>
-                <div className="flex items-center gap-3">
-                  <h4 className={`font-semibold text-sm transition-colors ${
-                    isSelected ? 'text-blue-900' : 'text-gray-900'
-                  }`}>
-                    {strategy.title}
-                  </h4>
-                  {isSelected && (
-                    <div className="flex items-center gap-1 text-blue-600">
-                      <Check className="h-4 w-4" />
-                      <span className="text-xs font-medium">Selected</span>
-                    </div>
-                  )}
-                </div>
-                <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">
-                  {strategy.content}
-                </p>
-              </div>
+                <Pen className="h-3 w-3" />
+              </Button>
 
-              {/* Action Buttons */}
-              <div className="flex-shrink-0 flex gap-1">
-                {/* Edit Button */}
+              {!isBuiltIn && (
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={(e) => handleEditClick(strategy, isBuiltIn, e)}
-                  className="h-8 w-8 p-0 text-gray-400 hover:text-blue-600 hover:bg-blue-50 opacity-0 group-hover:opacity-100 transition-all duration-200"
-                  disabled={addCustomStrategyMutation.isPending}
+                  onClick={(e) => removeCustomStrategy(strategy.id, e)}
+                  className="h-7 w-7 p-0 text-red-400 hover:text-red-600 hover:bg-red-50"
+                  disabled={removeCustomStrategyMutation.isPending}
                 >
-                  <Pen className="h-4 w-4" />
+                  <Trash2 className="h-3 w-3" />
                 </Button>
-
-                {/* Delete Button (Custom Strategies Only) */}
-                {!isBuiltIn && (
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={(e) => removeCustomStrategy(strategy.id, e)}
-                    className="h-8 w-8 p-0 text-red-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all duration-200"
-                    disabled={removeCustomStrategyMutation.isPending}
-                  >
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                )}
-              </div>
+              )}
             </div>
           </div>
-        </Card>
+        </div>
 
-        
-
-        {/* Inline editing form that expands seamlessly */}
+        {/* Inline editing form */}
         <div className={`overflow-hidden transition-all duration-300 ease-out ${
-          isEditing ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+          isEditing ? 'max-h-[500px] opacity-100 mt-2' : 'max-h-0 opacity-0'
         }`}>
-          <Card className="mt-2 border-blue-200 bg-blue-50/50">
-            <div className="p-3 space-y-3">
-              <div className="flex items-center justify-between">
-                <h5 className="font-medium text-sm text-blue-900">Edit Strategy</h5>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => saveEdit(strategy.id)}
-                    className="text-blue-700 hover:bg-blue-100"
-                  >
-                    <Save className="h-3 w-3 mr-1" />
-                    Save
-                  </Button>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    onClick={cancelEdit}
-                    className="border-blue-300 text-blue-700 hover:bg-blue-100"
-                  >
-                    <X className="h-3 w-3 mr-1" />
-                    Cancel
-                  </Button>
-                </div>
-              </div>
-
-              {/* Title editing */}
-              <div className="space-y-2">
-                <Label className="text-xs font-medium text-blue-900">Title</Label>
-                <Input
-                  placeholder="Strategy title"
-                  value={editFormData.title || ''}
-                  onChange={(e) => setEditFormData({ ...editFormData, title: e.target.value })}
-                  className="h-8 text-sm"
-                />
-              </div>
-
-              {/* Section selection */}
-              <div className="space-y-2">
-                <Label className="text-xs font-medium text-blue-900">Report Section</Label>
-                <Select
-                  value={editFormData.section || ""}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, section: value })}
+          <div className="border border-blue-200 bg-blue-50/50 rounded-lg p-3 space-y-3">
+            <div className="flex items-center justify-between">
+              <h5 className="font-medium text-sm text-blue-900">Edit Strategy</h5>
+              <div className="flex gap-2">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => saveEdit(strategy.id)}
+                  className="text-blue-700 hover:bg-blue-100 h-7 px-2"
                 >
-                  <SelectTrigger className="mt-1 h-8 text-sm">
-                    <SelectValue placeholder="Select report section" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {sectionOptions.map(section => (
-                      <SelectItem key={section} value={section}>
-                        {getSectionDisplayName(section)}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Content editing */}
-              <div className="space-y-2">
-                <Label className="text-xs font-medium text-blue-900">Content</Label>
-                <Textarea
-                  placeholder="Edit strategy content"
-                  value={editFormData.content || ''}
-                  onChange={(e) => setEditFormData({ ...editFormData, content: e.target.value })}
-                  className="min-h-[100px] text-sm"
-                />
+                  <Save className="h-3 w-3 mr-1" />
+                  Save
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={cancelEdit}
+                  className="border-blue-300 text-blue-700 hover:bg-blue-100 h-7 px-2"
+                >
+                  <X className="h-3 w-3 mr-1" />
+                  Cancel
+                </Button>
               </div>
             </div>
-          </Card>
+
+            <div className="space-y-2">
+              <Label className="text-xs font-medium text-blue-900">Title</Label>
+              <Input
+                placeholder="Strategy title"
+                value={editFormData.title || ''}
+                onChange={(e) => setEditFormData({ ...editFormData, title: e.target.value })}
+                className="h-8 text-sm"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs font-medium text-blue-900">Report Section</Label>
+              <Select
+                value={editFormData.section || ""}
+                onValueChange={(value) => setEditFormData({ ...editFormData, section: value })}
+              >
+                <SelectTrigger className="mt-1 h-8 text-sm">
+                  <SelectValue placeholder="Select report section" />
+                </SelectTrigger>
+                <SelectContent>
+                  {sectionOptions.map(section => (
+                    <SelectItem key={section} value={section}>
+                      {getSectionDisplayName(section)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+
+            <div className="space-y-2">
+              <Label className="text-xs font-medium text-blue-900">Content</Label>
+              <Textarea
+                placeholder="Edit strategy content"
+                value={editFormData.content || ''}
+                onChange={(e) => setEditFormData({ ...editFormData, content: e.target.value })}
+                className="min-h-[80px] text-sm"
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -556,21 +547,30 @@ export default function StrategyBank({
     );
   }
 
+  const totalStrategies = Object.values(organizedStrategies).reduce((acc, section) => {
+    return acc + section.strategies.length + Object.values(section.subsections).reduce((subAcc, subStrategies) => subAcc + subStrategies.length, 0);
+  }, 0);
+
   return (
     <Card className="h-full">
       <CardHeader>
         <div className="flex items-center justify-between">
           <CardTitle>Strategy Bank</CardTitle>
-          <Badge variant="secondary" className="px-3 py-1 bg-blue-100 text-blue-700 border-blue-300">
-            {selectedStrategies.length} selected
-          </Badge>
+          <div className="flex items-center gap-3">
+            <Badge variant="secondary" className="px-3 py-1 bg-blue-100 text-blue-700 border-blue-300">
+              {selectedStrategies.length} selected
+            </Badge>
+            <Badge variant="outline" className="px-3 py-1">
+              {totalStrategies} total
+            </Badge>
+          </div>
         </div>
 
         <div className="space-y-4">
           <div className="relative">
             <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
             <Input
-              placeholder="Search strategies..."
+              placeholder="Search strategies across all sections..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="pl-9 h-10"
@@ -586,7 +586,7 @@ export default function StrategyBank({
               disabled={addCustomStrategyMutation.isPending}
             >
               <Plus className="h-4 w-4 mr-2" />
-              Add Strategy
+              Add Custom Strategy
             </Button>
             <Button
               variant="outline"
@@ -595,25 +595,24 @@ export default function StrategyBank({
               disabled={selectedStrategies.length === 0}
               className="h-9 px-4"
             >
-              Clear All
+              Clear All ({selectedStrategies.length})
             </Button>
           </div>
         </div>
       </CardHeader>
 
       <CardContent>
-        <ScrollArea className="h-[500px] pr-4">
-          <div className="space-y-6">
-
+        <ScrollArea className="h-[600px] pr-4">
+          <div className="space-y-4">
             {/* Add Strategy Form */}
             <div className={`overflow-hidden transition-all duration-300 ease-out ${
               showAddForm ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
             }`}>
               <Card className="border-green-200 bg-green-50/50">
-                <div className="p-3 space-y-3">
-                  <h4 className="font-medium text-green-900">Add New Strategy</h4>
+                <div className="p-4 space-y-4">
+                  <h4 className="font-medium text-green-900">Add New Custom Strategy</h4>
 
-                  <div className="space-y-3">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <div>
                       <Label htmlFor="strategy-title" className="text-xs font-medium text-gray-700">Strategy Title</Label>
                       <Input
@@ -621,20 +620,7 @@ export default function StrategyBank({
                         placeholder="Enter strategy title..."
                         value={newStrategyTitle}
                         onChange={(e) => setNewStrategyTitle(e.target.value)}
-                        className="mt-1 h-8 text-sm"
-                        disabled={addCustomStrategyMutation.isPending}
-                      />
-                    </div>
-
-                    <div>
-                      <Label htmlFor="strategy-content" className="text-xs font-medium text-gray-700">Strategy Content</Label>
-                      <Textarea
-                        id="strategy-content"
-                        placeholder="Enter strategy content..."
-                        value={newStrategyContent}
-                        onChange={(e) => setNewStrategyContent(e.target.value)}
-                        rows={3}
-                        className="mt-1 text-sm resize-none"
+                        className="mt-1 h-9 text-sm"
                         disabled={addCustomStrategyMutation.isPending}
                       />
                     </div>
@@ -646,7 +632,7 @@ export default function StrategyBank({
                         onValueChange={setNewStrategySection}
                         disabled={addCustomStrategyMutation.isPending}
                       >
-                        <SelectTrigger className="mt-1 h-8 text-sm">
+                        <SelectTrigger className="mt-1 h-9 text-sm">
                           <SelectValue placeholder="Select report section" />
                         </SelectTrigger>
                         <SelectContent>
@@ -660,6 +646,19 @@ export default function StrategyBank({
                     </div>
                   </div>
 
+                  <div>
+                    <Label htmlFor="strategy-content" className="text-xs font-medium text-gray-700">Strategy Content</Label>
+                    <Textarea
+                      id="strategy-content"
+                      placeholder="Enter strategy content..."
+                      value={newStrategyContent}
+                      onChange={(e) => setNewStrategyContent(e.target.value)}
+                      rows={3}
+                      className="mt-1 text-sm resize-none"
+                      disabled={addCustomStrategyMutation.isPending}
+                    />
+                  </div>
+
                   <div className="flex gap-2">
                     <Button
                       onClick={addCustomStrategy}
@@ -671,7 +670,7 @@ export default function StrategyBank({
                     </Button>
                     <Button
                       variant="outline"
-                      onClick={cancelEdit}
+                      onClick={() => setShowAddForm(false)}
                       size="sm"
                       className="h-8 px-4"
                       disabled={addCustomStrategyMutation.isPending}
@@ -683,72 +682,141 @@ export default function StrategyBank({
               </Card>
             </div>
 
-            {/* Built-in Strategies */}
-            {filteredBuiltInStrategies.length > 0 && (
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="h-px bg-gradient-to-r from-green-200 to-transparent flex-1" />
-                  <h3 className="font-medium text-sm text-green-700 uppercase tracking-wide px-3 py-1 bg-green-100 rounded-full border border-green-200">
-                    Built-in Strategies
-                  </h3>
-                  <div className="h-px bg-gradient-to-l from-green-200 to-transparent flex-1" />
-                </div>
+            {/* Section-based Accordion */}
+            {Object.keys(organizedStrategies).length > 0 ? (
+              <Accordion
+                type="multiple"
+                value={expandedSections}
+                onValueChange={setExpandedSections}
+                className="space-y-3"
+              >
+                {Object.entries(organizedStrategies)
+                  .sort(([a], [b]) => {
+                    const order = ['recommendations', 'buildNetWorth', 'implementingTaxStrategies', 'protectingWhatMatters', 'leavingALegacy'];
+                    return order.indexOf(a) - order.indexOf(b);
+                  })
+                  .map(([sectionKey, sectionData]) => {
+                    const totalInSection = sectionData.strategies.length + 
+                      Object.values(sectionData.subsections).reduce((acc, subStrategies) => acc + subStrategies.length, 0);
+                    const selectedInSection = [...sectionData.strategies, ...Object.values(sectionData.subsections).flat()]
+                      .filter(strategy => selectedStrategies.includes(strategy.id)).length;
 
-                <div className="space-y-2 group">
-                  {filteredBuiltInStrategies.map((strategy) => (
-                    <StrategyCard
-                      key={strategy.id}
-                      strategy={strategy}
-                      isBuiltIn={true}
-                    />
-                  ))}
-                </div>
-              </div>
-            )}
+                    return (
+                      <AccordionItem key={sectionKey} value={sectionKey} className="border rounded-lg">
+                        <AccordionTrigger className={`px-4 py-3 hover:no-underline rounded-t-lg ${getSectionColor(sectionKey)}`}>
+                          <div className="flex items-center justify-between w-full mr-4">
+                            <div className="flex items-center gap-3">
+                              <span className="text-lg">{getSectionIcon(sectionKey)}</span>
+                              <div className="text-left">
+                                <h3 className="font-semibold text-base">
+                                  {getSectionDisplayName(sectionKey)}
+                                </h3>
+                                <p className="text-xs opacity-75 font-normal">
+                                  {totalInSection} strateg{totalInSection === 1 ? 'y' : 'ies'}
+                                  {selectedInSection > 0 && ` • ${selectedInSection} selected`}
+                                </p>
+                              </div>
+                            </div>
+                            <div className="flex items-center gap-2">
+                              {selectedInSection > 0 && (
+                                <Badge variant="secondary" className="bg-white/80 text-xs">
+                                  {selectedInSection}
+                                </Badge>
+                              )}
+                            </div>
+                          </div>
+                        </AccordionTrigger>
+                        <AccordionContent className="px-4 pb-4">
+                          <div className="space-y-4">
+                            {/* Direct section strategies */}
+                            {sectionData.strategies.length > 0 && (
+                              <div className="space-y-2">
+                                {sectionData.strategies.map((strategy) => {
+                                  const isBuiltIn = strategies.some(s => s.id === strategy.id);
+                                  return (
+                                    <StrategyCard
+                                      key={strategy.id}
+                                      strategy={strategy}
+                                      isBuiltIn={isBuiltIn}
+                                    />
+                                  );
+                                })}
+                              </div>
+                            )}
 
-            {/* Custom Strategies */}
-            {isLoading ? (
-              <div className="text-center py-8">
-                <p className="text-gray-500">Loading custom strategies...</p>
-              </div>
-            ) : filteredCustomStrategies.length > 0 ? (
-              <div className="space-y-3">
-                <div className="flex items-center gap-2">
-                  <div className="h-px bg-gradient-to-r from-blue-200 to-transparent flex-1" />
-                  <h3 className="font-medium text-sm text-blue-700 uppercase tracking-wide px-3 py-1 bg-blue-100 rounded-full border border-blue-200">
-                    Custom Strategies
-                  </h3>
-                  <div className="h-px bg-gradient-to-l from-blue-200 to-transparent flex-1" />
-                </div>
-
-                <div className="space-y-2 group">
-                  {filteredCustomStrategies.map((strategy) => (
-                    <StrategyCard
-                      key={strategy.id}
-                      strategy={strategy}
-                      isBuiltIn={false}
-                    />
-                  ))}
-                </div>
-              </div>
-            ) : filteredBuiltInStrategies.length === 0 && filteredCustomStrategies.length === 0 ? (
+                            {/* Subsections */}
+                            {Object.entries(sectionData.subsections).map(([subsectionKey, subsectionStrategies]) => (
+                              <div key={subsectionKey} className="space-y-2">
+                                <div className="flex items-center gap-2 pt-2">
+                                  <ChevronRight className="h-4 w-4 text-gray-400" />
+                                  <h4 className="font-medium text-sm text-gray-700 uppercase tracking-wide">
+                                    {subsectionKey}
+                                  </h4>
+                                  <div className="h-px bg-gray-200 flex-1" />
+                                  <Badge variant="outline" className="text-xs">
+                                    {subsectionStrategies.length}
+                                  </Badge>
+                                </div>
+                                <div className="ml-6 space-y-2">
+                                  {subsectionStrategies.map((strategy) => {
+                                    const isBuiltIn = strategies.some(s => s.id === strategy.id);
+                                    return (
+                                      <StrategyCard
+                                        key={strategy.id}
+                                        strategy={strategy}
+                                        isBuiltIn={isBuiltIn}
+                                      />
+                                    );
+                                  })}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </AccordionContent>
+                      </AccordionItem>
+                    );
+                  })}
+              </Accordion>
+            ) : (
               /* Empty State */
               <div className="text-center py-12">
                 <div className="mx-auto w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                  <Plus className="h-8 w-8 text-gray-400" />
+                  <Search className="h-8 w-8 text-gray-400" />
                 </div>
-                <p className="text-gray-500 mb-4">No strategies found.</p>
+                <p className="text-gray-500 mb-2">
+                  {searchTerm ? 'No strategies found matching your search.' : 'No strategies available.'}
+                </p>
+                {searchTerm && (
+                  <p className="text-sm text-gray-400 mb-4">
+                    Try adjusting your search terms or clear the search to see all strategies.
+                  </p>
+                )}
                 <Button
                   variant="outline"
-                  onClick={() => setShowAddForm(true)}
+                  onClick={() => {
+                    if (searchTerm) {
+                      setSearchTerm('');
+                    } else {
+                      setShowAddForm(true);
+                    }
+                  }}
                   className="text-blue-600 border-blue-200 hover:bg-blue-50"
                   disabled={addCustomStrategyMutation.isPending}
                 >
-                  <Plus className="h-4 w-4 mr-2" />
-                  Add Your First Strategy
+                  {searchTerm ? (
+                    <>
+                      <X className="h-4 w-4 mr-2" />
+                      Clear Search
+                    </>
+                  ) : (
+                    <>
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add Your First Strategy
+                    </>
+                  )}
                 </Button>
               </div>
-            ) : null}
+            )}
           </div>
         </ScrollArea>
       </CardContent>
