@@ -74,10 +74,12 @@ interface CustomStrategy {
   title: string;
   content: string;
   section?: string;
+  subsection?: string;
   isSelected: boolean;
 }
 
 const sectionOptions = [
+  "recommendations",
   "buildNetWorth",
   "implementingTaxStrategies",
   "protectingWhatMatters",
@@ -86,8 +88,9 @@ const sectionOptions = [
 
 const getSectionDisplayName = (section: string) => {
   const displayNames: Record<string, string> = {
-    buildNetWorth: "Build Net Worth",
-    implementingTaxStrategies: "Implementing Tax Efficient Strategies",
+    recommendations: "Recommendations",
+    buildNetWorth: "Building Net Worth",
+    implementingTaxStrategies: "Implementing Tax-Efficient Strategies",
     protectingWhatMatters: "Protecting What Matters",
     leavingALegacy: "Leaving a Legacy"
   };
@@ -106,6 +109,7 @@ export default function StrategyBank({
   const [newStrategyTitle, setNewStrategyTitle] = useState("");
   const [newStrategyContent, setNewStrategyContent] = useState("");
   const [newStrategySection, setNewStrategySection] = useState("");
+  const [newStrategySubsection, setNewStrategySubsection] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [showAddForm, setShowAddForm] = useState(false);
   const [editingStrategyId, setEditingStrategyId] = useState<string | null>(null);
@@ -113,7 +117,8 @@ export default function StrategyBank({
     title: string;
     content: string;
     section: string;
-  }>({ title: '', content: '', section: '' });
+    subsection?: string;
+  }>({ title: '', content: '', section: '', subsection: '' });
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
@@ -400,12 +405,19 @@ export default function StrategyBank({
                 className="flex-1 space-y-3 cursor-pointer"
                 onClick={() => handleStrategyClick(strategy.id, isBuiltIn)}
               >
-                {/* Display Section Tag */}
-                {strategy.section && (
-                  <Badge variant="outline" className="text-xs bg-gray-50 text-gray-700 border-gray-300">
-                    {getSectionDisplayName(strategy.section)}
-                  </Badge>
-                )}
+                {/* Display Section and Subsection Tags */}
+                <div className="flex items-center gap-2 flex-wrap">
+                  {strategy.section && (
+                    <Badge variant="outline" className="text-xs bg-gray-50 text-gray-700 border-gray-300">
+                      {getSectionDisplayName(strategy.section)}
+                    </Badge>
+                  )}
+                  {strategy.subsection && (
+                    <Badge variant="outline" className="text-xs bg-blue-50 text-blue-700 border-blue-300">
+                      {strategy.subsection}
+                    </Badge>
+                  )}
+                </div>
                 <div className="flex items-center gap-3">
                   <h4 className={`font-semibold text-sm transition-colors ${
                     isSelected ? 'text-blue-900' : 'text-gray-900'

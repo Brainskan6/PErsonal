@@ -498,13 +498,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
 // Report generation utilities
 class ReportGenerator {
   private static readonly SECTION_MAPPINGS: Record<string, string> = {
-    buildNetWorth: "BUILD NET WORTH",
-    implementingTaxStrategies: "IMPLEMENTING TAX EFFICIENT STRATEGIES",
+    recommendations: "RECOMMENDATIONS",
+    buildNetWorth: "BUILDING NET WORTH",
+    implementingTaxStrategies: "IMPLEMENTING TAX-EFFICIENT STRATEGIES",
     protectingWhatMatters: "PROTECTING WHAT MATTERS",
     leavingALegacy: "LEAVING A LEGACY"
   };
 
   private static readonly SECTION_ORDER = [
+    "recommendations",
     "buildNetWorth",
     "implementingTaxStrategies",
     "protectingWhatMatters",

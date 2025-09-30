@@ -182,6 +182,7 @@ export const strategySchema = z.object({
   description: z.string(),
   category: z.string(),
   section: z.string(), // Which report section this strategy belongs to
+  subsection: z.string().optional(), // Optional subsection for better organization
   content: z.string(), // Template content with placeholders like {{amount}}
   inputFields: z.array(strategyInputFieldSchema).default([]),
   isCustom: z.boolean().default(false), // For future manually added strategies
@@ -221,6 +222,7 @@ export const customStrategySchema = z.object({
   title: z.string(),
   content: z.string(),
   section: z.string().optional(),
+  subsection: z.string().optional(),
   isSelected: z.boolean().default(false),
 });
 
