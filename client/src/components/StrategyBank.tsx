@@ -77,6 +77,17 @@ const getSectionColor = (section: string) => {
   return colors[section] || "bg-gray-50 border-gray-200 text-gray-800";
 };
 
+const getSectionSubsections = (section: string) => {
+  const subsectionMapping: Record<string, string[]> = {
+    recommendations: ["General", "Emergency Fund", "Financial Priorities", "Investment Strategy"],
+    buildNetWorth: ["RRSP", "TFSA", "Non-Registered Investments", "Real Estate", "Business Investments", "Debt Management"],
+    implementingTaxStrategies: ["Tax Optimization", "Income Splitting", "Tax Credits", "Retirement Tax Planning", "Estate Tax Planning"],
+    protectingWhatMatters: ["Life Insurance", "Disability Insurance", "Critical Illness", "Property Insurance", "Legal Documents"],
+    leavingALegacy: ["Will and Estate Planning", "Beneficiary Designations", "Trust Planning", "Charitable Giving", "Succession Planning"]
+  };
+  return subsectionMapping[section] || [];
+};
+
 export default function StrategyBank({
   strategies = [],
   customStrategies: propCustomStrategies = [],
@@ -377,6 +388,27 @@ export default function StrategyBank({
     });
   };
 
+  // Reset subsection when section changes in edit form
+  const handleEditSectionChange = (newSection: string) => {
+    const availableSubsections = getSectionSubsections(newSection);
+    const currentSubsection = editFormData.subsection;
+    
+    setEditFormData({
+      ...editFormData,
+      section: newSection,
+      subsection: availableSubsections.includes(currentSubsection || "") ? currentSubsection : ""
+    });
+  };
+
+  // Reset subsection when section changes in add form
+  const handleAddSectionChange = (newSection: string) => {
+    setNewStrategySection(newSection);
+    const availableSubsections = getSectionSubsections(newSection);
+    if (!availableSubsections.includes(newStrategySubsection)) {
+      setNewStrategySubsection("");
+    }
+  };
+
   const saveEdit = (strategyId: string) => {
     if (!editFormData.title.trim() || !editFormData.content.trim() || !editFormData.section) {
       toast({
@@ -559,7 +591,7 @@ export default function StrategyBank({
                 <Label className="text-xs font-medium text-blue-900">Report Section</Label>
                 <Select
                   value={editFormData.section || ""}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, section: value })}
+                  onValueChange={handleEditSectionChange}
                 >
                   <SelectTrigger className="mt-1 h-8 text-sm">
                     <SelectValue placeholder="Select report section" />
@@ -576,12 +608,22 @@ export default function StrategyBank({
 
               <div className="space-y-2">
                 <Label className="text-xs font-medium text-blue-900">Subsection (Optional)</Label>
-                <Input
-                  placeholder="e.g., RRSP, TFSA, Insurance..."
-                  value={editFormData.subsection || ''}
-                  onChange={(e) => setEditFormData({ ...editFormData, subsection: e.target.value })}
-                  className="h-8 text-sm"
-                />
+                <Select
+                  value={editFormData.subsection || ""}
+                  onValueChange={(value) => setEditFormData({ ...editFormData, subsection: value === "none" ? "" : value })}
+                >
+                  <SelectTrigger className="h-8 text-sm">
+                    <SelectValue placeholder="Select subsection" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="none">No subsection</SelectItem>
+                    {getSectionSubsections(editFormData.section || "").map(subsection => (
+                      <SelectItem key={subsection} value={subsection}>
+                        {subsection}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 
@@ -701,7 +743,7 @@ export default function StrategyBank({
                       <Label htmlFor="strategy-section" className="text-xs font-medium text-gray-700">Report Section</Label>
                       <Select
                         value={newStrategySection}
-                        onValueChange={setNewStrategySection}
+                        onValueChange={handleAddSectionChange}
                         disabled={addCustomStrategyMutation.isPending}
                       >
                         <SelectTrigger className="mt-1 h-9 text-sm">
@@ -719,14 +761,23 @@ export default function StrategyBank({
 
                     <div>
                       <Label htmlFor="strategy-subsection" className="text-xs font-medium text-gray-700">Subsection (Optional)</Label>
-                      <Input
-                        id="strategy-subsection"
-                        placeholder="e.g., RRSP, TFSA, Insurance..."
+                      <Select
                         value={newStrategySubsection}
-                        onChange={(e) => setNewStrategySubsection(e.target.value)}
-                        className="mt-1 h-9 text-sm"
+                        onValueChange={(value) => setNewStrategySubsection(value === "none" ? "" : value)}
                         disabled={addCustomStrategyMutation.isPending}
-                      />
+                      >
+                        <SelectTrigger className="mt-1 h-9 text-sm">
+                          <SelectValue placeholder="Select subsection" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="none">No subsection</SelectItem>
+                          {getSectionSubsections(newStrategySection).map(subsection => (
+                            <SelectItem key={subsection} value={subsection}>
+                              {subsection}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
                     </div>
                   </div>
 
