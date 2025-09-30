@@ -81,23 +81,23 @@ const getSectionSubsections = (section: string) => {
   const subsectionMapping: Record<string, string[]> = {
     recommendations: ["General Recommendations"],
     buildNetWorth: [
-      "A. Planning for Retirement",
-      "B. Paying Down Debt", 
-      "C. Planning for Education",
-      "D. Planning for Business Owners",
-      "E. Planning for Large Purchase or Event"
+      "Planning for Retirement",
+      "Paying Down Debt", 
+      "Planning for Education",
+      "Planning for Business Owners",
+      "Planning for Large Purchase or Event"
     ],
     implementingTaxStrategies: [
-      "A. Optimise Cash Flow",
-      "B. Retirement Income Planning"
+      "Optimise Cash Flow",
+      "Retirement Income Planning"
     ],
     protectingWhatMatters: [
-      "A. Planning for Uncertainty",
-      "B. Insurance"
+      "Planning for Uncertainty",
+      "Insurance"
     ],
     leavingALegacy: [
-      "A. Donating to Charity",
-      "B. Passing on your Wealth"
+      "Donating to Charity",
+      "Passing on your Wealth"
     ]
   };
   return subsectionMapping[section] || [];
