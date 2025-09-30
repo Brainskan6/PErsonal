@@ -79,11 +79,26 @@ const getSectionColor = (section: string) => {
 
 const getSectionSubsections = (section: string) => {
   const subsectionMapping: Record<string, string[]> = {
-    recommendations: ["General", "Emergency Fund", "Financial Priorities", "Investment Strategy"],
-    buildNetWorth: ["RRSP", "TFSA", "Non-Registered Investments", "Real Estate", "Business Investments", "Debt Management"],
-    implementingTaxStrategies: ["Tax Optimization", "Income Splitting", "Tax Credits", "Retirement Tax Planning", "Estate Tax Planning"],
-    protectingWhatMatters: ["Life Insurance", "Disability Insurance", "Critical Illness", "Property Insurance", "Legal Documents"],
-    leavingALegacy: ["Will and Estate Planning", "Beneficiary Designations", "Trust Planning", "Charitable Giving", "Succession Planning"]
+    recommendations: ["General Recommendations"],
+    buildNetWorth: [
+      "A. Planning for Retirement",
+      "B. Paying Down Debt", 
+      "C. Planning for Education",
+      "D. Planning for Business Owners",
+      "E. Planning for Large Purchase or Event"
+    ],
+    implementingTaxStrategies: [
+      "A. Optimise Cash Flow",
+      "B. Retirement Income Planning"
+    ],
+    protectingWhatMatters: [
+      "A. Planning for Uncertainty",
+      "B. Insurance"
+    ],
+    leavingALegacy: [
+      "A. Donating to Charity",
+      "B. Passing on your Wealth"
+    ]
   };
   return subsectionMapping[section] || [];
 };
