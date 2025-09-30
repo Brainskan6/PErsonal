@@ -78,38 +78,18 @@ interface CustomStrategy {
 }
 
 const sectionOptions = [
-  "recommendations",
-  "buildingNetWorth",
-  "planningForRetirement",
-  "payingDownDebt",
-  "planningForEducation",
-  "planningForBusinessOwners",
-  "planningForLargePurchase",
+  "buildNetWorth",
   "implementingTaxStrategies",
-  "optimizeCashflow",
-  "retirementIncomePlanning",
-  "planningForUncertainty",
-  "insurance",
-  "donatingToCharity",
-  "passingOnWealth"
+  "protectingWhatMatters",
+  "leavingALegacy"
 ];
 
 const getSectionDisplayName = (section: string) => {
   const displayNames: Record<string, string> = {
-    recommendations: "Recommendations",
-    buildingNetWorth: "Building Net Worth",
-    planningForRetirement: "Planning for Retirement",
-    payingDownDebt: "Paying Down Debt",
-    planningForEducation: "Planning for Education",
-    planningForBusinessOwners: "Planning for Business Owners",
-    planningForLargePurchase: "Planning for Large Purchase or Event",
-    implementingTaxStrategies: "Implementing Tax-Efficient Strategies",
-    optimizeCashflow: "Optimize Cash Flow",
-    retirementIncomePlanning: "Retirement Income Planning",
-    planningForUncertainty: "Planning for Uncertainty",
-    insurance: "Insurance",
-    donatingToCharity: "Donating to Charity",
-    passingOnWealth: "Passing on Your Wealth"
+    buildNetWorth: "Build Net Worth",
+    implementingTaxStrategies: "Implementing Tax Efficient Strategies",
+    protectingWhatMatters: "Protecting What Matters",
+    leavingALegacy: "Leaving a Legacy"
   };
   return displayNames[section] || section;
 };

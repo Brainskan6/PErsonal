@@ -6,7 +6,7 @@ export interface IStorage {
   // User operations - REQUIRED for Replit Auth
   getUser(id: string): Promise<User | undefined>;
   upsertUser(user: UpsertUser): Promise<User>;
-  
+
   // Client data methods
   saveClientData(userId: string, data: InsertClientData): Promise<ClientData>;
   savePartialClientData(userId: string, data: Partial<ClientData>): Promise<Partial<ClientData>>;
@@ -18,27 +18,27 @@ export interface IStorage {
   addStrategy(strategy: Omit<Strategy, 'id'>): Promise<Strategy>;
 
   // Custom Strategy methods
-  getCustomStrategies(): Promise<CustomStrategy[]>; 
-  addCustomStrategy(strategy: { title: string; content: string }): Promise<CustomStrategy>; 
-  removeCustomStrategy(id: string): Promise<boolean>; 
-  updateCustomStrategy(id: string, updates: { title: string; content: string; section: string }): Promise<any>; 
+  getCustomStrategies(): Promise<CustomStrategy[]>;
+  addCustomStrategy(strategy: { title: string; content: string }): Promise<CustomStrategy>;
+  removeCustomStrategy(id: string): Promise<boolean>;
+  updateCustomStrategy(id: string, updates: { title: string; content: string; section: string }): Promise<any>;
 
   // Client Strategy Configuration methods
-  saveClientStrategyConfigs(userId: string, configs: ClientStrategyConfig[]): Promise<ClientStrategyConfig[]>; 
-  getClientStrategyConfigs(userId: string): Promise<ClientStrategyConfig[]>; 
+  saveClientStrategyConfigs(userId: string, configs: ClientStrategyConfig[]): Promise<ClientStrategyConfig[]>;
+  getClientStrategyConfigs(userId: string): Promise<ClientStrategyConfig[]>;
 
   // Report methods
-  saveReport(report: InsertReport): Promise<Report>; 
-  getReport(id: string): Promise<Report | undefined>; 
-  getReports(): Promise<Report[]>; 
+  saveReport(report: InsertReport): Promise<Report>;
+  getReport(id: string): Promise<Report | undefined>;
+  getReports(): Promise<Report[]>;
 }
 
 
 export class MemStorage implements IStorage {
-  private clientData: Map<string, ClientData>; 
-  private strategies: Map<string, Strategy>; 
-  private reports: Map<string, Report>; 
-  private clientStrategyConfigs: Map<string, ClientStrategyConfig[]>; 
+  private clientData: Map<string, ClientData>;
+  private strategies: Map<string, Strategy>;
+  private reports: Map<string, Report>;
+  private clientStrategyConfigs: Map<string, ClientStrategyConfig[]>;
   private customStrategies: Map<string, CustomStrategy>;
   private users: Map<string, User>;
 
@@ -66,7 +66,7 @@ export class MemStorage implements IStorage {
 
   async upsertUser(userData: UpsertUser): Promise<User> {
     const existingUser = this.users.get(userData.id!);
-    
+
     if (existingUser) {
       // Update existing user
       const updatedUser: User = {
@@ -336,6 +336,7 @@ export class MemStorage implements IStorage {
           title: "Emergency Fund Strategy",
           description: "Build and maintain 3-6 months of expenses in liquid savings",
           category: "Savings",
+          section: "buildNetWorth",
           content: "Establish an emergency fund equal to 3-6 months of living expenses in a high-yield savings account. This fund should be easily accessible and separate from other savings goals.",
           inputFields: [],
           isCustom: false
@@ -345,6 +346,7 @@ export class MemStorage implements IStorage {
           title: "Debt Reduction Plan",
           description: "Systematic approach to eliminate high-interest debt",
           category: "Debt Management",
+          section: "buildNetWorth",
           content: "Implement either debt avalanche (highest interest first) or debt snowball (smallest balance first) method to systematically eliminate debt while maintaining minimum payments on all accounts.",
           inputFields: [],
           isCustom: false
@@ -354,7 +356,8 @@ export class MemStorage implements IStorage {
           title: "401(k) Optimization",
           description: "Maximize employer matching and tax-advantaged retirement savings",
           category: "Retirement",
-          content: "Contribute enough to receive full employer match, then maximize annual contributions up to IRS limits. Consider Roth vs traditional contributions based on current and expected future tax brackets.",
+          section: "buildNetWorth",
+          content: "Contribute at least enough to your 401(k) to receive full employer match, then maximize annual contributions up to IRS limits. Consider Roth vs traditional contributions based on current and expected future tax brackets.",
           inputFields: [],
           isCustom: false
         },
@@ -363,6 +366,7 @@ export class MemStorage implements IStorage {
           title: "Diversified Investment Portfolio",
           description: "Build age-appropriate asset allocation with low-cost index funds",
           category: "Investing",
+          section: "buildNetWorth",
           content: "Implement a diversified portfolio using low-cost index funds with asset allocation based on age, risk tolerance, and time horizon. Consider target-date funds for simplicity or build custom allocation.",
           inputFields: [],
           isCustom: false
@@ -372,6 +376,7 @@ export class MemStorage implements IStorage {
           title: "Tax Optimization Strategy",
           description: "Minimize tax burden through strategic planning and deductions",
           category: "Tax Planning",
+          section: "implementingTaxStrategies",
           content: "Maximize tax-advantaged accounts (401k, IRA, HSA), consider tax-loss harvesting, and optimize timing of income and deductions. Review tax strategy annually and adjust as needed.",
           inputFields: [],
           isCustom: false
@@ -380,7 +385,8 @@ export class MemStorage implements IStorage {
           id: "insurance-review",
           title: "Insurance Coverage Review",
           description: "Ensure adequate protection for income, health, and assets",
-          category: "Protection",
+          category: "Insurance",
+          section: "protectingWhatMatters",
           content: "Review life insurance needs (10x annual income rule), disability insurance (60-70% of income), health insurance adequacy, and consider umbrella policy for asset protection.",
           inputFields: [],
           isCustom: false
@@ -390,6 +396,7 @@ export class MemStorage implements IStorage {
           title: "Home Purchase Strategy",
           description: "Plan for home ownership including down payment and ongoing costs",
           category: "Real Estate",
+          section: "buildNetWorth",
           content: "Save for 10-20% down payment, maintain good credit score (740+), budget for closing costs and ongoing maintenance. Consider rent vs buy analysis based on local market conditions.",
           inputFields: [],
           isCustom: false
@@ -399,6 +406,7 @@ export class MemStorage implements IStorage {
           title: "Education Funding Plan",
           description: "Save for children's education using tax-advantaged accounts",
           category: "Education",
+          section: "leavingALegacy",
           content: "Utilize 529 education savings plans for tax-free growth and withdrawals for qualified education expenses. Consider age-based investment options and state tax benefits.",
           inputFields: [],
           isCustom: false
@@ -408,6 +416,7 @@ export class MemStorage implements IStorage {
           title: "Tax Efficiency Assessment",
           description: "Evaluate non-registered account tax efficiency",
           category: "Tax Planning",
+          section: "implementingTaxStrategies",
           content: "Review your non-registered investment accounts for tax optimization opportunities.",
           inputFields: [
             {
@@ -428,6 +437,7 @@ export class MemStorage implements IStorage {
           title: "Estate Executor Review",
           description: "Assess executor capability for estate management",
           category: "Estate Planning",
+          section: "leavingALegacy",
           content: "Evaluate whether your chosen executor can effectively handle your estate administration.",
           inputFields: [
             {
@@ -448,6 +458,7 @@ export class MemStorage implements IStorage {
           title: "Testamentary Trust Analysis",
           description: "Determine if a testamentary trust is appropriate",
           category: "Estate Planning",
+          section: "leavingALegacy",
           content: "Assess the relevance of establishing a testamentary trust for your beneficiaries.",
           inputFields: [
             {
@@ -462,6 +473,76 @@ export class MemStorage implements IStorage {
             }
           ],
           isCustom: true
+        },
+        {
+          id: "tax-loss-harvesting",
+          title: "Tax Loss Harvesting",
+          description: "Offset capital gains with investment losses to reduce tax liability",
+          category: "Tax Planning",
+          section: "implementingTaxStrategies",
+          content: "Systematically realize investment losses to offset capital gains and reduce overall tax burden. Be mindful of wash sale rules and maintain portfolio diversification.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "life-insurance",
+          title: "Life Insurance Protection",
+          description: "Ensure adequate life insurance coverage for dependents",
+          category: "Insurance",
+          section: "protectingWhatMatters",
+          content: "Evaluate life insurance needs based on income replacement, debt coverage, and family obligations. Consider term life insurance for temporary needs and permanent insurance for estate planning.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "disability-insurance",
+          title: "Disability Insurance",
+          description: "Protect income against disability with proper coverage",
+          category: "Insurance",
+          section: "protectingWhatMatters",
+          content: "Secure disability insurance to protect against loss of income due to illness or injury. Consider both short-term and long-term disability coverage through employer or individual policies.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "estate-planning",
+          title: "Estate Planning Basics",
+          description: "Create essential estate planning documents",
+          category: "Estate Planning",
+          section: "leavingALegacy",
+          content: "Establish a will, power of attorney, and healthcare directives. Consider trusts for larger estates and review beneficiaries on all accounts annually.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "charitable-giving",
+          title: "Charitable Giving Strategy",
+          description: "Optimize charitable donations for tax efficiency",
+          category: "Tax Planning",
+          section: "leavingALegacy",
+          content: "Consider donor-advised funds, charitable remainder trusts, or direct giving strategies to maximize both charitable impact and tax benefits.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "investment-diversification",
+          title: "Investment Diversification",
+          description: "Build a well-diversified investment portfolio",
+          category: "Investing",
+          section: "buildNetWorth",
+          content: "Create a diversified portfolio across asset classes, geographic regions, and investment styles to reduce risk while maintaining growth potential.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "roth-conversion",
+          title: "Roth IRA Conversion Strategy",
+          description: "Convert traditional IRA funds to Roth for tax-free growth",
+          category: "Tax Planning",
+          section: "implementingTaxStrategies",
+          content: "Consider converting traditional IRA or 401(k) funds to Roth accounts during lower-income years to benefit from tax-free growth and withdrawals in retirement.",
+          inputFields: [],
+          isCustom: false
         }
       ];
 

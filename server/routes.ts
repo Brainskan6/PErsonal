@@ -498,28 +498,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
 // Report generation utilities
 class ReportGenerator {
   private static readonly SECTION_MAPPINGS: Record<string, string> = {
-    recommendations: "RECOMMENDATIONS",
-    buildingNetWorth: "BUILDING NET WORTH",
-    planningForRetirement: "PLANNING FOR RETIREMENT",
-    payingDownDebt: "PAYING DOWN DEBT",
-    planningForEducation: "PLANNING FOR EDUCATION",
-    planningForBusinessOwners: "PLANNING FOR BUSINESS OWNERS",
-    planningForLargePurchase: "PLANNING FOR LARGE PURCHASE OR EVENT",
-    implementingTaxStrategies: "IMPLEMENTING TAX-EFFICIENT STRATEGIES",
-    optimizeCashflow: "OPTIMIZE CASH FLOW",
-    retirementIncomePlanning: "RETIREMENT INCOME PLANNING",
-    planningForUncertainty: "PLANNING FOR UNCERTAINTY",
-    insurance: "INSURANCE",
-    donatingToCharity: "DONATING TO CHARITY",
-    passingOnWealth: "PASSING ON YOUR WEALTH"
+    buildNetWorth: "BUILD NET WORTH",
+    implementingTaxStrategies: "IMPLEMENTING TAX EFFICIENT STRATEGIES",
+    protectingWhatMatters: "PROTECTING WHAT MATTERS",
+    leavingALegacy: "LEAVING A LEGACY"
   };
 
   private static readonly SECTION_ORDER = [
-    'recommendations', 'buildingNetWorth', 'planningForRetirement',
-    'payingDownDebt', 'planningForEducation', 'planningForBusinessOwners',
-    'planningForLargePurchase', 'implementingTaxStrategies', 'optimizeCashflow',
-    'retirementIncomePlanning', 'planningForUncertainty', 'insurance',
-    'donatingToCharity', 'passingOnWealth'
+    "buildNetWorth",
+    "implementingTaxStrategies",
+    "protectingWhatMatters",
+    "leavingALegacy"
   ];
 
   static generateReport(clientData: any, strategies: any[], customStrategies: any[] = []): string {
