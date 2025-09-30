@@ -24,6 +24,7 @@ export default function StrategyBankExample() {
         selectedStrategies={selectedStrategies}
         onStrategyToggle={handleStrategyToggle}
         onSelectionChange={handleSelectionChange}
+        selectionMode="multiple"
       />
     </div>
   );

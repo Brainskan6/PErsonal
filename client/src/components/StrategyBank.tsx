@@ -9,7 +9,9 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Plus, Trash2, Search, Edit, Check, X, Save } from "lucide-react";
+import { Plus, Trash2, Search, Edit, Check, X, Save, Pen } from "lucide-react";
+import { Checkbox } from "@/components/ui/checkbox";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useToast } from "@/hooks/use-toast";
 import { apiRequest } from "@/lib/queryClient";
 import type { Strategy } from "@shared/schema";
@@ -64,6 +66,7 @@ interface StrategyBankProps {
   onStrategyToggle: (strategyId: string) => void;
   onSelectionChange: (selectedIds: string[]) => void;
   onStrategyConfigChange?: (strategyId: string, config: Partial<Strategy>) => void;
+  selectionMode?: 'multiple' | 'single'; // New prop for selection type
 }
 
 interface CustomStrategy {
@@ -117,7 +120,8 @@ export default function StrategyBank({
   selectedStrategies,
   onStrategyToggle,
   onSelectionChange,
-  onStrategyConfigChange
+  onStrategyConfigChange,
+  selectionMode = 'multiple'
 }: StrategyBankProps) {
   const [newStrategyTitle, setNewStrategyTitle] = useState("");
   const [newStrategyContent, setNewStrategyContent] = useState("");
@@ -279,8 +283,25 @@ export default function StrategyBank({
   };
 
   const handleStrategyClick = (strategyId: string, isBuiltIn: boolean = false) => {
-    // Toggle selection
-    onStrategyToggle(strategyId);
+    if (selectionMode === 'single') {
+      // For single selection, clear others and select this one
+      onSelectionChange([strategyId]);
+    } else {
+      // For multiple selection, toggle
+      onStrategyToggle(strategyId);
+    }
+  };
+
+  const handleCheckboxChange = (strategyId: string, checked: boolean) => {
+    if (selectionMode === 'single') {
+      onSelectionChange(checked ? [strategyId] : []);
+    } else {
+      if (checked) {
+        onSelectionChange([...selectedStrategies, strategyId]);
+      } else {
+        onSelectionChange(selectedStrategies.filter(id => id !== strategyId));
+      }
+    }
   };
 
   const handleEditClick = (strategy: Strategy | CustomStrategy, isBuiltIn: boolean = false, e: React.MouseEvent) => {
@@ -368,16 +389,37 @@ export default function StrategyBank({
     return (
       <div className="space-y-0">
         <Card
-          className={`transition-all duration-300 ease-out cursor-pointer ${
+          className={`transition-all duration-300 ease-out group relative ${
             isSelected
               ? 'bg-gradient-to-r from-blue-50 to-indigo-50 border-blue-200 shadow-md'
               : 'hover:bg-gray-50 hover:shadow-sm'
           }`}
-          onClick={() => handleStrategyClick(strategy.id, isBuiltIn)}
         >
           <div className="p-5">
-            <div className="flex items-start justify-between">
-              <div className="flex-1 space-y-3">
+            <div className="flex items-start gap-3">
+              {/* Selection Control */}
+              <div className="flex-shrink-0 mt-1">
+                {selectionMode === 'single' ? (
+                  <RadioGroupItem
+                    value={strategy.id}
+                    checked={isSelected}
+                    onChange={() => handleCheckboxChange(strategy.id, !isSelected)}
+                    className="cursor-pointer"
+                  />
+                ) : (
+                  <Checkbox
+                    checked={isSelected}
+                    onCheckedChange={(checked) => handleCheckboxChange(strategy.id, !!checked)}
+                    className="cursor-pointer"
+                  />
+                )}
+              </div>
+
+              {/* Strategy Content */}
+              <div 
+                className="flex-1 space-y-3 cursor-pointer"
+                onClick={() => handleStrategyClick(strategy.id, isBuiltIn)}
+              >
                 {/* Display Section Tag */}
                 {strategy.section && (
                   <Badge variant="outline" className="text-xs bg-gray-50 text-gray-700 border-gray-300">
@@ -402,38 +444,37 @@ export default function StrategyBank({
                 </p>
               </div>
 
-              {!isBuiltIn && (
+              {/* Action Buttons */}
+              <div className="flex-shrink-0 flex gap-1">
+                {/* Edit Button */}
                 <Button
                   variant="ghost"
                   size="sm"
-                  onClick={(e) => removeCustomStrategy(strategy.id, e)}
-                  className="ml-3 h-8 w-8 p-0 text-red-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity"
-                  disabled={removeCustomStrategyMutation.isPending}
+                  onClick={(e) => handleEditClick(strategy, isBuiltIn, e)}
+                  className="h-8 w-8 p-0 text-gray-400 hover:text-blue-600 hover:bg-blue-50 opacity-0 group-hover:opacity-100 transition-all duration-200"
+                  disabled={addCustomStrategyMutation.isPending}
                 >
-                  <Trash2 className="h-4 w-4" />
+                  <Pen className="h-4 w-4" />
                 </Button>
-              )}
+
+                {/* Delete Button (Custom Strategies Only) */}
+                {!isBuiltIn && (
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={(e) => removeCustomStrategy(strategy.id, e)}
+                    className="h-8 w-8 p-0 text-red-400 hover:text-red-600 hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-all duration-200"
+                    disabled={removeCustomStrategyMutation.isPending}
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                )}
+              </div>
             </div>
           </div>
         </Card>
 
-        {/* Edit button that slides in smoothly */}
-        <div className={`overflow-hidden transition-all duration-300 ease-out ${
-          isSelected ? 'max-h-16 opacity-100' : 'max-h-0 opacity-0'
-        }`}>
-          <div className="pt-2 pb-1 px-1">
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={(e) => handleEditClick(strategy, isBuiltIn, e)}
-              className="w-full h-10 text-blue-600 hover:text-blue-700 hover:bg-blue-50 border border-blue-200 hover:border-blue-300 transition-all duration-200"
-              disabled={addCustomStrategyMutation.isPending}
-            >
-              <Edit className="h-4 w-4 mr-2" />
-              Edit Strategy
-            </Button>
-          </div>
-        </div>
+        
 
         {/* Inline editing form that expands seamlessly */}
         <div className={`overflow-hidden transition-all duration-300 ease-out ${
