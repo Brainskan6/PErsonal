@@ -337,7 +337,7 @@ export class MemStorage implements IStorage {
           description: "Build and maintain 3-6 months of expenses in liquid savings",
           category: "Savings",
           section: "buildNetWorth",
-          content: "Establish an emergency fund equal to 3-6 months of living expenses in a high-yield savings account. This fund should be easily accessible and separate from other savings goals.",
+          content: "Establish an emergency fund equal to 3-6 months of living expenses in a high-yield savings account (HISA) or Tax-Free Savings Account (TFSA). This fund should be easily accessible and separate from other savings goals.",
           inputFields: [],
           isCustom: false
         },
@@ -347,67 +347,147 @@ export class MemStorage implements IStorage {
           description: "Systematic approach to eliminate high-interest debt",
           category: "Debt Management",
           section: "buildNetWorth",
-          content: "Implement either debt avalanche (highest interest first) or debt snowball (smallest balance first) method to systematically eliminate debt while maintaining minimum payments on all accounts.",
+          content: "Implement either debt avalanche (highest interest first) or debt snowball (smallest balance first) method to systematically eliminate debt while maintaining minimum payments on all accounts. Consider using TFSA room strategically once high-interest debt is eliminated.",
           inputFields: [],
           isCustom: false
         },
         {
-          id: "retirement-401k",
-          title: "401(k) Optimization",
-          description: "Maximize employer matching and tax-advantaged retirement savings",
+          id: "rrsp-optimization",
+          title: "RRSP Optimization Strategy",
+          description: "Maximize RRSP contributions and employer matching",
           category: "Retirement",
           section: "buildNetWorth",
-          content: "Contribute at least enough to your 401(k) to receive full employer match, then maximize annual contributions up to IRS limits. Consider Roth vs traditional contributions based on current and expected future tax brackets.",
+          content: "Contribute to your Registered Retirement Savings Plan (RRSP) to receive immediate tax deductions and defer taxes until retirement. Maximize employer matching contributions first, then consider additional contributions based on your marginal tax rate. Consider spousal RRSPs for income splitting in retirement.",
           inputFields: [],
           isCustom: false
         },
         {
-          id: "investment-portfolio",
-          title: "Diversified Investment Portfolio",
-          description: "Build age-appropriate asset allocation with low-cost index funds",
+          id: "tfsa-maximization",
+          title: "TFSA Maximization Strategy",
+          description: "Fully utilize Tax-Free Savings Account room",
+          category: "Savings",
+          section: "buildNetWorth",
+          content: "Maximize your Tax-Free Savings Account (TFSA) contributions annually. TFSA growth and withdrawals are tax-free, making it ideal for emergency funds, short-term goals, and long-term investing. Consider TFSA before RRSP if you're in a lower tax bracket or expect higher income in the future.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "investment-portfolio-canadian",
+          title: "Canadian Diversified Investment Portfolio",
+          description: "Build portfolio with Canadian and international exposure",
           category: "Investing",
           section: "buildNetWorth",
-          content: "Implement a diversified portfolio using low-cost index funds with asset allocation based on age, risk tolerance, and time horizon. Consider target-date funds for simplicity or build custom allocation.",
+          content: "Implement a diversified portfolio including Canadian equity (TSX), international developed markets, emerging markets, and bonds. Consider Canadian-listed ETFs to minimize foreign withholding taxes in taxable accounts. Maintain home bias appropriate for Canadian investors (typically 25-40% Canadian equity).",
           inputFields: [],
           isCustom: false
         },
         {
-          id: "tax-optimization",
-          title: "Tax Optimization Strategy",
-          description: "Minimize tax burden through strategic planning and deductions",
+          id: "quebec-tax-optimization",
+          title: "Quebec Tax Optimization Strategy",
+          description: "Minimize combined federal and Quebec provincial tax burden",
           category: "Tax Planning",
           section: "implementingTaxStrategies",
-          content: "Maximize tax-advantaged accounts (401k, IRA, HSA), consider tax-loss harvesting, and optimize timing of income and deductions. Review tax strategy annually and adjust as needed.",
+          content: "Optimize for Quebec's unique tax structure with separate federal and provincial returns. Maximize RRSP contributions for combined 48%+ marginal tax rate relief. Consider Quebec-specific tax credits including childcare expenses, medical expenses, and charitable donations. Utilize income splitting strategies where applicable.",
           inputFields: [],
           isCustom: false
         },
         {
-          id: "insurance-review",
-          title: "Insurance Coverage Review",
-          description: "Ensure adequate protection for income, health, and assets",
-          category: "Insurance",
-          section: "protectingWhatMatters",
-          content: "Review life insurance needs (10x annual income rule), disability insurance (60-70% of income), health insurance adequacy, and consider umbrella policy for asset protection.",
-          inputFields: [],
-          isCustom: false
-        },
-        {
-          id: "home-buying",
-          title: "Home Purchase Strategy",
-          description: "Plan for home ownership including down payment and ongoing costs",
-          category: "Real Estate",
+          id: "qpp-cpp-optimization",
+          title: "QPP/CPP Optimization Strategy",
+          description: "Optimize Quebec and Canada Pension Plan benefits",
+          category: "Retirement",
           section: "buildNetWorth",
-          content: "Save for 10-20% down payment, maintain good credit score (740+), budget for closing costs and ongoing maintenance. Consider rent vs buy analysis based on local market conditions.",
+          content: "Understand QPP (Quebec Pension Plan) benefits and optimal claiming strategies. Consider delaying QPP until age 70 for increased benefits (42% increase) if financially feasible. Factor QPP into overall retirement income planning alongside OAS and personal savings.",
           inputFields: [],
           isCustom: false
         },
         {
-          id: "education-funding",
-          title: "Education Funding Plan",
-          description: "Save for children's education using tax-advantaged accounts",
+          id: "resp-education-funding",
+          title: "RESP Education Funding Plan",
+          description: "Save for children's education using Registered Education Savings Plan",
           category: "Education",
           section: "leavingALegacy",
-          content: "Utilize 529 education savings plans for tax-free growth and withdrawals for qualified education expenses. Consider age-based investment options and state tax benefits.",
+          content: "Utilize Registered Education Savings Plans (RESP) for tax-free growth and withdrawals for qualified education expenses. Maximize Canada Education Savings Grant (CESG) of 20% on first $2,500 contributed annually. Quebec residents also receive additional Quebec Education Savings Incentive (QESI).",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "first-time-homebuyer",
+          title: "First-Time Home Buyer Strategy",
+          description: "Leverage Canadian programs for home ownership",
+          category: "Real Estate",
+          section: "buildNetWorth",
+          content: "Utilize the Home Buyers' Plan (HBP) to withdraw up to $35,000 from RRSP tax-free for first home purchase. Consider First-Time Home Buyer Incentive programs and ensure adequate down payment (minimum 5% for homes under $500K). Factor in land transfer taxes, which vary by province, and consider legal fees and home inspection costs.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "insurance-review-canadian",
+          title: "Canadian Insurance Coverage Review",
+          description: "Ensure adequate protection considering Canadian healthcare and benefits",
+          category: "Insurance",
+          section: "protectingWhatMatters",
+          content: "Review life insurance needs (typically 8-10x annual income) considering mortgage protection, income replacement, and final expenses. Evaluate disability insurance to supplement employer coverage, as government disability benefits are limited. Consider critical illness insurance as a supplement to provincial healthcare coverage.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "estate-planning-quebec",
+          title: "Quebec Estate Planning Essentials",
+          description: "Create estate planning documents under Quebec civil law",
+          category: "Estate Planning",
+          section: "leavingALegacy",
+          content: "Establish a will that complies with Quebec's Civil Code requirements. Consider a notarial will for added security. Prepare mandate in case of incapacity (equivalent to power of attorney). Review beneficiary designations on RRSPs, RRIFs, TFSAs, and insurance policies. Consider spousal rollovers and graduated rate estates for tax efficiency.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "rrif-withdrawal-strategy",
+          title: "RRIF Withdrawal Strategy",
+          description: "Optimize RRIF withdrawals for tax efficiency",
+          category: "Retirement",
+          section: "implementingTaxStrategies",
+          content: "Plan mandatory Registered Retirement Income Fund (RRIF) withdrawals starting at age 71. Consider income splitting with spouse through pension splitting rules. Time withdrawals to minimize OAS clawback (starting at $81,761 net income). Consider voluntary withdrawals in lower-income years to smooth tax burden.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "oas-optimization",
+          title: "Old Age Security Optimization",
+          description: "Maximize OAS benefits and minimize clawbacks",
+          category: "Retirement",
+          section: "protectingWhatMatters",
+          content: "Understand Old Age Security (OAS) eligibility and benefit amounts. Plan to minimize OAS recovery tax (clawback) which begins at $81,761 net income. Consider income splitting strategies, RRSP withdrawal timing, and capital gains realization to stay below clawback thresholds. Factor in Guaranteed Income Supplement (GIS) if applicable.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "capital-gains-optimization",
+          title: "Capital Gains Tax Strategy",
+          description: "Optimize capital gains realization and lifetime exemption",
+          category: "Tax Planning",
+          section: "implementingTaxStrategies",
+          content: "Utilize lifetime capital gains exemption ($971,190 for 2023) on qualified small business corporation shares and qualified farm/fishing property. Plan capital gains realization to minimize tax impact, considering income splitting opportunities and tax-loss harvesting in non-registered accounts.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "charitable-giving-canadian",
+          title: "Canadian Charitable Giving Strategy",
+          description: "Optimize charitable donations for Canadian tax efficiency",
+          category: "Tax Planning",
+          section: "leavingALegacy",
+          content: "Maximize charitable tax credits (15% federal + provincial rate on first $200, then 29% federal + top provincial rate). Consider donating appreciated securities to eliminate capital gains tax. Explore charitable remainder trusts, charitable gift annuities, and private foundation options for larger gifts.",
+          inputFields: [],
+          isCustom: false
+        },
+        {
+          id: "tax-loss-harvesting-canadian",
+          title: "Canadian Tax Loss Harvesting",
+          description: "Offset capital gains with investment losses in Canadian context",
+          category: "Tax Planning",
+          section: "implementingTaxStrategies",
+          content: "Systematically realize investment losses to offset capital gains and reduce overall tax burden. Be mindful of Canada's superficial loss rules (30-day rule) and maintain portfolio diversification. Consider carrying forward capital losses indefinitely or back three years to optimize tax efficiency.",
           inputFields: [],
           isCustom: false
         },
@@ -417,7 +497,7 @@ export class MemStorage implements IStorage {
           description: "Evaluate non-registered account tax efficiency",
           category: "Tax Planning",
           section: "implementingTaxStrategies",
-          content: "Review your non-registered investment accounts for tax optimization opportunities.",
+          content: "Review your non-registered investment accounts for tax optimization opportunities considering Canadian dividend tax credits and capital gains treatment.",
           inputFields: [
             {
               id: "significantNonRegistered",
@@ -425,12 +505,12 @@ export class MemStorage implements IStorage {
               type: "toggle",
               defaultValue: false,
               conditionalText: {
-                whenTrue: "Think your portfolio is tax efficient ? Lol nope my friend.",
+                whenTrue: "Consider asset location strategies: hold Canadian eligible dividends and growth investments in non-registered accounts, while placing interest-bearing investments in tax-sheltered accounts.",
                 whenFalse: ""
               }
             }
           ],
-          isCustom: true
+          isCustom: false
         },
         {
           id: "estate-executor-review",
@@ -438,7 +518,7 @@ export class MemStorage implements IStorage {
           description: "Assess executor capability for estate management",
           category: "Estate Planning",
           section: "leavingALegacy",
-          content: "Evaluate whether your chosen executor can effectively handle your estate administration.",
+          content: "Evaluate whether your chosen executor can effectively handle your estate administration under Quebec civil law.",
           inputFields: [
             {
               id: "executorCapable",
@@ -447,19 +527,19 @@ export class MemStorage implements IStorage {
               defaultValue: true,
               conditionalText: {
                 whenTrue: "",
-                whenFalse: "Forget it bro, leave it to the pros."
+                whenFalse: "Consider appointing a trust company or professional executor familiar with Quebec estate administration requirements."
               }
             }
           ],
-          isCustom: true
+          isCustom: false
         },
         {
           id: "testamentary-trust-analysis",
           title: "Testamentary Trust Analysis",
-          description: "Determine if a testamentary trust is appropriate",
+          description: "Determine if a testamentary trust is appropriate under Quebec law",
           category: "Estate Planning",
           section: "leavingALegacy",
-          content: "Assess the relevance of establishing a testamentary trust for your beneficiaries.",
+          content: "Assess the relevance of establishing a testamentary trust for your beneficiaries under Quebec's Civil Code framework.",
           inputFields: [
             {
               id: "testamentaryTrustRelevant",
@@ -467,81 +547,11 @@ export class MemStorage implements IStorage {
               type: "toggle",
               defaultValue: false,
               conditionalText: {
-                whenTrue: "Good call, you don't want your kids to spend it all for nothing right ?",
+                whenTrue: "Testamentary trusts can provide tax advantages and asset protection for beneficiaries, particularly useful for minor children or beneficiaries requiring financial guidance.",
                 whenFalse: ""
               }
             }
           ],
-          isCustom: true
-        },
-        {
-          id: "tax-loss-harvesting",
-          title: "Tax Loss Harvesting",
-          description: "Offset capital gains with investment losses to reduce tax liability",
-          category: "Tax Planning",
-          section: "implementingTaxStrategies",
-          content: "Systematically realize investment losses to offset capital gains and reduce overall tax burden. Be mindful of wash sale rules and maintain portfolio diversification.",
-          inputFields: [],
-          isCustom: false
-        },
-        {
-          id: "life-insurance",
-          title: "Life Insurance Protection",
-          description: "Ensure adequate life insurance coverage for dependents",
-          category: "Insurance",
-          section: "protectingWhatMatters",
-          content: "Evaluate life insurance needs based on income replacement, debt coverage, and family obligations. Consider term life insurance for temporary needs and permanent insurance for estate planning.",
-          inputFields: [],
-          isCustom: false
-        },
-        {
-          id: "disability-insurance",
-          title: "Disability Insurance",
-          description: "Protect income against disability with proper coverage",
-          category: "Insurance",
-          section: "protectingWhatMatters",
-          content: "Secure disability insurance to protect against loss of income due to illness or injury. Consider both short-term and long-term disability coverage through employer or individual policies.",
-          inputFields: [],
-          isCustom: false
-        },
-        {
-          id: "estate-planning",
-          title: "Estate Planning Basics",
-          description: "Create essential estate planning documents",
-          category: "Estate Planning",
-          section: "leavingALegacy",
-          content: "Establish a will, power of attorney, and healthcare directives. Consider trusts for larger estates and review beneficiaries on all accounts annually.",
-          inputFields: [],
-          isCustom: false
-        },
-        {
-          id: "charitable-giving",
-          title: "Charitable Giving Strategy",
-          description: "Optimize charitable donations for tax efficiency",
-          category: "Tax Planning",
-          section: "leavingALegacy",
-          content: "Consider donor-advised funds, charitable remainder trusts, or direct giving strategies to maximize both charitable impact and tax benefits.",
-          inputFields: [],
-          isCustom: false
-        },
-        {
-          id: "investment-diversification",
-          title: "Investment Diversification",
-          description: "Build a well-diversified investment portfolio",
-          category: "Investing",
-          section: "buildNetWorth",
-          content: "Create a diversified portfolio across asset classes, geographic regions, and investment styles to reduce risk while maintaining growth potential.",
-          inputFields: [],
-          isCustom: false
-        },
-        {
-          id: "roth-conversion",
-          title: "Roth IRA Conversion Strategy",
-          description: "Convert traditional IRA funds to Roth for tax-free growth",
-          category: "Tax Planning",
-          section: "implementingTaxStrategies",
-          content: "Consider converting traditional IRA or 401(k) funds to Roth accounts during lower-income years to benefit from tax-free growth and withdrawals in retirement.",
-          inputFields: [],
           isCustom: false
         }
       ];
