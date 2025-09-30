@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useMemo } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
@@ -261,7 +260,7 @@ export default function StrategyBank({
   // Organize strategies by section and subsection
   const organizedStrategies = useMemo(() => {
     const allStrategies = [...strategies, ...customStrategies];
-    
+
     // Filter by search term
     const filteredStrategies = allStrategies.filter(strategy => {
       if (!searchTerm) return true;
@@ -281,14 +280,14 @@ export default function StrategyBank({
 
     filteredStrategies.forEach(strategy => {
       const section = strategy.section || 'uncategorized';
-      
+
       if (!sections[section]) {
         sections[section] = { strategies: [], subsections: {} };
       }
 
       // Use subsection or category as the grouping key
       const subsectionKey = strategy.subsection || strategy.category;
-      
+
       if (subsectionKey) {
         if (!sections[section].subsections[subsectionKey]) {
           sections[section].subsections[subsectionKey] = [];
@@ -303,7 +302,7 @@ export default function StrategyBank({
     Object.keys(sections).forEach(sectionKey => {
       // Sort strategies within section
       sections[sectionKey].strategies.sort((a, b) => a.title.localeCompare(b.title));
-      
+
       // Sort strategies within each subsection
       Object.keys(sections[sectionKey].subsections).forEach(subsectionKey => {
         sections[sectionKey].subsections[subsectionKey].sort((a, b) => a.title.localeCompare(b.title));
@@ -407,7 +406,7 @@ export default function StrategyBank({
   const handleEditSectionChange = (newSection: string) => {
     const availableSubsections = getSectionSubsections(newSection);
     const currentSubsection = editFormData.subsection;
-    
+
     setEditFormData({
       ...editFormData,
       section: newSection,
@@ -523,13 +522,13 @@ export default function StrategyBank({
                   <Check className="h-4 w-4 text-blue-600" />
                 )}
               </div>
-              
+
               {(strategy.subsection || strategy.category) && (
                 <Badge variant="outline" className="text-xs bg-gray-50 text-gray-600 border-gray-300">
                   {strategy.subsection || strategy.category}
                 </Badge>
               )}
-              
+
               <p className="text-xs text-gray-600 leading-relaxed line-clamp-2">
                 {strategy.content}
               </p>
@@ -625,7 +624,23 @@ export default function StrategyBank({
                 <Label className="text-xs font-medium text-blue-900">Subsection (Optional)</Label>
                 <Select
                   value={editFormData.subsection || ""}
-                  onValueChange={(value) => setEditFormData({ ...editFormData, subsection: value === "none" ? "" : value })}
+                  onValueChange={(value) => {
+                    const newSubsection = value === "none" ? "" : value;
+                    setEditFormData({ ...editFormData, subsection: newSubsection });
+
+                    // Show real-time preview of where strategy will be moved
+                    const originalStrategy = [...strategies, ...customStrategies].find(s => s.id === strategy.id);
+                    const currentSubsection = originalStrategy?.subsection || originalStrategy?.category || '';
+
+                    if (currentSubsection !== newSubsection) {
+                      const targetLocation = `${getSectionDisplayName(editFormData.section)}${newSubsection ? ` > ${newSubsection}` : ''}`;
+                      toast({
+                        title: "Preview: Strategy will move",
+                        description: `"${editFormData.title}" → ${targetLocation}`,
+                        duration: 2000,
+                      });
+                    }
+                  }}
                 >
                   <SelectTrigger className="h-8 text-sm">
                     <SelectValue placeholder="Select subsection" />
@@ -907,7 +922,7 @@ export default function StrategyBank({
                               .map(([subsectionKey, subsectionStrategies]) => {
                                 const isSubsectionExpanded = expandedSubsections.includes(subsectionKey);
                                 const selectedInSubsection = subsectionStrategies.filter(strategy => selectedStrategies.includes(strategy.id)).length;
-                                
+
                                 return (
                                   <div key={subsectionKey} className="space-y-2">
                                     <button
@@ -932,7 +947,7 @@ export default function StrategyBank({
                                         </Badge>
                                       </div>
                                     </button>
-                                    
+
                                     <div className={`overflow-hidden transition-all duration-300 ease-out ${
                                       isSubsectionExpanded ? 'max-h-[2000px] opacity-100' : 'max-h-0 opacity-0'
                                     }`}>
